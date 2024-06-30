@@ -9,6 +9,11 @@ import { Component } from '@angular/core';
 })
 export class PropertyCardComponent {
   title: string = 'Property works';
-
+  Property: any = {
+    id: 1,
+    name: 'Birla house',
+    type: 'House',
+    price: 12000,
+  };
   constructor() {}
 }
