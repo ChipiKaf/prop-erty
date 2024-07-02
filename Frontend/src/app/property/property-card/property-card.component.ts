@@ -1,19 +1,19 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { IPropertyBase } from '../../model/ipropertybase';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-property-card',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, RouterModule],
   templateUrl: './property-card.component.html',
   styleUrl: './property-card.component.scss',
 })
 export class PropertyCardComponent {
-  title: string = 'Property works';
-  Property: any = {
-    id: 1,
-    name: 'Birla house',
-    type: 'House',
-    price: 12000,
-  };
-  constructor() {}
+  @Input() property: IPropertyBase | null;
+  @Input() hideIcons: boolean = true;
+  constructor() {
+    this.property = null;
+  }
 }
