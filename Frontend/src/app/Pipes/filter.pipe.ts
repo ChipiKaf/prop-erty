@@ -5,11 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class FilterPipe implements PipeTransform {
-  transform(value: any[], filterString: string, propName: string): any[] {
-    const resultArray = [];
+  transform<T>(value: T[], filterString: string, propName: keyof T): string[] {
+    const resultArray: T[] = [];
     if (value) {
       if (value.length === 0 || filterString === '' || propName === '') {
-        return value;
+        return value as unknown as string[];
       }
 
       for (const item of value) {
@@ -17,7 +17,8 @@ export class FilterPipe implements PipeTransform {
           resultArray.push(item);
         }
       }
-      return resultArray;
+      return resultArray as unknown as string[];
     }
+    return resultArray as unknown as string[];
   }
 }

@@ -1,5 +1,5 @@
 export interface Photo {
-    imageUrl: string;
-    publicId: string;
-    isPrimary: boolean;
+  imageUrl: string;
+  publicId: string;
+  isPrimary: boolean;
 }

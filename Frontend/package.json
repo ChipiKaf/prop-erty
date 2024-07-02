@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\"",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -18,6 +19,8 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
+    "alertify": "^0.3.0",
+    "alertifyjs": "^1.14.0",
     "bootstrap": "^5.3.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

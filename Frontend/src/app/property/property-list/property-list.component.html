@@ -14,7 +14,7 @@
 </button>
 
 <div class="row">
-  <div *ngFor="let property of (properties || [])|filter:SearchCity:'City'|sort:[SortbyParam,SortDirection]"
+  <div *ngFor="let property of properties|filter:SearchCity:'city'|sort:[SortbyParam,SortDirection]"
   class="col-sm-4">
     <div class="shadow-lg p-3 mb-4">
         <app-property-card [property]="property"></app-property-card>
