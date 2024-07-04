@@ -1,6 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-// import { HousingService } from '../../services/housing.service';
-// import { ActivatedRoute } from '@angular/router';
 import { IPropertyBase, PropertyBase } from '../../model/ipropertybase';
 import { CommonModule } from '@angular/common';
 import { PropertyCardComponent } from '../property-card/property-card.component';
@@ -38,7 +36,7 @@ export class PropertyListComponent implements OnInit {
       new PropertyBase(
         1,
         1000,
-        'Home',
+        'The Penthouse',
         'Flat',
         'Modern',
         1000,
@@ -46,12 +44,12 @@ export class PropertyListComponent implements OnInit {
         1,
         'Pretoria',
         true,
-        'flat2.webp'
+        '1.jpg'
       ),
       new PropertyBase(
         2,
         2000,
-        'House',
+        'Sanctuary home',
         'Townhouse',
         'Antique',
         2000,
@@ -59,7 +57,20 @@ export class PropertyListComponent implements OnInit {
         2,
         'Johannesburg',
         false,
-        'house2.webp'
+        '2.jpg'
+      ),
+      new PropertyBase(
+        3,
+        2000,
+        'The Condo',
+        'Townhouse',
+        'Antique',
+        2000,
+        3,
+        2,
+        'Johannesburg',
+        false,
+        '3.jpg'
       ),
     ];
   }
