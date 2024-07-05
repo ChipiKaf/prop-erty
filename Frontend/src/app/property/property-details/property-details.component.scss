@@ -1,0 +1,114 @@
+@import '../../../variables.scss';
+.box {
+    border-width: 2px 2px 2px 0;
+    margin-top: -2px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.5);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    .flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &.pad {
+        padding: 5rem;
+    }
+    
+    .icons-container {
+        font-size: 3rem;
+        position: absolute;
+        transform: translate(0, -50%);
+        top: 50%;
+        left: 6rem;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .icon-child {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .icon {
+            &.gold {
+                background-color: darken($tertiary-color, 55);
+            }
+            &.burgundy {
+                background-color: lighten($alt-color, 10);
+            }
+            &.grey {
+                background-color: $background-color;
+            }
+            width: 5rem;
+            text-align: center;
+        }
+
+        .icon-text {
+            color: black;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 200;
+            font-style: normal;
+        }
+    }
+
+    & &__title {
+        color: black;
+        font-family: "Anton SC", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 4rem;
+      }
+    
+      & &__sub-title {
+        color: black;
+        font-family: "Montserrat", sans-serif;
+        font-size: 2rem;
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-style: normal;
+        z-index: 4;
+      }
+    
+      .text-container {
+        position: absolute;
+        left: 6rem;
+        bottom: 3rem;
+        opacity: 1;
+        transition: opacity .3s, bottom .5s;
+        z-index: 4;
+      }
+      .property-img {
+        transition: all 0.2s;
+        object-fit: cover;
+        object-position: 50% 50%;
+        height: 100%;
+        width: 100%;
+        position: relative;
+      }
+    &.limit-height {
+        border-width: 2px 2px 0 0;
+        max-height: calc(100vh);
+        position: sticky;
+        top: 0;
+    }
+}
+.relative {
+    position: relative;
+}
+.min-200 {
+    height: 190vh;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.half-height {
+    height: 50%;
+}

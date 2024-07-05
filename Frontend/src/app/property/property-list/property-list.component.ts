@@ -5,12 +5,14 @@ import { PropertyCardComponent } from '../property-card/property-card.component'
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../Pipes/filter.pipe';
 import { SortPipe } from '../../Pipes/sort.pipe';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-property-list',
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     FormsModule,
     PropertyCardComponent,
     FilterPipe,
@@ -72,7 +74,21 @@ export class PropertyListComponent implements OnInit {
         false,
         '3.jpg'
       ),
+      new PropertyBase(
+        4,
+        2000,
+        'Craven hills',
+        'Townhouse',
+        'Antique',
+        2000,
+        3,
+        2,
+        'Durban',
+        false,
+        '4.jpg'
+      ),
     ];
+    localStorage.setItem('properties', JSON.stringify(this.properties));
   }
 
   onCityFilter() {

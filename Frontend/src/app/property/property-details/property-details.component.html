@@ -1,0 +1,47 @@
+<div class="row min-200">
+    <div
+    class="col-sm-3 relative">
+    <div class="row full-height">
+        <div class="col-12 box">
+            <div class="text-container">
+                <h2 class="box__title">{{ property.name }}</h2>  
+                <h3 class="box__sub-title">{{ property.city }}</h3>    
+              </div>
+        </div>
+        <div class="col-12 box">
+            <div class="icons-container">
+                <div class="icon-child">
+                    <div class="icon gold">
+                        <i class="fa fa-map-marker"></i>
+                    </div>
+                    <h4 class="icon-text">{{property.city}}</h4>
+                </div>
+                <div class="icon-child">
+                    <div class="icon burgundy">
+                        <i class="fa fa-building"></i>
+                    </div>
+                    <h4 class="icon-text">{{property.propertyType}}</h4>
+                </div>
+                <div class="icon-child">
+                    <div class="icon grey">
+                        <i class="fa fa-money"></i>
+                    </div>
+                    <h4 class="icon-text">{{property.price}}</h4>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-12 box">
+    
+        </div>
+        <div class="col-12 box">
+    
+        </div>
+    </div>
+
+  </div>
+  <div
+  class="col-sm-9 box limit-height pad">
+  <img *ngIf="property?.photo" class="property-img" src="{{property.photo}}">
+</div>
+  </div>

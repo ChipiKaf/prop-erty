@@ -28,9 +28,12 @@ export class HousingService {
   }
 
   getProperty(id: number) {
-    return this.http.get<Property>(
-      this.baseUrl + '/property/detail/' + id.toString()
+    return JSON.parse(localStorage.getItem('properties') || '').find(
+      (property: Property) => property.id === id
     );
+    // return this.http.get<Property>(
+    //   this.baseUrl + '/property/detail/' + id.toString()
+    // );
   }
 
   getAllProperties(SellRent?: number): Observable<Property[]> {

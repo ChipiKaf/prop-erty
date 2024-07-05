@@ -11,6 +11,7 @@ export interface IPropertyBase {
   readyToMove: boolean;
   photo?: string;
   estPossessionOn?: string;
+  description?: string;
 }
 
 export class PropertyBase implements IPropertyBase {
@@ -21,6 +22,7 @@ export class PropertyBase implements IPropertyBase {
   furnishingType: string;
   price: number;
   bhk: number;
+  description?: string | undefined;
   builtArea: number;
   city: string;
   readyToMove: boolean;
