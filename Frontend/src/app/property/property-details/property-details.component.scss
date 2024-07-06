@@ -7,10 +7,72 @@
     transition: all 0.3s;
     position: relative;
     overflow: hidden;
-    .flex {
+
+    .description-text-container {
+        font-size: 1.6rem;
+    }
+    &.style-hovered:hover  {
+        background-color: darken($tertiary-color, 55);
+    }
+    &.style-hovered:hover &__title {
+        color: $tertiary-color;
+    }
+    &.style-hovered:hover &__sub-title {
+        color: white;
+    }
+    .pagination-container {
         display: flex;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    
+        .arrow-button {
+            font-size: 1.6rem;
+            border-bottom: 1px solid black;
+            color: darken($tertiary-color, 55);
+            padding: 1rem 2rem;
+            transition: transform .3s cubic-bezier(1,.02,0,.95);
+            transform: translateY(0);
+            position: relative;
+    
+            &:hover {
+                cursor: pointer;
+                transform: translateY(-.3rem);
+                border-color: darken($tertiary-color, 55);
+            }
+    
+            &::after {
+                content: '';
+                position: absolute;
+                opacity: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 1px; // Adjust this height as needed
+                background-color: black;
+                transition: bottom .3s cubic-bezier(1,.02,0,.95), opacity .5s;
+            }
+    
+            &:hover::after {
+                bottom: -.4rem; // Adjust to match the translateY(-.3rem) of the .arrow-button
+                opacity: 1;
+                background-color: darken($tertiary-color, 55); // Adjust color as needed
+            }
+        }
+    }
+    &.flex {
+        display: flex;
+        justify-content: left;
         align-items: center;
+        &.column {
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        &.align-end {
+            align-items: end;
+        }
     }
     &.pad {
         padding: 5rem;
@@ -18,10 +80,10 @@
     
     .icons-container {
         font-size: 3rem;
-        position: absolute;
-        transform: translate(0, -50%);
-        top: 50%;
-        left: 6rem;
+        // position: absolute;
+        // transform: translate(0, -50%);
+        // top: 50%;
+        // left: 6rem;
         color: white;
         display: flex;
         flex-direction: column;
@@ -51,7 +113,7 @@
 
         .icon-text {
             color: black;
-            font-family: "Montserrat", sans-serif;
+            font-family: $body-font;
             font-weight: 200;
             font-style: normal;
         }
@@ -59,29 +121,26 @@
 
     & &__title {
         color: black;
-        font-family: "Anton SC", sans-serif;
+        font-family: $heading-font;
         font-weight: 400;
         font-style: normal;
+        transition: color .5s;
         font-size: 4rem;
       }
     
       & &__sub-title {
         color: black;
-        font-family: "Montserrat", sans-serif;
+        font-family: $body-font;
         font-size: 2rem;
         font-optical-sizing: auto;
+        transition: color .5s cubic-bezier(0,-0.02,1,.33);
         font-weight: 200;
         font-style: normal;
-        z-index: 4;
       }
     
       .text-container {
-        position: absolute;
-        left: 6rem;
-        bottom: 3rem;
         opacity: 1;
         transition: opacity .3s, bottom .5s;
-        z-index: 4;
       }
       .property-img {
         transition: all 0.2s;
@@ -90,12 +149,30 @@
         height: 100%;
         width: 100%;
         position: relative;
+        &.small {
+            max-height: 300px;
+        }
       }
     &.limit-height {
         border-width: 2px 2px 0 0;
         max-height: calc(100vh);
         position: sticky;
         top: 0;
+    }
+    &.limit-height-lg {
+        border-width: 2px 2px 0 0;
+        max-height: calc(100vh);
+        position: sticky;
+        top: 0;
+    }
+    
+    /* Non-sticky version for smaller screens */
+    @media (max-width: 576px) {
+        &.limit-height-lg {
+            position: static;
+            border-width: 2px;
+            max-height: none;
+        }
     }
 }
 .relative {

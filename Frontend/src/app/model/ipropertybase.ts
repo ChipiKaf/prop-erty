@@ -39,9 +39,11 @@ export class PropertyBase implements IPropertyBase {
     builtArea = 1,
     city = 'Pretoria',
     readyToMove = true,
-    photo = ''
+    photo = '',
+    description = ''
   ) {
     this.id = id;
+    this.description = description;
     this.sellRent = sellRent;
     this.name = name;
     this.propertyType = propertyType;

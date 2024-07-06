@@ -39,14 +39,18 @@ export class PropertyListComponent implements OnInit {
         1,
         1000,
         'The Penthouse',
-        'Flat',
+        'Estate',
         'Modern',
         1000,
         2,
         1,
         'Pretoria',
         true,
-        '1.jpg'
+        '1.jpg',
+        `Experience unparalleled luxury with this exquisite penthouse in a prestigious Pretoria estate. 
+        This stunning residence offers modern sophistication and timeless charm, making it the perfect 
+        retreat for an elevated lifestyle. Nestled in the heart of Pretoria, the estate provides easy 
+        access to upscale shopping, fine dining, and reputable schools, all within a serene, secure environment.`
       ),
       new PropertyBase(
         2,
@@ -59,20 +63,29 @@ export class PropertyListComponent implements OnInit {
         2,
         'Johannesburg',
         false,
-        '2.jpg'
+        '2.jpg',
+        `Experience tranquility and modern living in this beautiful sanctuary home townhouse located in the vibrant city of Johannesburg. 
+        This residence combines contemporary design with a serene atmosphere, providing the perfect escape from the bustling city life.`
       ),
       new PropertyBase(
         3,
         2000,
         'The Condo',
-        'Townhouse',
+        'Flat',
         'Antique',
         2000,
         3,
         2,
         'Johannesburg',
         false,
-        '3.jpg'
+        '3.jpg',
+        `Welcome to this stylish condo in the heart of Johannesburg, 
+        offering modern living in a prime urban setting. This well-appointed 
+        flat provides a perfect blend of comfort and convenience, ideal for city 
+        dwellers seeking a vibrant lifestyle. Located in a desirable neighborhood, 
+        the condo offers easy access to Johannesburg's top attractions, shopping centers, 
+        dining spots, and cultural landmarks. The building features secure access, ensuring 
+        a safe and peaceful living environment.`
       ),
       new PropertyBase(
         4,
@@ -85,7 +98,10 @@ export class PropertyListComponent implements OnInit {
         2,
         'Durban',
         false,
-        '4.jpg'
+        '4.jpg',
+        `Discover refined living in this elegant townhouse located in the sought-after Craven Hills neighborhood of Durban. 
+        This residence offers a harmonious blend of contemporary design and comfort, making it an ideal home for those 
+        seeking both style and convenience.`
       ),
     ];
     localStorage.setItem('properties', JSON.stringify(this.properties));

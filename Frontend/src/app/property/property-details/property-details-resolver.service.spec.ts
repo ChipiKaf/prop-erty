@@ -1,16 +1,19 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
-import { PropertyDetailsResolverService } from './property-details-resolver.service';
+import { TestBed, inject } from '@angular/core/testing';
+import { PropertyDetailResolverService } from './property-details-resolver.service';
 
 describe('Service: PropertyDetailsResolver', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PropertyDetailsResolverService]
+      providers: [PropertyDetailResolverService],
     });
   });
 
-  it('should ...', inject([PropertyDetailsResolverService], (service: PropertyDetailsResolverService) => {
-    expect(service).toBeTruthy();
-  }));
+  it('should ...', inject(
+    [PropertyDetailResolverService],
+    (service: PropertyDetailResolverService) => {
+      expect(service).toBeTruthy();
+    }
+  ));
 });
