@@ -1,11 +1,13 @@
 @import '../../mixins.scss';
 @import '../../variables';
-.navbar {
+
+.navbar-custom {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0;
+    padding: 2rem 2rem;
     margin: 0;
+
     &.home {
         animation: enterTop 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) 2.5s backwards;
     }
@@ -31,27 +33,32 @@
 
     &__list-item {
         display: inline-block;
-        &:not(:first-child) {
-            margin-left: 1rem;
+        &:not(:last-child) {
+            margin-right: 3rem;
         }
     }
 
     &__link {
+        text-decoration: none;
+        color: lighten(black, 40);
+        // font-weight: 900;
+        font-size: 1.6rem;
+        text-transform: uppercase;
         transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        font-family: $body-font;
+        &:hover {
+            cursor: pointer;
+        }
+
+        &:link,
+        &:visited {
+            color: lighten(black, 40); // Ensure the color is applied
+        }
     }
+
     &__list:hover &__list-item:not(:hover) &__link {
         filter: blur(2px);
         opacity: .7;
-    }
-    
-
-    &__link:link,
-    &__link:visited {
-        text-decoration: none;
-        color: white;
-        font-weight: 900;
-        font-size: 1.2rem;
-        text-transform: uppercase;
     }
 }
 
@@ -59,7 +66,6 @@ svg {
     & .line-one {
         transform: rotate(0) translate(0, 0);
         animation: transform-first-line-undo .5s ease forwards;
-
 
         &.active {
             animation: transform-first-line 1s ease .2s forwards;
@@ -69,6 +75,7 @@ svg {
     & .line-two {
         // stroke-dasharray: 0;
         animation: transform-second-line-undo .5s .5s ease backwards;
+
         &.active {
             animation: transform-second-line .2s ease forwards;
         }
@@ -77,6 +84,7 @@ svg {
     & .line-three {
         transform: rotate(0) translate(0);
         animation: transform-last-line-undo .5s ease forwards;
+
         &.active {
             animation: transform-last-line 1s ease .2s forwards;
         }
@@ -96,6 +104,7 @@ svg {
     background-color: $primary-color;
     transform: translate(-40%, -50%);
     transition: all 1s;
+
     @include respond(phone) {
         display: block;
     }
@@ -105,4 +114,26 @@ svg {
     position: fixed;
     // opacity: 1;
     transform: scale(80);
+}
+.logo {
+    color: lighten(black, 40);
+    font-family: $heading-font;
+    // text-transform: uppercase;
+    font-size: 2.5rem;
+    font-weight: 300;
+    text-decoration: none;
+    &:hover {
+        cursor: pointer;
+    }
+    &-image {
+        max-height: 7rem;
+    }
+
+    @include respond(phone) {
+        display: block;
+        text-align: center;
+        margin: auto;
+        font-size: 4rem;
+    }
+    // letter-spacing: .5rem;
 }
