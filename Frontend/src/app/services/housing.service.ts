@@ -14,7 +14,7 @@ export class HousingService {
   constructor(private http: HttpClient) {}
 
   getAllCities(): Observable<string[]> {
-    return this.http.get<string[]>(this.baseUrl + '/city/cities');
+    return this.http.get<string[]>(this.baseUrl + '/city');
   }
 
   getPropertyTypes(): Observable<Ikeyvaluepair[]> {
