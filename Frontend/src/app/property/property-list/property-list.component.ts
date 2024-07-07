@@ -51,7 +51,8 @@ export class PropertyListComponent implements OnInit {
         `Experience unparalleled luxury with this exquisite penthouse in a prestigious Pretoria estate.
         This stunning residence offers modern sophistication and timeless charm, making it the perfect
         retreat for an elevated lifestyle. Nestled in the heart of Pretoria, the estate provides easy
-        access to upscale shopping, fine dining, and reputable schools, all within a serene, secure environment.`
+        access to upscale shopping, fine dining, and reputable schools, all within a serene, secure environment.`,
+        ['in1.jpg']
       ),
       new PropertyBase(
         2,
@@ -66,7 +67,8 @@ export class PropertyListComponent implements OnInit {
         false,
         '2.jpg',
         `Experience tranquility and modern living in this beautiful sanctuary home townhouse located in the vibrant city of Johannesburg.
-        This residence combines contemporary design with a serene atmosphere, providing the perfect escape from the bustling city life.`
+        This residence combines contemporary design with a serene atmosphere, providing the perfect escape from the bustling city life.`,
+        ['in2.jpg']
       ),
       new PropertyBase(
         3,
@@ -86,7 +88,8 @@ export class PropertyListComponent implements OnInit {
         dwellers seeking a vibrant lifestyle. Located in a desirable neighborhood,
         the condo offers easy access to Johannesburg's top attractions, shopping centers,
         dining spots, and cultural landmarks. The building features secure access, ensuring
-        a safe and peaceful living environment.`
+        a safe and peaceful living environment.`,
+        ['in3.jpg']
       ),
       new PropertyBase(
         4,
@@ -102,7 +105,8 @@ export class PropertyListComponent implements OnInit {
         '4.jpg',
         `Discover refined living in this elegant townhouse located in the sought-after Craven Hills neighborhood of Durban.
         This residence offers a harmonious blend of contemporary design and comfort, making it an ideal home for those
-        seeking both style and convenience.`
+        seeking both style and convenience.`,
+        ['in4.jpg']
       ),
     ];
     localStorage.setItem('properties', JSON.stringify(this.properties));

@@ -10,6 +10,7 @@ export interface IPropertyBase {
   city: string;
   readyToMove: boolean;
   photo?: string;
+  photos?: string[];
   estPossessionOn?: string;
   description?: string;
 }
@@ -27,6 +28,7 @@ export class PropertyBase implements IPropertyBase {
   city: string;
   readyToMove: boolean;
   photo?: string;
+  photos?: string[] | undefined;
   estPossessionOn?: string;
   constructor(
     id = 0,
@@ -40,7 +42,8 @@ export class PropertyBase implements IPropertyBase {
     city = 'Pretoria',
     readyToMove = true,
     photo = '',
-    description = ''
+    description = '',
+    photos: string[] = []
   ) {
     this.id = id;
     this.description = description;
@@ -54,5 +57,6 @@ export class PropertyBase implements IPropertyBase {
     this.city = city;
     this.readyToMove = readyToMove;
     this.photo = photo;
+    this.photos = photos;
   }
 }

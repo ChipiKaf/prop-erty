@@ -15,6 +15,7 @@ export class PropertyDetailsComponent implements OnInit {
   public propertyId: number = 0;
   public mainPhotoUrl: string | null = null;
   property = new Property();
+  nextProperty = new Property();
 
   constructor(
     private route: ActivatedRoute,
@@ -25,8 +26,11 @@ export class PropertyDetailsComponent implements OnInit {
   ngOnInit() {
     this.propertyId = +this.route.snapshot.params['id'];
     this.route.data.subscribe((data) => {
-      this.property = (data as { prp: Property }).prp;
-      console.log(this.property);
+      const propertiesObject = data as {
+        prp: { currentItem: Property; nextItem: Property | null };
+      };
+      this.property = propertiesObject.prp.currentItem;
+      this.nextProperty = propertiesObject.prp.currentItem;
     });
 
     // this.property.age = this.housingService.getPropertyAge(

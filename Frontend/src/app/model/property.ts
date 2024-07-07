@@ -1,5 +1,4 @@
 import { IPropertyBase } from './ipropertybase';
-import { Photo } from './photo';
 
 export class Property implements IPropertyBase {
   id: number = 0;
@@ -28,5 +27,5 @@ export class Property implements IPropertyBase {
   estPossessionOn?: string = '';
   photo?: string = '';
   description?: string = '';
-  photos?: Photo[];
+  photos?: string[];
 }

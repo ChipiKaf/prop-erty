@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Property } from '../model/property';
 import { environment } from '../../environments/environment';
 import { Ikeyvaluepair } from '../model/IKeyValuePair';
@@ -28,9 +28,18 @@ export class HousingService {
   }
 
   getProperty(id: number) {
-    return JSON.parse(localStorage.getItem('properties') || '').find(
+    const properties = JSON.parse(
+      localStorage.getItem('properties') || ''
+    ) as Property[];
+    const currentItemIndex = properties.findIndex(
       (property: Property) => property.id === id
     );
+    const currentItem = properties[currentItemIndex];
+    const nextItem = properties[currentItemIndex + 1] || null;
+    return of({
+      currentItem,
+      nextItem,
+    });
     // return this.http.get<Property>(
     //   this.baseUrl + '/property/detail/' + id.toString()
     // );
