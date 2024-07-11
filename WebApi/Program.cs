@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
-using WebApi.Data.Repo;
+using WebApi.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +9,7 @@ builder.Services.AddControllers();  // Add this line to add controllers support
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
-builder.Services.AddScoped<ICityRepository, CityRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
 var app = builder.Build();

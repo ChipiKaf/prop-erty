@@ -3,38 +3,34 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Data;
 
-#nullable disable
-
-namespace WebApi.Migrations
+namespace WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210724054232_add_publicid_to_photo")]
+    partial class add_publicid_to_photo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("WebApi.Models.City", b =>
+            modelBuilder.Entity("WebAPI.Models.City", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnOrder(0);
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(2);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LastUpdatedBy")
                         .HasColumnType("int");
@@ -43,23 +39,19 @@ namespace WebApi.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnOrder(1);
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("WebApi.Models.FurnishingType", b =>
+            modelBuilder.Entity("WebAPI.Models.FurnishingType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnOrder(0);
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("LastUpdatedBy")
                         .HasColumnType("int");
@@ -76,14 +68,12 @@ namespace WebApi.Migrations
                     b.ToTable("FurnishingTypes");
                 });
 
-            modelBuilder.Entity("WebApi.Models.Photo", b =>
+            modelBuilder.Entity("WebAPI.Models.Photo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnOrder(0);
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -112,21 +102,17 @@ namespace WebApi.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("WebApi.Models.Property", b =>
+            modelBuilder.Entity("WebAPI.Models.Property", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnOrder(0);
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Age")
@@ -145,7 +131,6 @@ namespace WebApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EstPossessionOn")
@@ -167,14 +152,12 @@ namespace WebApi.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MainEntrance")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Maintenance")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PostedBy")
@@ -214,14 +197,12 @@ namespace WebApi.Migrations
                     b.ToTable("Properties");
                 });
 
-            modelBuilder.Entity("WebApi.Models.PropertyType", b =>
+            modelBuilder.Entity("WebAPI.Models.PropertyType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnOrder(0);
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("LastUpdatedBy")
                         .HasColumnType("int");
@@ -238,14 +219,12 @@ namespace WebApi.Migrations
                     b.ToTable("PropertyTypes");
                 });
 
-            modelBuilder.Entity("WebApi.Models.User", b =>
+            modelBuilder.Entity("WebAPI.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnOrder(0);
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("LastUpdatedBy")
                         .HasColumnType("int");
@@ -258,7 +237,6 @@ namespace WebApi.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordKey")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Username")
@@ -270,55 +248,40 @@ namespace WebApi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("WebApi.Models.Photo", b =>
+            modelBuilder.Entity("WebAPI.Models.Photo", b =>
                 {
-                    b.HasOne("WebApi.Models.Property", "Property")
+                    b.HasOne("WebAPI.Models.Property", "Property")
                         .WithMany("Photos")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Property");
                 });
 
-            modelBuilder.Entity("WebApi.Models.Property", b =>
+            modelBuilder.Entity("WebAPI.Models.Property", b =>
                 {
-                    b.HasOne("WebApi.Models.City", "City")
+                    b.HasOne("WebAPI.Models.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApi.Models.FurnishingType", "FurnishingType")
+                    b.HasOne("WebAPI.Models.FurnishingType", "FurnishingType")
                         .WithMany()
                         .HasForeignKey("FurnishingTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApi.Models.User", "User")
+                    b.HasOne("WebAPI.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("PostedBy")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebApi.Models.PropertyType", "PropertyType")
+                    b.HasOne("WebAPI.Models.PropertyType", "PropertyType")
                         .WithMany()
                         .HasForeignKey("PropertyTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("City");
-
-                    b.Navigation("FurnishingType");
-
-                    b.Navigation("PropertyType");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WebApi.Models.Property", b =>
-                {
-                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }
