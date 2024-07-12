@@ -1,5 +1,9 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using WebApi.Data;
+using WebApi.Helpers;
 using WebApi.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +15,20 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+
+var secretKey = builder.Configuration.GetSection("AppSettings:Key").Value;
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+    opt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        IssuerSigningKey = key
+    };
+});
 
 var app = builder.Build();
 
@@ -22,10 +40,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(m => m.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseCors(m => m.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 app.MapControllers(); // Add this line to map controllers
 
