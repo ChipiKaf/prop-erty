@@ -7,3 +7,27 @@ $background-color: #36454F;
 // Fonts
 $heading-font: "Anton SC", sans-serif;
 $body-font: "Montserrat", sans-serif;
+$body-font-alt: 'Poppins', sans-serif;
+
+$color-primary: #FFB000;
+$color-secondary: #004225;
+$color-tertiary: #FFCF9D;
+$color-alt: #F5F5DC;
+$color-white: #fff;
+$color-black: #000;
+$color-grey: #444;
+
+// ---------- Darken -------------
+
+
+$color-secondary-dark: darken($color-secondary, 5);
+$color-tertirary-dark: darken($color-tertiary, 5);
+
+// ---------- Whtien -------------
+$color-primary-light: lighten($color-primary, 42);
+$color-secondary-light: lighten($color-secondary-dark, 40);
+$color-tertiary-light: lighten($color-tertiary, 25);
+
+$color-primary-dark: darken($color-primary, 5);
+$color-primary-dark_2: darken($color-primary-light, 50);
+// $color-secondary-dark: darken($color-secondary, 5);

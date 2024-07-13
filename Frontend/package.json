@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
     "alertify": "^0.3.0",
+    "alertify.js": "^1.0.12",
     "alertifyjs": "^1.14.0",
     "bootstrap": "^5.3.3",
     "rxjs": "~7.8.0",

@@ -1,0 +1,42 @@
+@import '../../../variables.scss';
+.login-background {
+  background-color: $color-primary-light;
+}
+.home-background {
+  background-image: url('/home3.jpg');
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  isolation: isolate;
+}
+
+.home__text {
+  font-size: 4rem;
+  font-family: $heading-font;
+  text-align: center;
+  // width: 100%;
+  color: white;
+  height: 20rem;
+  line-height: 4rem;
+  position: relative;
+
+  & .small-text {
+    font-size: 3rem;
+  }
+
+  &::after {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: $primary-color;
+    inset: 0;
+    mix-blend-mode: multiply;
+
+  }
+}

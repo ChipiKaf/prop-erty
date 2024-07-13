@@ -1,0 +1,291 @@
+@import '../../variables';
+@import '../../mixins';
+
+.card {
+    border-radius: 10px;
+    border-color: transparent;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+
+    width: 100%;
+    padding: 5rem;
+    background-color: lighten($color-primary-light, 70);
+
+    &.bg-primary {
+        background-color: $color-primary-light;
+    }
+
+    &.bg-secondary {
+        background-color: $color-secondary-light;
+    }
+
+    &.bg-tertiary {
+        background-color: $color-tertiary-light;
+    }
+}
+
+.logo {
+  color: $color-primary-light;
+  // text-transform: uppercase;
+  font-size: 3rem;
+  font-weight: 900;
+  text-decoration: none;
+  &:hover {
+      cursor: pointer;
+  }
+
+  @include respond(phone) {
+      display: block;
+      text-align: center;
+      margin: auto;
+      font-size: 4rem;
+  }
+  // letter-spacing: .5rem;
+}
+
+.sub-title {
+  font-size: 1.5rem;
+  // font-family: 'Poppins', sans-serif;
+  font-family: $body-font;
+  color: $color-primary-light;
+  text-transform: uppercase;
+  animation: textFadeIn 2s ease .5s backwards;
+  // line-height: 1.3rem;
+  @include respond(phone) {
+      font-size: 2.6rem;
+  }
+}
+
+.title {
+  // font-family: 'Poppins', sans-serif;
+  font-family: $body-font;
+  font-size: 10vw;
+  color: $color-primary-light;
+  font-weight: 800;
+  letter-spacing: 1.5rem;
+  text-transform: uppercase;
+  line-height: 11rem;
+  margin-bottom: 1rem;
+
+  &--login {
+      display: inline-block;
+      font-size: 8vw;
+      letter-spacing: .01rem;
+      line-height: 8rem;
+      margin-top: -10rem;
+      @include respond(phone) {
+          margin-top: 0;
+          line-height: 10rem;
+      }
+
+      & .sub-text {
+          font-family: 'Permanent Marker', cursive;
+          font-size: 1.5rem;
+          font-weight: 300;
+          height: 7rem;
+      }
+  }
+
+  & .title__sub-block {
+      font-family: 'Permanent Marker', cursive;
+      text-transform: lowercase;
+      font-size: 2.8vw;
+      display: flex;
+      justify-content: end;
+      align-items: end;
+      letter-spacing: 1rem;
+  }
+
+  &__line {
+      overflow: hidden;
+      display: flex;
+      justify-content: start;
+  }
+}
+
+.card-main-heading {
+  font-size: 2rem;
+  color: $color-grey;
+  @include respond(phone) {
+      font-size: 2.6rem;
+  }
+}
+
+.card-sub-header {
+  font-size: 1.4rem;
+  color: $background-color;
+  font-weight: 600;
+  @include respond(phone) {
+      font-size: 2rem;
+  }
+}
+
+.card-paragraph-text {
+  font-size: 1.4rem;
+  color: $color-grey;
+
+  @include respond(phone) {
+      font-size: 2rem;
+  }
+}
+
+.login-form-title {
+  font-size: 3rem;
+  text-transform: uppercase;
+  color: $background-color;
+  font-family: $body-font-alt;
+  margin-bottom: 3rem;
+  font-weight: 800;
+
+  @include respond(phone) {
+      font-size: 4rem;
+  }
+}
+
+.form {
+    &__footer-text {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.2rem;
+        padding-top: .5rem;
+        @include respond(phone) {
+            font-size: 2rem;
+        }
+        &.btn {
+            // text-decoration: underline;
+            // border-bottom: 1px solid rgba(64, 70, 40, .7);
+            // padding: .3rem .2rem;
+            transition: all .3s;
+
+            &:hover {
+                background-color: transparent;
+                color: $color-primary-dark_2;
+                // border: 1px solid $color-primary-dark_2;
+            }
+        }
+    }
+    &__container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 95%;
+    }
+
+    &__group:not(:last-child) {
+        margin-bottom: 3rem;
+    }
+
+    &__button-container {
+        width: 100%;
+        margin-top: 3rem;
+
+        @include respond(phone) {
+            margin-top: 6rem;
+        }
+    }
+
+    &__label {
+        display: block;
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: .5rem;
+        font-family: $body-font-alt;
+        @include respond(phone) {
+            font-size: 3.3rem;
+        }
+        color: $background-color;
+    }
+
+    &__input {
+        display: block;
+        font-size: 1.2rem;
+        color: $color-grey;
+        width: 100%;
+        background-color: transparent;
+        padding: .7rem .7rem;
+        border: 1px solid rgba(64, 70, 40, .2);
+        border-radius: .2em;
+        @include respond(phone) {
+            font-size: 3rem;
+            padding: 1.3rem 2rem;
+        }
+        // background-color: rgba($color-white, .5);
+        // border-color: $background-color;
+        &:focus {
+            outline: none;
+            // box-shadow: 0 1rem 2rem rgba($color-black, .1);
+            // border-bottom: 3px solid $color-primary;
+            border: 1px solid darken($color-primary-light, 50);
+        }
+    }
+}
+
+.btn {
+  user-select: none;
+  display: inline-block;
+  min-width: 7rem;
+  min-height: 3.8rem;
+  font-family: $body-font;
+  font-size: 1.3rem;
+
+  &:link,
+  &:visited {
+      color: white;
+
+      text-decoration: none;
+      background-color: white;
+
+  }
+  &:hover {
+      cursor: pointer;
+  }
+
+  &.btn-menu {
+      z-index: 100;
+      border-radius: 50%;
+      width: 7rem;
+      height: 7rem;
+  }
+
+  & &__svg {
+      width: 3rem;
+      height: 1.3rem;
+  }
+
+
+  & &__circle {
+      stroke: white;
+      transition: all .5s;
+      stroke-dasharray: 280;
+      stroke-dashoffset: 85;
+  }
+
+  &__spinner &__svg {
+      animation: spin 1s linear infinite;
+  }
+
+  &.btn-form {
+      background-color: $color-primary-dark_2;
+      padding: 1rem 1rem;
+      color: $color-tertiary-light;
+      transition: all .5s;
+      border: 1px solid $color-primary-dark_2;
+
+      &:hover {
+          background-color: transparent;
+          color: $color-primary-dark_2;
+          border: 1px solid $color-primary-dark_2;
+      }
+
+      &:hover .btn__circle {
+          stroke: $color-primary-dark_2;
+      }
+
+      @include respond(phone) {
+          padding: 2rem 1rem;
+          width: 100%;
+          text-align: center;
+          font-size: 2rem;
+      }
+  }
+}

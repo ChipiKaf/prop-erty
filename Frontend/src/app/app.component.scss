@@ -1,4 +1,35 @@
+@import '../variables.scss';
 .u-mt {
     margin-top: 10px;
     margin-bottom: 30px;
+}
+
+.u-pt {
+  padding-top: 10px;
+  padding-bottom: 30px;
+
+}
+@keyframes backgroundMotion {
+  0% {
+      background-position: 0 50%;
+  }
+
+  50% {
+      background-position: 100% 50%;
+  }
+
+  100% {
+      background-position: 0 50%;
+  }
+}
+
+.background-gradient {
+  background-blend-mode: screen;
+  background-color: lighten($color-primary-light, 6);
+  // background: linear-gradient(45deg, $color-primary-dark, $color-secondary-dark, $color-tertirary-dark);
+  background-size: 400% 400%;
+  width: 100%;
+  animation: backgroundMotion 30s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  // padding: 1rem 2rem;
+  overflow-x: hidden;
 }

@@ -1,0 +1,56 @@
+<div class="card w-75 h-75">
+  <div class="login-form-header">
+    <h1 class="login-form-title u-mb-2">
+      Your account
+    </h1>
+  </div>
+
+  <div class="form__container">
+    <form>
+      <div class="form__group">
+          <label htmlFor="email" class='form__label'>Email</label>
+          <input type="email" id="email"
+              class="form__input" required />
+      </div>
+
+      <div class="form__group">
+          <label htmlFor="password" class='form__label'>Password</label>
+          <input type="password" id="password"
+              class="form__input" required />
+      </div>
+
+      <div class="form__group">
+          <label htmlFor="confirmPassword" class='form__label'>Confirm Password</label>
+          <input type="password" id="confirmPassword"
+              class="form__input" required />
+      </div>
+      <div class="form__button-container">
+          <a class="btn btn-form" type='submit'>
+              Log in
+          </a >
+              <!-- <a class="btn btn-form">
+                  <div class="btn__spinner">
+                      <svg class='btn__svg' viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                          <circle class='btn__circle' cx="50" cy="50" r="45" stroke-width="8" fill="none" stroke-linecap="round" />
+                      </svg>
+                  </div>
+
+              </a > -->
+      </div>
+  </form>
+
+  <div class="form__footer">
+      <hr />
+      <div class="form__footer-text">
+          <div class="form__footer-text">
+              Don't have an account?
+          </div>
+          <a class="btn form__footer-text" onClick={handleOnSignup}>
+              Sign up
+          </a>
+
+
+      </div>
+  </div>
+  </div>
+</div>
