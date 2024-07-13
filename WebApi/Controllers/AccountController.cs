@@ -34,9 +34,9 @@ namespace WebApi.Controllers
 
             if (user == null)
             {
-                apiError.ErrorCode=Unauthorized().StatusCode;
-                apiError.ErrorMessage="Invalid user name or password";
-                apiError.ErrorDetails="This error appear when provided user id or password does not exists";
+                apiError.ErrorCode = Unauthorized().StatusCode;
+                apiError.ErrorMessage = "Invalid user name or password";
+                apiError.ErrorDetails = "This error appear when provided user id or password does not exists";
                 return Unauthorized(apiError);
             }
 
@@ -51,17 +51,19 @@ namespace WebApi.Controllers
         {
             ApiError apiError = new ApiError();
 
-            if(loginReq.UserName.IsEmpty() || loginReq.Password.IsEmpty()) {
-                    apiError.ErrorCode=BadRequest().StatusCode;
-                    apiError.ErrorMessage="User name or password can not be blank";                    
-                    return BadRequest(apiError);
-            }                    
-
-            if (await uow.UserRepository.UserAlreadyExists(loginReq.UserName)) {
-                apiError.ErrorCode=BadRequest().StatusCode;
-                apiError.ErrorMessage="User already exists, please try different user name";
+            if (loginReq.UserName.IsEmpty() || loginReq.Password.IsEmpty())
+            {
+                apiError.ErrorCode = BadRequest().StatusCode;
+                apiError.ErrorMessage = "User name or password can not be blank";
                 return BadRequest(apiError);
-            }                
+            }
+
+            if (await uow.UserRepository.UserAlreadyExists(loginReq.UserName))
+            {
+                apiError.ErrorCode = BadRequest().StatusCode;
+                apiError.ErrorMessage = "User already exists, please try different user name";
+                return BadRequest(apiError);
+            }
 
             uow.UserRepository.Register(loginReq.UserName, loginReq.Password);
             await uow.SaveAsync();
@@ -72,7 +74,7 @@ namespace WebApi.Controllers
         {
             var secretKey = configuration.GetSection("AppSettings:Key").Value;
             var key = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(secretKey));
+                .GetBytes(secretKey ?? ""));
 
             var claims = new Claim[] {
                 new Claim(ClaimTypes.Name,user.Username),

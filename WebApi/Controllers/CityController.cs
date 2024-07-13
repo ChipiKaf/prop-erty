@@ -25,10 +25,10 @@ namespace WebApi.Controllers
         }
 
         // GET api/city
-        [HttpGet ("cities")]        
+        [HttpGet("cities")]
         [AllowAnonymous]
         public async Task<IActionResult> GetCities()
-        {            
+        {
             var cities = await uow.CityRepository.GetCitiesAsync();
 
             var citiesDto = mapper.Map<IEnumerable<CityDto>>(cities);
@@ -49,18 +49,18 @@ namespace WebApi.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateCity(int id, CityDto cityDto)
         {
-            if(id != cityDto.Id)
+            if (id != cityDto.Id)
                 return BadRequest("Update not allowed");
 
             var cityFromDb = await uow.CityRepository.FindCity(id);
 
             if (cityFromDb == null)
                 return BadRequest("Update not allowed");
-            
+
             cityFromDb.LastUpdatedBy = 1;
             cityFromDb.LastUpdatedOn = DateTime.Now;
             mapper.Map(cityDto, cityFromDb);
-        
+
             await uow.SaveAsync();
             return StatusCode(200);
         }
@@ -75,7 +75,6 @@ namespace WebApi.Controllers
             await uow.SaveAsync();
             return StatusCode(200);
         }
-
         [HttpPatch("update/{id}")]
         public async Task<IActionResult> UpdateCityPatch(int id, JsonPatchDocument<City> cityToPatch)
         {

@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Data;
@@ -9,18 +10,36 @@ using WebApi.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();  // Add this line to add controllers support
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+// Retrieve the environment variable
+var dbPassword = builder.Configuration["DBPassword"];
+
+if (string.IsNullOrEmpty(dbPassword))
+{
+    throw new InvalidOperationException("Database password is not set in environment variables.");
+}
+
+var sqlStringBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("Default"))
+{
+    Password = dbPassword
+};
+
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlServer(sqlStringBuilder.ConnectionString));
+
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
-var secretKey = builder.Configuration.GetSection("AppSettings:Key").Value;
-var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+var secretKey = builder.Configuration["AppSettings:Key"];
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey ?? ""));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+{
     opt.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
@@ -43,16 +62,8 @@ app.UseHttpsRedirection();
 app.UseCors(m => m.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
-
-app.MapControllers(); // Add this line to map controllers
-
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
