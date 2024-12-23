@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using WebApi.Data;
 using WebApi.Helpers;
-using WebApi.Interfaces;
+using WebApi.DataAccess;
+using WebApi.DataAccess.Data;
+using WebApi.DataAccess.Interfaces;
+using WebApi.DataAccess.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Retrieve the environment variable
 var dbPassword = builder.Configuration["DBPassword"];
@@ -29,10 +30,12 @@ var sqlStringBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetC
     Password = dbPassword
 };
 
-builder.Services.AddDbContext<DataContext>(options =>
+builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(sqlStringBuilder.ConnectionString));
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+
+builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
 
 var secretKey = builder.Configuration["AppSettings:Key"];
 

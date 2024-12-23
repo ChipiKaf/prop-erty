@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, AfterViewInit } from '@angular/core';
 import { Property } from '../../model/property';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { gsap } from 'gsap';
 // import { HousingService } from '../../services/housing.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './property-details.component.html',
   styleUrl: './property-details.component.scss',
 })
-export class PropertyDetailsComponent implements OnInit {
+export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   public propertyId: number = 0;
   public mainPhotoUrl: string | null = null;
   property = new Property();
@@ -19,9 +20,26 @@ export class PropertyDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private el: ElementRef<HTMLDivElement>
     // private housingService: HousingService
   ) {}
+
+  ngAfterViewInit(): void {
+    const iconContainer = this.el.nativeElement.querySelector('.three-d-icon');
+    if (!iconContainer) return;
+    const text = iconContainer.querySelector('.text-inner');
+    const icon = iconContainer.querySelector('i');
+    gsap.set(icon, { xPercent: 100 });
+    iconContainer.addEventListener('mouseenter', () => {
+      gsap.to(text, { x: 0 });
+      gsap.to(icon, { xPercent: 0 });
+    });
+    iconContainer.addEventListener('mouseleave', () => {
+      gsap.to(text, { x: -100 });
+      gsap.to(icon, { xPercent: 100 });
+    });
+  }
 
   ngOnInit() {
     this.propertyId = +this.route.snapshot.params['id'];
@@ -36,6 +54,10 @@ export class PropertyDetailsComponent implements OnInit {
     // this.property.age = this.housingService.getPropertyAge(
     //   this.property.estPossessionOn || ''
     // );
+  }
+
+  navigateTo3D() {
+    this.router.navigate([`/property-view-3d/${this.propertyId}`]);
   }
 
   changePrimaryPhoto(mainPhotoUrl: string) {

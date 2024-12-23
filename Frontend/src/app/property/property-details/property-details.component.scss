@@ -25,7 +25,7 @@
         flex-direction: row;
         justify-content: space-between;
         width: 100%;
-    
+
         .arrow-button {
             font-size: 1.6rem;
             border-bottom: 1px solid black;
@@ -34,13 +34,13 @@
             transition: transform .3s cubic-bezier(1,.02,0,.95);
             transform: translateY(0);
             position: relative;
-    
+
             &:hover {
                 cursor: pointer;
                 transform: translateY(-.3rem);
                 border-color: darken($tertiary-color, 55);
             }
-    
+
             &::after {
                 content: '';
                 position: absolute;
@@ -52,7 +52,7 @@
                 background-color: black;
                 transition: bottom .3s cubic-bezier(1,.02,0,.95), opacity .5s;
             }
-    
+
             &:hover::after {
                 bottom: -.4rem; // Adjust to match the translateY(-.3rem) of the .arrow-button
                 opacity: 1;
@@ -77,7 +77,7 @@
     &.pad {
         padding: 5rem;
     }
-    
+
     .icons-container {
         font-size: 3rem;
         // position: absolute;
@@ -127,7 +127,7 @@
         transition: color .5s;
         font-size: 4rem;
       }
-    
+
       & &__sub-title {
         color: black;
         font-family: $body-font;
@@ -137,7 +137,7 @@
         font-weight: 200;
         font-style: normal;
       }
-    
+
       .text-container {
         opacity: 1;
         transition: opacity .3s, bottom .5s;
@@ -165,7 +165,7 @@
         position: sticky;
         top: 0;
     }
-    
+
     /* Non-sticky version for smaller screens */
     @media (max-width: 576px) {
         &.limit-height-lg {
@@ -188,4 +188,37 @@
 
 .half-height {
     height: 50%;
+}
+
+.image-container {
+  position: relative;
+
+  & .three-d-icon {
+    position: absolute;
+    // background-color: white;
+    top: 6rem;
+    right: 6rem;
+    z-index: 1000;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    & .icon-text {
+      color: white;
+      display: inline-block;
+      font-size: 1.6rem;
+      overflow: hidden;
+      & .text-inner {
+        display: block;
+        transform: translateX(-100%);
+      }
+    }
+
+    i {
+      font-size: 3rem;
+      color: white;
+      // transform: translateX(100%);
+    }
+  }
 }

@@ -1,10 +1,10 @@
-<div class="row">
+<div class="row main-container">
   <div *ngFor="let property of properties|filter:SearchCity:'city'|sort:[SortbyParam,SortDirection]"
   class="col-sm-4 box-entry" routerLink="/property-detail/{{property.id}}">
-  <img *ngIf="property?.photo" class="property-img" src="{{property?.photo}}">
+  <img *ngIf="property?.image" class="property-img" src="{{property?.image}}">
   <div class="text-container">
-    <h2 class="box-entry__title">{{ property.name }}</h2>  
-    <h3 class="box-entry__sub-title">{{ property.city }}</h3>    
+    <h2 class="box-entry__title">{{ property.name }}</h2>
+    <h3 class="box-entry__sub-title">{{ property.city }}</h3>
   </div>
 
 </div>

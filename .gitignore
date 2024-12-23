@@ -5,7 +5,7 @@
 /frontend/tmp
 /frontend/out-tsc
 /frontend/bazel-out
-
+*.*
 # Node
 /frontend/node_modules
 npm-debug.log

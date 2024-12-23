@@ -45,10 +45,8 @@ export class HousingService {
     // );
   }
 
-  getAllProperties(SellRent?: number): Observable<Property[]> {
-    return this.http.get<Property[]>(
-      this.baseUrl + '/property/list/' + SellRent?.toString()
-    );
+  getAllProperties(): Observable<Property[]> {
+    return this.http.get<Property[]>(this.baseUrl + '/property/properties');
   }
   addProperty(property: Property) {
     const httpOptions = {

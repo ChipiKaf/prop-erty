@@ -2,15 +2,17 @@ export interface IPropertyBase {
   id: number;
   sellRent: number;
   name: string;
-  propertyType: string;
+  type: string;
   furnishingType: string;
-  price: number;
+  cost: number;
   bhk: number;
   builtArea: number;
   city: string;
   readyToMove: boolean;
-  photo?: string;
+  image?: string;
   photos?: string[];
+  model?: string;
+  texture?: string;
   estPossessionOn?: string;
   description?: string;
 }
@@ -19,44 +21,50 @@ export class PropertyBase implements IPropertyBase {
   id: number;
   sellRent: number;
   name: string;
-  propertyType: string;
+  type: string;
   furnishingType: string;
-  price: number;
+  cost: number;
   bhk: number;
   description?: string | undefined;
   builtArea: number;
   city: string;
   readyToMove: boolean;
-  photo?: string;
+  image?: string;
+  model?: string;
+  texture?: string;
   photos?: string[] | undefined;
   estPossessionOn?: string;
   constructor(
     id = 0,
     sellRent = 1000,
     name = '',
-    propertyType = '',
+    type = '',
     furnishingType = '',
-    price = 1000,
+    cost = 1000,
     bhk = 1000,
     builtArea = 1,
     city = 'Pretoria',
     readyToMove = true,
-    photo = '',
+    image = '',
     description = '',
-    photos: string[] = []
+    photos: string[] = [],
+    model: string = '',
+    texture: string = ''
   ) {
     this.id = id;
     this.description = description;
     this.sellRent = sellRent;
     this.name = name;
-    this.propertyType = propertyType;
+    this.type = type;
     this.furnishingType = furnishingType;
-    this.price = price;
+    this.cost = cost;
     this.bhk = bhk;
     this.builtArea = builtArea;
     this.city = city;
     this.readyToMove = readyToMove;
-    this.photo = photo;
+    this.image = image;
     this.photos = photos;
+    this.model = model;
+    this.texture = texture;
   }
 }

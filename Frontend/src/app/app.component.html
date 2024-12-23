@@ -1,6 +1,6 @@
-<div class="background-gradient">
-  <app-nav-bar></app-nav-bar>
-  <div class="u-pt">
+<div [ngClass]="{'background-gradient': !in3DView()}">
+  <app-nav-bar *ngIf="!in3DView()"></app-nav-bar>
+  <div [ngClass]="{'u-pt': !in3DView()}">
       <router-outlet />
   </div>
 

@@ -5,11 +5,11 @@ export class Property implements IPropertyBase {
   sellRent: number = 0;
   name: string = '';
   propertyTypeId: number = 0;
-  propertyType: string = '';
+  type: string = '';
   bhk: number = 0;
   furnishingTypeId: number = 0;
   furnishingType: string = '';
-  price: number = 0;
+  cost: number = 0;
   builtArea: number = 0;
   carpetArea?: number = 0;
   address: string = '';
@@ -25,7 +25,7 @@ export class Property implements IPropertyBase {
   gated?: boolean;
   maintenance?: number = 0;
   estPossessionOn?: string = '';
-  photo?: string = '';
+  image?: string = '';
   description?: string = '';
   photos?: string[];
 }

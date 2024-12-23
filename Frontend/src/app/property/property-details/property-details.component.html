@@ -1,13 +1,19 @@
 <div class="row min-200">
-    <div class="col-sm-9 order-sm-2 order-1 box limit-height-lg pad">
-        <img *ngIf="property?.photo" class="property-img" src="{{property.photo}}">
+    <div class="image-container col-sm-9 order-sm-2 order-1 box limit-height-lg pad">
+      <div (click)="navigateTo3D()" class="three-d-icon d-flex align-items-center gap-1">
+        <i class="fa fa-cube" aria-hidden="true"></i>
+        <div class="icon-text">
+          <span class="text-inner">3D view</span>
+        </div>
+      </div>
+        <img *ngIf="property?.image" class="property-img" src="{{property.image}}">
     </div>
     <div class="col-sm-3 order-sm-1 order-2 relative">
         <div class="row full-height">
             <div class="col-12 box style-hovered flex align-end p-5">
                 <div class="text-container mb-5">
-                    <h2 class="box__title">{{ property.name }}</h2>  
-                    <h3 class="box__sub-title">{{ property.city }}</h3>    
+                    <h2 class="box__title">{{ property.name }}</h2>
+                    <h3 class="box__sub-title">{{ property.city }}</h3>
                 </div>
             </div>
             <div class="col-12 box flex p-5">
@@ -22,13 +28,13 @@
                         <div class="icon burgundy">
                             <i class="fa fa-building"></i>
                         </div>
-                        <h4 class="icon-text">{{property.propertyType}}</h4>
+                        <h4 class="icon-text">{{property.type}}</h4>
                     </div>
                     <div class="icon-child">
                         <div class="icon grey">
                             <i class="fa fa-money"></i>
                         </div>
-                        <h4 class="icon-text">{{property.price}}</h4>
+                        <h4 class="icon-text">{{property.cost}}</h4>
                     </div>
                 </div>
             </div>
@@ -38,7 +44,7 @@
                 </div>
             </div>
             <div class="col-12 box pad flex column">
-                <img *ngIf="property?.photo" class="property-img small" src="{{property.photo}}">
+                <img *ngIf="property?.image" class="property-img small" src="{{property.image}}">
                 <div class="pagination-container">
                     <div class="arrow-button">
                         <i class="fa fa-long-arrow-left"></i> Back
