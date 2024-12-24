@@ -8,17 +8,18 @@ namespace WebApi.Controllers
 {
     public class PropertyController : BaseController
     {
-        private readonly IPropertyRepository _propertyRepo;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public PropertyController(IPropertyRepository db)
+        public PropertyController(IUnitOfWork unitOfWork)
         {
-            _propertyRepo = db;
+            _unitOfWork = unitOfWork;
         }
         [HttpGet("properties")]
         [AllowAnonymous]
         public IActionResult GetProperties()
         {
-            IEnumerable<Property> properties = _propertyRepo.GetAll();
+            IEnumerable<Property> properties = _unitOfWork.Property.GetAll();
             return Ok(properties);
         }
 

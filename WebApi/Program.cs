@@ -8,6 +8,7 @@ using WebApi.DataAccess;
 using WebApi.DataAccess.Data;
 using WebApi.DataAccess.Interfaces;
 using WebApi.DataAccess.Repository;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,16 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
-builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
+builder.Services
+    .AddIdentity<IdentityUser, IdentityRole>(options =>
+    {
+        // Optionally configure password rules, lockout, etc.
+        // options.Password.RequiredLength = 8;
+        // options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    })
+    .AddEntityFrameworkStores<ApplicationContext>()   // Tells Identity to use your EF Core store
+    .AddDefaultTokenProviders();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var secretKey = builder.Configuration["AppSettings:Key"];
 
