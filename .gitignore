@@ -45,3 +45,4 @@ bin
 /*.exe
 /*.pdb
 /*.dll
+bin/Debug/net8.0/
