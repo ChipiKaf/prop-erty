@@ -9,6 +9,7 @@ using WebApi.DataAccess.Data;
 using WebApi.DataAccess.Interfaces;
 using WebApi.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity;
+using WebApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +38,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
 builder.Services
-    .AddIdentity<IdentityUser, IdentityRole>(options =>
+    .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {
         // Optionally configure password rules, lockout, etc.
         // options.Password.RequiredLength = 8;

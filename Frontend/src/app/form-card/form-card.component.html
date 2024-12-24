@@ -1,51 +1,66 @@
 <div class="card w-75 h-75">
   <div class="login-form-header">
-    <h1 class="login-form-title u-mb-2">
-      Your account
-    </h1>
+    <h1 class="login-form-title u-mb-2">Your account</h1>
   </div>
 
   <div class="form__container">
-    <form>
+    <form [formGroup]="authForm">
       <div class="form__group">
-          <label htmlFor="email" class='form__label'>Email</label>
-          <input type="email" id="email"
-            autocomplete="username"
-              class="form__input" required />
+        <label htmlFor="email" class="form__label">Email</label>
+        <input type="email" id="email" formControlName="email" autocomplete="username" class="form__input" required />
+        <small class="text-danger" *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched">
+          Email is required and must be valid
+        </small>
       </div>
 
       <div class="form__group">
-          <label htmlFor="password" class='form__label'>Password</label>
-          <input type="password" id="password"
-          autocomplete="new-password"
-              class="form__input" required />
+        <label htmlFor="password" class="form__label">Password</label>
+        <input type="password" formControlName="password" id="password" autocomplete="new-password" class="form__input"
+          required />
+          <small class="text-danger" *ngIf="authForm.touched && authForm.get('password')?.hasError('upperCase')">
+            Password must have at least one uppercase letter.
+            <br />
+          </small>
+          <small class="text-danger" *ngIf="authForm.touched && authForm.get('password')?.hasError('lowerCase')">
+            Password must have at least one lowercase letter.
+            <br />
+          </small>
+          <small class="text-danger" *ngIf="authForm.touched && authForm.get('password')?.hasError('digit')">
+            Password must have at least one digit.
+            <br />
+          </small>
+          <small class="text-danger" *ngIf="authForm.touched && authForm.get('password')?.hasError('nonAlphanumeric')">
+            Password must have at least one special character.
+            <br />
+          </small>
+          <small class="text-danger" *ngIf="authForm.touched && authForm.get('password')?.hasError('minLength')">
+            Password must be at least 6 characters long.
+          </small>
       </div>
 
       <div *ngIf="isSignup" class="form__group">
-          <label htmlFor="confirmPassword" class='form__label'>Confirm Password</label>
-          <input type="password" id="confirmPassword"
-          autocomplete="confirm-new-password"
-          class="form__input" required />
-      </div>
+        <label htmlFor="confirmPassword" class="form__label">Confirm Password</label>
+        <input type="password" id="confirmPassword" formControlName="confirmPassword"
+          autocomplete="confirm-new-password" class="form__input" required />
+          <small class="text-danger" *ngIf="authForm.hasError('passwordMismatch') && authForm.get('confirmPassword')?.touched">
+            Passwords do not match
+          </small>
+        </div>
       <div class="form__button-container">
-          <a class="btn btn-form" type='submit'>
-            {{ isSignup ? "Sign up" : "Log in" }}
-          </a >
+        <a class="btn btn-form" type="submit" (click)="handleSubmit()">
+          {{ isSignup ? 'Sign up' : 'Log in' }}
+        </a>
       </div>
-  </form>
+    </form>
 
-  <div class="form__footer">
+    <div class="form__footer">
       <hr />
       <div class="form__footer-text">
-          <div class="form__footer-text">
-              Don't have an account?
-          </div>
-          <a class="btn form__footer-text" (click)="handleOnSignup()">
-              {{ isSignup ? "Log in" : "Sign up" }}
-          </a>
-
-
+        <div class="form__footer-text">Don't have an account?</div>
+        <a class="btn form__footer-text" (click)="toggleAuthPage()">
+          {{ isSignup ? 'Log in' : 'Sign up' }}
+        </a>
       </div>
-  </div>
+    </div>
   </div>
 </div>
