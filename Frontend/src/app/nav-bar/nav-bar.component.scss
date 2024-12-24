@@ -14,7 +14,20 @@
     }
 
     &__btn-container {
+        // height: 3.5rem;
+        & .btn-no-padding {
+          padding: .5rem;
+        }
         display: none;
+        height: 100%;
+        width: 100%;
+        // transform: translateX(50%);
+        // width: 3.5rem;
+        // top: 3.5%;
+        // right: 10%;
+        // transform: translate(-50%, -50%);
+        top: 100%;
+        left: 4%;
         @include respond(phone) {
             display: inline-block;
             z-index: 100;
@@ -64,6 +77,7 @@
 }
 
 svg {
+  // height: 3.5rem;
     & .line-one {
         transform: rotate(0) translate(0, 0);
         animation: transform-first-line-undo .5s ease forwards;
@@ -97,7 +111,7 @@ svg {
     // opacity: 0;
     position: fixed;
     border-radius: 50%;
-    top: 3.5%;
+    top: 5.5%;
     right: 5%;
     height: 5rem;
     width: 5rem;

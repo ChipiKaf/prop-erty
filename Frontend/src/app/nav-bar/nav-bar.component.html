@@ -17,14 +17,16 @@
     <li class="navbar-custom__list-item"><a class="navbar-custom__link" routerLink="/contact">Contact</a></li>
     <li class="navbar-custom__list-item"><a class="navbar-custom__link" routerLink="/help">Help</a></li>
   </ul>
-
-  <div class="navbar-custom__btn-container" (click)="toggleMenu()">
-    <a href="#" class="btn btn-menu">
-      <svg width="100%" height="100%" viewBox="0 0 100 100">
-        <line class="line-one" [class.active]="active" x1="25" x2="75" y1="30" y2="30" stroke="black" stroke-width="4px" />
-        <line class="line-two" [class.active]="active" x1="25" x2="75" y1="50" y2="50" stroke="black" stroke-width="4px" />
-        <line class="line-three" [class.active]="active" x1="25" x2="75" y1="70" y2="70" stroke="black" stroke-width="4px" id="bottomLine" />
-      </svg>
-    </a>
+  <div class="menu">
+    <div class="navbar-custom__btn-container" (click)="toggleMenu()">
+      <a class="btn btn-menu btn-no-padding">
+        <svg width="100%" height="100%" viewBox="0 0 100 100">
+          <line class="line-one" [class.active]="active" x1="25" x2="75" y1="30" y2="30" stroke="black" stroke-width="4px" />
+          <line class="line-two" [class.active]="active" x1="25" x2="75" y1="50" y2="50" stroke="black" stroke-width="4px" />
+          <line class="line-three" [class.active]="active" x1="25" x2="75" y1="70" y2="70" stroke="black" stroke-width="4px" id="bottomLine" />
+        </svg>
+      </a>
+    </div>
   </div>
+
 </nav>

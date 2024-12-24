@@ -28,4 +28,8 @@ export class AppComponent {
   in3DView(): boolean {
     return this.router.url.includes('property-view-3d');
   }
+
+  inAuth(): boolean {
+    return this.router.url.includes('login');
+  }
 }
