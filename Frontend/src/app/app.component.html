@@ -1,4 +1,5 @@
 <div [ngClass]="{'background-gradient': !in3DView() && !inAuth()}">
+  <app-loading-screen></app-loading-screen>
   <app-nav-bar *ngIf="!in3DView()"></app-nav-bar>
   <div [ngClass]="{'u-pt': !in3DView()}">
       <router-outlet />

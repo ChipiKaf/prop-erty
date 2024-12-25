@@ -4,6 +4,7 @@ import { Router, RouterOutlet } from '@angular/router';
 // import { PropertyListComponent } from './property/property-list/property-list.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { CommonModule } from '@angular/common';
+import { LoadingScreenComponent } from './components/loading-screen/loading-screen.component';
 // import { GradientOverlayComponent } from './gradient-overlay/gradient-overlay.component';
 
 @Component({
@@ -16,6 +17,7 @@ import { CommonModule } from '@angular/common';
     // GradientOverlayComponent,
     CommonModule,
     NavBarComponent,
+    LoadingScreenComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
