@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Property } from '../model/property';
 import { environment } from '../../environments/environment';
 import { Ikeyvaluepair } from '../model/IKeyValuePair';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,10 @@ import { Ikeyvaluepair } from '../model/IKeyValuePair';
 export class HousingService {
   baseUrl = environment.baseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   getAllCities(): Observable<string[]> {
     return this.http.get<string[]>(this.baseUrl + '/city/cities');
@@ -46,7 +50,20 @@ export class HousingService {
   }
 
   getAllProperties(): Observable<Property[]> {
-    return this.http.get<Property[]>(this.baseUrl + '/property/properties');
+    const token = localStorage.getItem('token');
+    console.log('In get all properties');
+    console.log(token);
+
+    if (!token) {
+      this.router.navigate(['/login']);
+      throw new Error('No token');
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<Property[]>(this.baseUrl + '/property/properties', {
+      headers,
+    });
   }
   addProperty(property: Property) {
     const httpOptions = {
