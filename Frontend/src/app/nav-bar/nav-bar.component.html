@@ -13,9 +13,11 @@
   </a>
 
   <ul class="navbar-custom__list">
-    <li class="navbar-custom__list-item"><a class="navbar-custom__link" routerLink="/">Properties</a></li>
-    <li class="navbar-custom__list-item"><a class="navbar-custom__link" routerLink="/contact">Contact</a></li>
-    <li class="navbar-custom__list-item"><a class="navbar-custom__link" routerLink="/help">Help</a></li>
+    <ng-container *ngFor="let item of listItems">
+      <li class="navbar-custom__list-item" *ngIf="isItemVisible(item)">
+        <a class="navbar-custom__link" (click)="navigate(item)">{{ item.name }}</a>
+      </li>
+    </ng-container>
   </ul>
   <div class="menu">
     <div class="navbar-custom__btn-container" (click)="toggleMenu()">
