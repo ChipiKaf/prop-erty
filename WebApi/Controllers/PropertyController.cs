@@ -15,8 +15,8 @@ namespace WebApi.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+        [Authorize]
         [HttpGet("properties")]
-        [AllowAnonymous]
         public IActionResult GetProperties()
         {
             IEnumerable<Property> properties = _unitOfWork.Property.GetAll();

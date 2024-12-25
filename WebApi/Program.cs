@@ -4,7 +4,6 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Helpers;
-using WebApi.DataAccess;
 using WebApi.DataAccess.Data;
 using WebApi.DataAccess.Interfaces;
 using WebApi.DataAccess.Repository;
@@ -46,22 +45,43 @@ builder.Services
     })
     .AddEntityFrameworkStores<ApplicationContext>()   // Tells Identity to use your EF Core store
     .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Prevent MVC Behavior of redirecting on UNAUTHORIZED
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+        return Task.CompletedTask;
+    };
+
+    options.Events.OnRedirectToAccessDenied = context =>
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+        return Task.CompletedTask;
+    };
+});
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-var secretKey = builder.Configuration["AppSettings:Key"];
+var secretKey = builder.Configuration["JWT:Key"];
 
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey ?? ""));
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
-{
-    opt.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        IssuerSigningKey = key
-    };
-});
+builder.Services.AddAuthentication(options =>
+ {
+     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+ }).AddJwtBearer(opt =>
+ {
+     opt.TokenValidationParameters = new TokenValidationParameters
+     {
+         ValidateIssuerSigningKey = true,
+         ValidateIssuer = false,
+         ValidateAudience = false,
+         IssuerSigningKey = key
+     };
+ });
 
 var app = builder.Build();
 
