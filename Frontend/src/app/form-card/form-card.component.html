@@ -46,17 +46,20 @@
             Passwords do not match
           </small>
         </div>
-      <div class="form__button-container">
-        <a class="btn btn-form" type="submit" (click)="handleSubmit()">
-          {{ isSignup ? 'Sign up' : 'Log in' }}
-        </a>
-      </div>
+        <button class="btn btn-form" type="submit" [disabled]="authForm.invalid || isSubmitting" (click)="handleSubmit()">
+        <ng-container *ngIf="showLoader; else buttonText">
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </ng-container>
+        <ng-template #buttonText>
+          {{ isSignup ? 'Sign up' : 'Login' }}
+        </ng-template>
+      </button>
     </form>
 
     <div class="form__footer">
       <hr />
       <div class="form__footer-text">
-        <div class="form__footer-text">Don't have an account?</div>
+        <div class="form__footer-text">{{ isSignup ? 'Already have an account?' : "Don't have an account?" }}</div>
         <a class="btn form__footer-text" (click)="toggleAuthPage()">
           {{ isSignup ? 'Log in' : 'Sign up' }}
         </a>

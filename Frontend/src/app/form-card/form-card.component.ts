@@ -12,6 +12,7 @@ import {
   passwordMatchValidator,
   passwordValidator,
 } from '../helpers/validators/passwordValidators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form-card',
@@ -22,17 +23,19 @@ import {
 })
 export class FormCardComponent {
   isSignup: boolean = false;
+  isSubmitting: boolean = false;
+  showLoader: boolean = false;
 
-  authForm = new FormGroup(
-    {
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl(''),
-    },
-    { validators: passwordMatchValidator() }
-  );
+  authForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
+    confirmPassword: new FormControl(''),
+  });
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   toggleAuthPage() {
     console.log('Clicked');
@@ -41,8 +44,10 @@ export class FormCardComponent {
     const password = this.authForm.get('password');
     if (this.isSignup) {
       confirmPassword?.setValidators([Validators.required]);
-      password?.setValidators([Validators.required, passwordValidator()])
+      password?.setValidators([Validators.required, passwordValidator()]);
+      this.authForm.setValidators([passwordMatchValidator()]);
     } else {
+      this.authForm.clearValidators();
       confirmPassword?.clearValidators();
       password?.setValidators([Validators.required]);
     }
@@ -51,22 +56,47 @@ export class FormCardComponent {
   }
 
   handleSubmit() {
-    console.log(`Submitting ${this.isSignup ? 'sign up' : 'Log in'}`);
-
+    this.isSubmitting = true;
+    // Loader grace period
+    setTimeout(() => {
+      this.showLoader = true;
+    }, 300);
     if (!this.authForm.valid) return;
+    console.log(`Valid form`);
+    const { email, password, confirmPassword } = this.authForm.value;
+    if (!email || !password) return;
 
     if (this.isSignup) {
-      const { email, password, confirmPassword } = this.authForm.value;
-      if (!email || !password || !confirmPassword) return;
+      if (!confirmPassword) return;
       this.authService
         .registerUser({
           email,
           password,
           confirmPassword,
         })
-        .subscribe((value) => {
-          console.log(value);
+        .subscribe({
+          next: (value) => {
+            console.log(value);
+          },
+          complete: () => {
+            this.isSubmitting = false;
+            this.showLoader = false;
+          },
         });
+    } else {
+      this.authService.authUser({ email, password }).subscribe({
+        next: (res) => {
+          localStorage.setItem('token', res.token);
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          console.error('Authentication failed ', err);
+        },
+        complete: () => {
+          this.isSubmitting = false;
+          this.showLoader = false;
+        },
+      });
     }
   }
 }
