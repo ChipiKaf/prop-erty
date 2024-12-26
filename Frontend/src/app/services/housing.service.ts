@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Property } from '../model/property';
 import { environment } from '../../environments/environment';
 import { Ikeyvaluepair } from '../model/IKeyValuePair';
-import { Router } from '@angular/router';
+import { RoutingService } from './routing.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class HousingService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: RoutingService
   ) {}
 
   getAllCities(): Observable<string[]> {

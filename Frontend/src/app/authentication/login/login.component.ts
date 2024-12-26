@@ -6,9 +6,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AlertifyService } from '../../services/alertify.service';
-import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormCardComponent } from '../../form-card/form-card.component';
 import * as THREE from 'three';
@@ -47,11 +44,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   // For cleanup
   animationId: number | null = null;
 
-  constructor(
-    private authService: AuthService,
-    private alertify: AlertifyService,
-    private router: Router
-  ) {}
+  constructor() {}
 
   private initializeScene() {
     const container = this.canvasContainer.nativeElement;

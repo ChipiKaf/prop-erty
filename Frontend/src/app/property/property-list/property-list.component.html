@@ -1,5 +1,5 @@
 <div class="row main-container">
-  <div *ngFor="let property of properties|filter:SearchCity:'city'|sort:[SortbyParam,SortDirection]"
+  <div *ngFor="let property of properties$ | async"
   class="col-sm-4 box-entry" routerLink="/property-detail/{{property.id}}">
   <img *ngIf="property?.image" class="property-img" src="{{property?.image}}">
   <div class="text-container">
