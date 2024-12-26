@@ -1,9 +1,9 @@
 import { Component, ElementRef, OnInit, AfterViewInit } from '@angular/core';
 import { Property } from '../../model/property';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { gsap } from 'gsap';
-// import { HousingService } from '../../services/housing.service';
+import { RoutingService } from '../../services/routing.service';
 
 @Component({
   selector: 'app-property-details',
@@ -20,9 +20,8 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
+    private router: RoutingService,
     private el: ElementRef<HTMLDivElement>
-    // private housingService: HousingService
   ) {}
 
   ngAfterViewInit(): void {

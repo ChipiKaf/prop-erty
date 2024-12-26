@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Property } from '../../model/property';
 import { Observable, of } from 'rxjs';
 import { HousingService } from '../../services/housing.service';
 import { catchError } from 'rxjs/operators';
+import { RoutingService } from '../../services/routing.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class PropertyDetailResolverService
     Resolve<{ currentItem: Property | null; nextItem: Property | null }>
 {
   constructor(
-    private router: Router,
+    private router: RoutingService,
     private housingService: HousingService
   ) {}
 

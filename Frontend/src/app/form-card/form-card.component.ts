@@ -12,7 +12,7 @@ import {
   passwordMatchValidator,
   passwordValidator,
 } from '../helpers/validators/passwordValidators';
-import { Router } from '@angular/router';
+import { RoutingService } from '../services/routing.service';
 
 @Component({
   selector: 'app-form-card',
@@ -34,7 +34,7 @@ export class FormCardComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: RoutingService
   ) {}
 
   toggleAuthPage() {
