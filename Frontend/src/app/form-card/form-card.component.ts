@@ -13,11 +13,19 @@ import {
   passwordValidator,
 } from '../helpers/validators/passwordValidators';
 import { RoutingService } from '../services/routing.service';
+import { CardComponent } from '../components/card/card.component';
+import { FormInputComponent } from '../components/form/form-input/form-input.component';
 
 @Component({
   selector: 'app-form-card',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    FormInputComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    CardComponent,
+  ],
   templateUrl: './form-card.component.html',
   styleUrl: './form-card.component.scss',
 })
@@ -57,10 +65,7 @@ export class FormCardComponent {
 
   handleSubmit() {
     this.isSubmitting = true;
-    // Loader grace period
-    setTimeout(() => {
-      this.showLoader = true;
-    }, 300);
+    this.showLoader = true;
     if (!this.authForm.valid) return;
     console.log(`Valid form`);
     const { email, password, confirmPassword } = this.authForm.value;
@@ -79,22 +84,31 @@ export class FormCardComponent {
             console.log(value);
           },
           complete: () => {
-            this.isSubmitting = false;
-            this.showLoader = false;
+            // Loader grace period
+            setTimeout(() => {
+              this.isSubmitting = false;
+              this.showLoader = false;
+            }, 300);
           },
         });
     } else {
       this.authService.authUser({ email, password }).subscribe({
         next: (res) => {
           localStorage.setItem('token', res.token);
-          this.router.navigate(['/']);
+          // Loader grace period
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 300);
         },
         error: (err) => {
           console.error('Authentication failed ', err);
         },
         complete: () => {
-          this.isSubmitting = false;
-          this.showLoader = false;
+          // Loader grace period
+          setTimeout(() => {
+            this.isSubmitting = false;
+            this.showLoader = false;
+          }, 300);
         },
       });
     }

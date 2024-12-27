@@ -1,52 +1,31 @@
-<div class="card w-75 h-75">
-  <div class="login-form-header">
+<app-card class="w-75">
+<div class="login-form-header">
     <h1 class="login-form-title u-mb-2">Your account</h1>
   </div>
 
   <div class="form__container">
     <form [formGroup]="authForm">
-      <div class="form__group">
-        <label htmlFor="email" class="form__label">Email</label>
-        <input type="email" id="email" formControlName="email" autocomplete="username" class="form__input" required />
-        <small class="text-danger" *ngIf="authForm.get('email')?.invalid && authForm.get('email')?.touched">
-          Email is required and must be valid
-        </small>
-      </div>
+      <app-form-input inputId="email" label="Email" formControlName="email"
+      [errors]="[{ text: 'Email is required and must be valid', show: !!(authForm.get('email')?.invalid && authForm.get('email')?.touched) }]"
+      [required]="true"
+      >
+      </app-form-input>
 
-      <div class="form__group">
-        <label htmlFor="password" class="form__label">Password</label>
-        <input type="password" formControlName="password" id="password" autocomplete="new-password" class="form__input"
-          required />
-          <small class="text-danger" *ngIf="authForm.touched && authForm.get('password')?.hasError('upperCase')">
-            Password must have at least one uppercase letter.
-            <br />
-          </small>
-          <small class="text-danger" *ngIf="authForm.touched && authForm.get('password')?.hasError('lowerCase')">
-            Password must have at least one lowercase letter.
-            <br />
-          </small>
-          <small class="text-danger" *ngIf="authForm.touched && authForm.get('password')?.hasError('digit')">
-            Password must have at least one digit.
-            <br />
-          </small>
-          <small class="text-danger" *ngIf="authForm.touched && authForm.get('password')?.hasError('nonAlphanumeric')">
-            Password must have at least one special character.
-            <br />
-          </small>
-          <small class="text-danger" *ngIf="authForm.touched && authForm.get('password')?.hasError('minLength')">
-            Password must be at least 6 characters long.
-          </small>
-      </div>
+      <app-form-input inputId="password" label="Password" formControlName="password" type="password" [required]="true"
+        [errors]="[
+          { text: 'Password must have at least one uppercase letter.', show: !!(authForm.touched && authForm.get('password')?.hasError('upperCase'))},
+          { text: 'Password must have at least one lowercase letter.', show: !!(authForm.touched && authForm.get('password')?.hasError('lowerCase'))},
+          { text: 'Password must have at least one digit.', show: !!(authForm.touched && authForm.get('password')?.hasError('digit'))},
+          { text: 'Password must have at least one special character.', show: !!(authForm.touched && authForm.get('password')?.hasError('nonAlphanumeric'))},
+          { text: 'Password must be at least 6 characters long.', show: !!(authForm.touched && authForm.get('password')?.hasError('minLength'))},
+          ]"
+      ></app-form-input>
 
-      <div *ngIf="isSignup" class="form__group">
-        <label htmlFor="confirmPassword" class="form__label">Confirm Password</label>
-        <input type="password" id="confirmPassword" formControlName="confirmPassword"
-          autocomplete="confirm-new-password" class="form__input" required />
-          <small class="text-danger" *ngIf="authForm.hasError('passwordMismatch') && authForm.get('confirmPassword')?.touched">
-            Passwords do not match
-          </small>
-        </div>
-        <button class="btn btn-form" type="submit" [disabled]="authForm.invalid || isSubmitting" (click)="handleSubmit()">
+      <app-form-input *ngIf="isSignup" inputId="confirm-password" label="Confirm Password" formControlName="confirmPassword" type="password"
+      [errors]="[{ text: 'Passwords do not match', show: !!(authForm.hasError('passwordMismatch') && authForm.get('confirmPassword')?.touched) }]"
+      >
+      </app-form-input>
+        <button class="btn btn-form mt-3" type="submit" [disabled]="authForm.invalid || isSubmitting" (click)="handleSubmit()">
         <ng-container *ngIf="showLoader; else buttonText">
           <i class="fa-solid fa-circle-notch fa-spin"></i>
         </ng-container>
@@ -66,4 +45,4 @@
       </div>
     </div>
   </div>
-</div>
+</app-card>

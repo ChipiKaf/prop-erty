@@ -1,29 +1,6 @@
 @import '../../variables';
 @import '../../mixins';
 
-.card {
-    border-radius: 10px;
-    border-color: transparent;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-
-    width: 100%;
-    padding: 4vh 4vw;
-    // max-height: 100%;
-    background-color: lighten($color-primary-light, 70);
-
-    &.bg-primary {
-        background-color: $color-primary-light;
-    }
-
-    &.bg-secondary {
-        background-color: $color-secondary-light;
-    }
-
-    &.bg-tertiary {
-        background-color: $color-tertiary-light;
-    }
-}
-
 .logo {
   color: $color-primary-light;
   // text-transform: uppercase;

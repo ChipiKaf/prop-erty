@@ -1,0 +1,36 @@
+@import '../../../../mixins.scss';
+@import '../../../../variables.scss';
+.form__label {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: .5rem;
+  font-family: $body-font-alt;
+  @include respond(phone) {
+      font-size: 2rem;
+  }
+  color: $background-color;
+}
+
+.form__input {
+  display: block;
+  font-size: 1.2rem;
+  color: $color-grey;
+  width: 100%;
+  background-color: transparent;
+  padding: .7rem .7rem;
+  border: 1px solid rgba(64, 70, 40, .2);
+  border-radius: .2em;
+  @include respond(phone) {
+      font-size: 1.5rem;
+      padding: 1.3rem 2rem;
+  }
+  // background-color: rgba($color-white, .5);
+  // border-color: $background-color;
+  &:focus {
+      outline: none;
+      // box-shadow: 0 1rem 2rem rgba($color-black, .1);
+      // border-bottom: 3px solid $color-primary;
+      border: 1px solid darken($color-primary-light, 50);
+  }
+}
