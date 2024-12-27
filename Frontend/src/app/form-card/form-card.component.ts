@@ -15,6 +15,7 @@ import {
 import { RoutingService } from '../services/routing.service';
 import { CardComponent } from '../components/card/card.component';
 import { FormInputComponent } from '../components/form/form-input/form-input.component';
+import { FormButtonComponent } from '../components/form/form-button/form-button.component';
 
 @Component({
   selector: 'app-form-card',
@@ -25,6 +26,7 @@ import { FormInputComponent } from '../components/form/form-input/form-input.com
     FormsModule,
     ReactiveFormsModule,
     CardComponent,
+    FormButtonComponent,
   ],
   templateUrl: './form-card.component.html',
   styleUrl: './form-card.component.scss',

@@ -1,44 +1,101 @@
 <app-card class="w-75">
-<div class="login-form-header">
+  <div class="login-form-header">
     <h1 class="login-form-title u-mb-2">Your account</h1>
   </div>
 
   <div class="form__container">
     <form [formGroup]="authForm">
-      <app-form-input inputId="email" label="Email" formControlName="email"
-      [errors]="[{ text: 'Email is required and must be valid', show: !!(authForm.get('email')?.invalid && authForm.get('email')?.touched) }]"
-      [required]="true"
-      >
-      </app-form-input>
-
-      <app-form-input inputId="password" label="Password" formControlName="password" type="password" [required]="true"
+      <app-form-input
+        inputId="email"
+        label="Email"
+        formControlName="email"
         [errors]="[
-          { text: 'Password must have at least one uppercase letter.', show: !!(authForm.touched && authForm.get('password')?.hasError('upperCase'))},
-          { text: 'Password must have at least one lowercase letter.', show: !!(authForm.touched && authForm.get('password')?.hasError('lowerCase'))},
-          { text: 'Password must have at least one digit.', show: !!(authForm.touched && authForm.get('password')?.hasError('digit'))},
-          { text: 'Password must have at least one special character.', show: !!(authForm.touched && authForm.get('password')?.hasError('nonAlphanumeric'))},
-          { text: 'Password must be at least 6 characters long.', show: !!(authForm.touched && authForm.get('password')?.hasError('minLength'))},
-          ]"
-      ></app-form-input>
+          {
+            text: 'Email is required and must be valid',
+            show: !!(
+              authForm.get('email')?.invalid && authForm.get('email')?.touched
+            ),
+          },
+        ]"
+        [required]="true"
+      />
 
-      <app-form-input *ngIf="isSignup" inputId="confirm-password" label="Confirm Password" formControlName="confirmPassword" type="password"
-      [errors]="[{ text: 'Passwords do not match', show: !!(authForm.hasError('passwordMismatch') && authForm.get('confirmPassword')?.touched) }]"
+      <app-form-input
+        inputId="password"
+        label="Password"
+        formControlName="password"
+        type="password"
+        [required]="true"
+        [errors]="[
+          {
+            text: 'Password must have at least one uppercase letter.',
+            show: !!(
+              authForm.touched &&
+              authForm.get('password')?.hasError('upperCase')
+            ),
+          },
+          {
+            text: 'Password must have at least one lowercase letter.',
+            show: !!(
+              authForm.touched &&
+              authForm.get('password')?.hasError('lowerCase')
+            ),
+          },
+          {
+            text: 'Password must have at least one digit.',
+            show: !!(
+              authForm.touched && authForm.get('password')?.hasError('digit')
+            ),
+          },
+          {
+            text: 'Password must have at least one special character.',
+            show: !!(
+              authForm.touched &&
+              authForm.get('password')?.hasError('nonAlphanumeric')
+            ),
+          },
+          {
+            text: 'Password must be at least 6 characters long.',
+            show: !!(
+              authForm.touched &&
+              authForm.get('password')?.hasError('minLength')
+            ),
+          },
+        ]"
+      />
+
+      <app-form-input
+        *ngIf="isSignup"
+        inputId="confirm-password"
+        label="Confirm Password"
+        formControlName="confirmPassword"
+        type="password"
+        [errors]="[
+          {
+            text: 'Passwords do not match',
+            show: !!(
+              authForm.hasError('passwordMismatch') &&
+              authForm.get('confirmPassword')?.touched
+            ),
+          },
+        ]"
+      />
+
+      <app-form-button
+        [disabled]="authForm.invalid || isSubmitting"
+        [showLoader]="showLoader"
+        (click)="handleSubmit()"
       >
-      </app-form-input>
-        <button class="btn btn-form mt-3" type="submit" [disabled]="authForm.invalid || isSubmitting" (click)="handleSubmit()">
-        <ng-container *ngIf="showLoader; else buttonText">
-          <i class="fa-solid fa-circle-notch fa-spin"></i>
-        </ng-container>
-        <ng-template #buttonText>
-          {{ isSignup ? 'Sign up' : 'Login' }}
-        </ng-template>
-      </button>
+        {{ isSignup ? 'Sign up' : 'Login' }}
+      </app-form-button>
     </form>
 
     <div class="form__footer">
       <hr />
       <div class="form__footer-text">
-        <div class="form__footer-text">{{ isSignup ? 'Already have an account?' : "Don't have an account?" }}</div>
+        <div class="form__footer-text">
+          {{ isSignup ? 'Already have an account?' : "Don't have an account?" }}
+        </div>
         <a class="btn form__footer-text" (click)="toggleAuthPage()">
           {{ isSignup ? 'Log in' : 'Sign up' }}
         </a>

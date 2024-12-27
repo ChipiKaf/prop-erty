@@ -1,24 +1,46 @@
 <div class="profile-container h-100">
-<div class="profile__header">
-  <img src="./icons/profile.png" alt="">
-</div>
-<div class="profile__body row mt-3 g-5">
-<div class="left col-md-4">
-  <app-card class="card-wrapper">
-    <div class="card__header">
-      Info
+  <div class="profile__header">
+    <img src="./icons/profile.png" alt="" />
+  </div>
+  <div class="profile__body row mt-3 g-5">
+    <div class="left col-md-4">
+      <app-card class="card-wrapper">
+        <div class="card__header">Info</div>
+        <div class="card__body mt-5">
+          <div class="form__container">
+            <form [formGroup]="infoForm">
+              <app-form-input
+                inputId="displayName"
+                label="Username"
+                formControlName="displayName"
+              />
+
+              <app-form-input
+                inputId="firstName"
+                label="First Name"
+                formControlName="firstName"
+              />
+
+              <app-form-input
+                inputId="lastName"
+                label="Last Name"
+                formControlName="lastName"
+              />
+
+              <app-form-button
+                [disabled]="infoForm.invalid || isSubmitting"
+                (click)="handleSubmit()"
+              >
+                Save
+              </app-form-button>
+            </form>
+          </div>
+        </div>
+      </app-card>
     </div>
-    <div class="card__body mt-5">
-      Info
+
+    <div class="right col-md-8">
+      <app-card> </app-card>
     </div>
-  </app-card>
-</div>
-
-<div class="right col-md-8">
-  <app-card>
-
-  </app-card>
-</div>
-
-</div>
+  </div>
 </div>
