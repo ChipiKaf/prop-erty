@@ -29,3 +29,14 @@
   background-size: 400% 400%;
   width: 100%;
 }
+
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  flex-grow: 1;
+}
+
+.parent-container {
+  flex: 1;
+}

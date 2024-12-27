@@ -1,8 +1,9 @@
 <div [ngClass]="{'background-gradient': !in3DView() && !inAuth()}">
-  <app-loading-screen></app-loading-screen>
-  <app-nav-bar *ngIf="!in3DView()"></app-nav-bar>
-  <div [ngClass]="{'u-pt': !in3DView()}">
-      <router-outlet />
+  <!-- <app-loading-screen></app-loading-screen> -->
+  <div class="layout-container">
+    <app-nav-bar *ngIf="!in3DView()"></app-nav-bar>
+    <div class="parent-container" [ngClass]="{'u-pt': !in3DView()}">
+      <router-outlet></router-outlet>
+    </div>
   </div>
-
 </div>
