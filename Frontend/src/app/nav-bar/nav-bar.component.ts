@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { RoutingService } from '../services/routing.service';
+import { TokenService } from '../services/token.service';
 
 export enum ListItemTypes {
+  ALL,
   AUTHENTICATED,
   UNAUTHENTICATED,
 }
@@ -28,12 +30,17 @@ export class NavBarComponent implements OnInit {
     {
       name: 'Properties',
       url: '/',
-      type: ListItemTypes.UNAUTHENTICATED,
+      type: ListItemTypes.ALL,
     },
     {
       name: 'Contact',
       url: '/',
       type: ListItemTypes.UNAUTHENTICATED,
+    },
+    {
+      name: 'Profile',
+      url: '/profile',
+      type: ListItemTypes.AUTHENTICATED,
     },
     {
       name: 'Logout',
@@ -45,7 +52,10 @@ export class NavBarComponent implements OnInit {
     },
   ];
 
-  constructor(private router: RoutingService) {}
+  constructor(
+    private router: RoutingService,
+    private tokenService: TokenService
+  ) {}
 
   ngOnInit(): void {
     console.log(this.active);
@@ -58,9 +68,11 @@ export class NavBarComponent implements OnInit {
 
   isItemVisible(item: ListItem): boolean {
     return (
-      item.type === ListItemTypes.UNAUTHENTICATED ||
+      item.type === ListItemTypes.ALL ||
+      (item.type === ListItemTypes.UNAUTHENTICATED &&
+        !this.tokenService.hasToken()) ||
       (item.type === ListItemTypes.AUTHENTICATED &&
-        !!localStorage.getItem('token'))
+        this.tokenService.hasToken())
     );
   }
 

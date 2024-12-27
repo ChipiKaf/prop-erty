@@ -23,5 +23,23 @@ namespace WebApi.Controllers
             return Ok(properties);
         }
 
+        [Authorize]
+        [HttpGet("{id}")]
+        public IActionResult GetProperty(int id)
+        {
+            Property currentItem = _unitOfWork.Property.Get(u => u.Id == id);
+
+            if (currentItem == null)
+            {
+                return BadRequest("Property not found");
+            }
+
+            Property nextItem = _unitOfWork.Property.Get(u => u.Id > id, orderBy: u => u.Id);
+
+            Property prevItem = _unitOfWork.Property.Get(u => u.Id < id, orderBy: u => u.Id);
+
+            return Ok(new { prevItem, currentItem, nextItem });
+        }
+
     }
 }

@@ -1,0 +1,15 @@
+<div class="box-entry full" routerLink="/property-detail/{{ property.id }}">
+  <ngx-skeleton-loader
+    *ngIf="imageLoading"
+    [theme]="{ 'min-height': '300px', 'width': '300px' }"
+  ></ngx-skeleton-loader>
+  <img
+    *ngIf="!imageLoading && loadedImageUrl"
+    class="property-img"
+    [src]="loadedImageUrl"
+  />
+  <div class="text-container">
+    <h2 class="box-entry__title">{{ property.name }}</h2>
+    <h3 class="box-entry__sub-title">{{ property.city }}</h3>
+  </div>
+</div>

@@ -150,7 +150,8 @@
         width: 100%;
         position: relative;
         &.small {
-            max-height: 300px;
+            height: 400px;
+            width: 400px;
         }
       }
     &.limit-height {

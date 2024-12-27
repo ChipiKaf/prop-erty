@@ -1,35 +1,42 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+/* eslint-disable @ngrx/no-typed-global-store */
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HousingService } from '../../services/housing.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { RoutingService } from '../../services/routing.service';
-import { catchError, of, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import {
+  selectAllProperties,
+  selectPropertiesFetchStatus,
+} from '../../store/property/property.selector';
+import { AppState } from '../../store/app.store';
+import { loadProperties } from '../../store/property/property.actions';
+import { PropertyItemComponent } from '../property-item/property-item.component';
 
 @Component({
   selector: 'app-property-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    NgxSkeletonLoaderModule,
+    PropertyItemComponent,
+  ],
   templateUrl: './property-list.component.html',
   styleUrl: './property-list.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class PropertyListComponent {
+export class PropertyListComponent implements OnInit {
   SellRent = 1;
-  properties$ = this.housingService.getAllProperties().pipe(
-    tap(() => console.log('Get all properties')),
-    catchError((err: HttpErrorResponse) => {
-      if (err.status === 401) {
-        this.router.navigate(['/login']);
-      }
-      console.error(err.statusText);
-      return of([]);
-    })
-  );
+  properties$ = this.store.select(selectAllProperties);
+  fetchStatus$ = this.store.select(selectPropertiesFetchStatus);
+  allImagesLoaded = false; // Track if all images are loaded
 
-  constructor(
-    private housingService: HousingService,
-    private router: RoutingService
-  ) {} // // private route: ActivatedRoute,
+  constructor(private store: Store<AppState>) {}
+
+  ngOnInit(): void {
+    this.fetchStatus$.subscribe((val) => console.log(val));
+    this.store.dispatch(loadProperties());
+  }
 }

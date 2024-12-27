@@ -4,6 +4,7 @@ import { PropertyDetailsComponent } from './property/property-details/property-d
 import { PropertyDetailResolverService } from './property/property-details/property-details-resolver.service';
 import { LoginComponent } from './authentication/login/login.component';
 import { ThreeDViewComponent } from './three-d-view/three-d-view.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -22,5 +23,9 @@ export const routes: Routes = [
   {
     path: 'property-view-3d/:id',
     component: ThreeDViewComponent,
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
   },
 ];

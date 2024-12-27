@@ -5,28 +5,31 @@ import { Observable, of } from 'rxjs';
 import { HousingService } from '../../services/housing.service';
 import { catchError } from 'rxjs/operators';
 import { RoutingService } from '../../services/routing.service';
+import { GetPropertyModel } from '../../model/GetProperty';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PropertyDetailResolverService
-  implements
-    Resolve<{ currentItem: Property | null; nextItem: Property | null }>
+  implements Resolve<GetPropertyModel>
 {
   constructor(
     private router: RoutingService,
     private housingService: HousingService
   ) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot
-  ): Observable<{ currentItem: Property | null; nextItem: Property | null }> {
+  resolve(route: ActivatedRouteSnapshot): Observable<GetPropertyModel> {
     const propId = route.params['id'];
     return this.housingService.getProperty(+propId).pipe(
       catchError((_error) => {
         console.error(_error);
         this.router.navigate(['/']);
-        return of({ currentItem: new Property(), nextItem: new Property() }); // Return an empty Property instead of null
+        const result: GetPropertyModel = {
+          currentItem: new Property(),
+          nextItem: new Property(),
+          prevItem: new Property(),
+        };
+        return of(result);
       })
     );
   }

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Property } from '../model/property';
 import { environment } from '../../environments/environment';
 import { Ikeyvaluepair } from '../model/IKeyValuePair';
-import { RoutingService } from './routing.service';
+import { TokenService } from './token.service';
+import { GetPropertyModel } from '../model/GetProperty';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class HousingService {
 
   constructor(
     private http: HttpClient,
-    private router: RoutingService
+    private tokenService: TokenService
   ) {}
 
   getAllCities(): Observable<string[]> {
@@ -31,37 +32,17 @@ export class HousingService {
     );
   }
 
-  getProperty(id: number) {
-    const properties = JSON.parse(
-      localStorage.getItem('properties') || ''
-    ) as Property[];
-    const currentItemIndex = properties.findIndex(
-      (property: Property) => property.id === id
-    );
-    const currentItem = properties[currentItemIndex];
-    const nextItem = properties[currentItemIndex + 1] || null;
-    return of({
-      currentItem,
-      nextItem,
+  getProperty(id: number): Observable<GetPropertyModel> {
+    const headers = this.tokenService.getAuthHeader();
+    return this.http.get<GetPropertyModel>(`${this.baseUrl}/property/${id}`, {
+      headers,
     });
-    // return this.http.get<Property>(
-    //   this.baseUrl + '/property/detail/' + id.toString()
-    // );
   }
 
   getAllProperties(): Observable<Property[]> {
-    const token = localStorage.getItem('token');
-    console.log('In get all properties');
-    console.log(token);
+    const headers = this.tokenService.getAuthHeader();
 
-    if (!token) {
-      this.router.navigate(['/login']);
-      throw new Error('No token');
-    }
-
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    return this.http.get<Property[]>(this.baseUrl + '/property/properties', {
+    return this.http.get<Property[]>(`${this.baseUrl}/property/properties`, {
       headers,
     });
   }

@@ -5,7 +5,10 @@
 /frontend/tmp
 /frontend/out-tsc
 /frontend/bazel-out
-*.*
+*.jso
+*.bin
+*.vsidx
+/WebApi/.vs/**
 # Node
 /frontend/node_modules
 npm-debug.log
