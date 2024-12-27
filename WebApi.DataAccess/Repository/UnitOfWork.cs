@@ -13,10 +13,13 @@ namespace WebApi.DataAccess.Repository
         private ApplicationContext _db;
         public IPropertyRepository Property { get; private set; }
 
+        public IUserRepository User { get; private set; }
+
         public UnitOfWork(ApplicationContext db)
         {
             _db = db;
             Property = new PropertyRepository(_db);
+            User = new UserRespository(_db);
         }
 
         public void Save()

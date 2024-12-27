@@ -4,14 +4,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
-namespace WebApi.Models
+namespace WebApi.DataAccess.Dtos
 {
-    public class ApplicationUser : IdentityUser
+    public class UserUpdateDto
     {
+        [EmailAddress]
+        public string Email { get; set; }
+        [Required]
         public string DisplayName { get; set; }
+        [Required]
         public string FirstName { get; set; }
+        [Required]
         public string LastName { get; set; }
     }
 }

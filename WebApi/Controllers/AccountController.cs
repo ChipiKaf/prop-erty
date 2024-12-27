@@ -1,10 +1,14 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using WebApi.DataAccess.Dtos;
+using WebApi.DataAccess.Interfaces;
+using WebApi.DataAccess.Repository;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -13,13 +17,18 @@ namespace WebApi.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IUnitOfWork _uow;
         private readonly IConfiguration _config;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration config)
+        public AccountController(UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager,
+            IUnitOfWork uow,
+            IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _config = config;
+            _uow = uow;
         }
 
         private string GenerateJwtToken(string email)
@@ -45,7 +54,7 @@ namespace WebApi.Controllers
         }
         
         [HttpPost("register")]
-        public async Task<IActionResult> Signup([FromBody] SignUpModel model) 
+        public async Task<IActionResult> Signup([FromBody] SignUpDto model) 
         {
             if (!ModelState.IsValid)
             {
@@ -81,7 +90,7 @@ namespace WebApi.Controllers
 
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
             if (!ModelState.IsValid)
             {
@@ -99,18 +108,52 @@ namespace WebApi.Controllers
             return Unauthorized(new { Message = "Invalid email or password." });
         }
 
-        
-        public class SignUpModel
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetUser()
         {
-            public string Email { get; set; }
-            public string Password { get; set; }
-            public string ConfirmPassword { get; set; }
+            // Use the email in the JWT to fetch user
+            var emailClaim = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
+            
+            if (emailClaim == null)
+            {
+                return Unauthorized(new { Message = "Invalid token: Email claim missing." });
+            }
+            
+            string email = emailClaim.Value;
+            
+            ApplicationUser user = _uow.User.Get(u => u.Email == email);
+            if (user == null)
+            {
+                return StatusCode(404);
+            }
+            return Ok(new UserResponseDto { DisplayName = user.DisplayName, FirstName = user.FirstName, LastName = user.LastName });
         }
 
-        public class LoginModel
+        [HttpPut("update")]
+        [Authorize]
+        public IActionResult UpdateUser([FromBody] UserUpdateDto userUpdateDto)
         {
-            public string Email { get; set; }
-            public string Password { get; set; }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var emailClaim = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
+
+            if(emailClaim == null)
+            {
+                return Unauthorized(new { Message = "Invalid token: Email claim missing." });
+            }
+
+            userUpdateDto.Email = emailClaim.Value; // Use Email in JWT to update user
+
+            _uow.User.Update(userUpdateDto);
+
+            _uow.Save();
+            return Ok(new { Message = "User updated successfully" });
+
+
         }
     }
 }
