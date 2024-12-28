@@ -7,8 +7,11 @@ namespace WebApi.Models
     {
         [Column(Order = 0)]
         public int Id { get; set; }
-        public DateTime LastUpdatedOn { get; set; } = DateTime.Now;
-        public int LastUpdatedBy { get; set; }
 
+        // Use UTC to align with PostgreSQL's timestamp with time zone
+        [Column(TypeName = "timestamp with time zone")]
+        public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
+
+        public int LastUpdatedBy { get; set; }
     }
 }

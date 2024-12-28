@@ -8,9 +8,12 @@
 
         public string Type {  get; set; }
         public string Description { get; set; }
-        public string model { get; set; }
-        public string texture { get; set; }
+        public string Model { get; set; }
+        public string Texture { get; set; }
 
         public float Cost { get; set; }
+
+        public ICollection<PropertyLike> Likes { get; set; } 
+        public PropertyLikeCount PropertyLikeCount { get; set; }
     }
 }

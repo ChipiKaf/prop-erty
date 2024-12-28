@@ -9,6 +9,7 @@ using WebApi.DataAccess.Interfaces;
 using WebApi.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity;
 using WebApi.Models;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,14 +27,14 @@ if (string.IsNullOrEmpty(dbPassword))
 {
     throw new InvalidOperationException("Database password is not set in environment variables.");
 }
-
-var sqlStringBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("RDSConnection"))
+//var sqlStringBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("RDSConnection")) // For SQL Server
+var sqlStringBuilder = new NpgsqlConnectionStringBuilder(builder.Configuration.GetConnectionString("RDSConnection"))
 {
     Password = dbPassword
 };
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
-    options.UseSqlServer(sqlStringBuilder.ConnectionString));
+    options.UseNpgsql(sqlStringBuilder.ConnectionString));
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
