@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApi.DataAccess.Data;
 
 #nullable disable
@@ -12,42 +12,41 @@ using WebApi.DataAccess.Data;
 namespace WebApi.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20241223151323_ExtendIdentityUser")]
-    partial class ExtendIdentityUser
+    [Migration("20241228182126_CreatePropertyLikeAndPropertyLikeCountTables")]
+    partial class CreatePropertyLikeAndPropertyLikeCountTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
                 });
@@ -56,19 +55,19 @@ namespace WebApi.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -80,59 +79,59 @@ namespace WebApi.DataAccess.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasColumnType("character varying(21)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -141,12 +140,11 @@ namespace WebApi.DataAccess.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+                    b.HasDiscriminator().HasValue("IdentityUser");
 
                     b.UseTphMappingStrategy();
                 });
@@ -155,19 +153,19 @@ namespace WebApi.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -179,17 +177,17 @@ namespace WebApi.DataAccess.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -201,10 +199,10 @@ namespace WebApi.DataAccess.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -216,16 +214,16 @@ namespace WebApi.DataAccess.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -236,47 +234,47 @@ namespace WebApi.DataAccess.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnOrder(0);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<float>("Cost")
                         .HasColumnType("real");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("LastUpdatedBy")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("LastUpdatedOn")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("Texture")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("texture")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -291,11 +289,11 @@ namespace WebApi.DataAccess.Migrations
                             Description = "Experience unparalleled luxury with this exquisite penthouse in a prestigious Pretoria estate. This stunning residence offers modern sophistication and timeless charm, making it the perfect retreat for an elevated lifestyle. Nestled in the heart of Pretoria, the estate provides easy access to upscale shopping, fine dining, and reputable schools, all within a serene, secure environment.",
                             Image = "1.jpg",
                             LastUpdatedBy = 0,
-                            LastUpdatedOn = new DateTime(2024, 12, 23, 17, 13, 22, 547, DateTimeKind.Local).AddTicks(6258),
+                            LastUpdatedOn = new DateTime(2024, 12, 28, 18, 21, 25, 837, DateTimeKind.Utc).AddTicks(693),
+                            Model = "4.glb",
                             Name = "The Penthouse",
-                            Type = "Estate",
-                            model = "4.glb",
-                            texture = "3.jpg"
+                            Texture = "3.jpg",
+                            Type = "Estate"
                         },
                         new
                         {
@@ -305,11 +303,11 @@ namespace WebApi.DataAccess.Migrations
                             Description = "Experience tranquility and modern living in this beautiful sanctuary home townhouse located in the vibrant city of Johannesburg. This residence combines contemporary design with a serene atmosphere, providing the perfect escape from the bustling city life.",
                             Image = "2.jpg",
                             LastUpdatedBy = 0,
-                            LastUpdatedOn = new DateTime(2024, 12, 23, 17, 13, 22, 547, DateTimeKind.Local).AddTicks(6276),
+                            LastUpdatedOn = new DateTime(2024, 12, 28, 18, 21, 25, 837, DateTimeKind.Utc).AddTicks(698),
+                            Model = "2.glb",
                             Name = "Sanctuary home",
-                            Type = "Townhouse",
-                            model = "2.glb",
-                            texture = "2.jpg"
+                            Texture = "2.jpg",
+                            Type = "Townhouse"
                         },
                         new
                         {
@@ -319,11 +317,11 @@ namespace WebApi.DataAccess.Migrations
                             Description = "Welcome to this stylish condo in the heart of Johannesburg, offering modern living in a prime urban setting. This well-appointed flat provides a perfect blend of comfort and convenience, ideal for city dwellers seeking a vibrant lifestyle. Located in a desirable neighborhood, the condo offers easy access to Johannesburg's top attractions, shopping centers, dining spots, and cultural landmarks. The building features secure access, ensuring a safe and peaceful living environment.",
                             Image = "3.jpg",
                             LastUpdatedBy = 0,
-                            LastUpdatedOn = new DateTime(2024, 12, 23, 17, 13, 22, 547, DateTimeKind.Local).AddTicks(6278),
+                            LastUpdatedOn = new DateTime(2024, 12, 28, 18, 21, 25, 837, DateTimeKind.Utc).AddTicks(700),
+                            Model = "",
                             Name = "The Condo",
-                            Type = "Flat",
-                            model = "",
-                            texture = ""
+                            Texture = "",
+                            Type = "Flat"
                         },
                         new
                         {
@@ -333,11 +331,77 @@ namespace WebApi.DataAccess.Migrations
                             Description = "Discover refined living in this elegant townhouse located in the sought-after Craven Hills neighborhood of Durban. This residence offers a harmonious blend of contemporary design and comfort, making it an ideal home for those seeking both style and convenience.",
                             Image = "4.jpg",
                             LastUpdatedBy = 0,
-                            LastUpdatedOn = new DateTime(2024, 12, 23, 17, 13, 22, 547, DateTimeKind.Local).AddTicks(6280),
+                            LastUpdatedOn = new DateTime(2024, 12, 28, 18, 21, 25, 837, DateTimeKind.Utc).AddTicks(702),
+                            Model = "",
                             Name = "Craven hills",
-                            Type = "Townhouse",
-                            model = "",
-                            texture = ""
+                            Texture = "",
+                            Type = "Townhouse"
+                        });
+                });
+
+            modelBuilder.Entity("WebApi.Models.PropertyLike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(0);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LastUpdatedBy")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("LastUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("PropertyId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropertyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PropertyLike");
+                });
+
+            modelBuilder.Entity("WebApi.Models.PropertyLikeCount", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PropertyLikeCount");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Count = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Count = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Count = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Count = 0
                         });
                 });
 
@@ -345,9 +409,17 @@ namespace WebApi.DataAccess.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("DisplayName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -401,6 +473,49 @@ namespace WebApi.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApi.Models.PropertyLike", b =>
+                {
+                    b.HasOne("WebApi.Models.Property", "Property")
+                        .WithMany("Likes")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApi.Models.ApplicationUser", "User")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Property");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebApi.Models.PropertyLikeCount", b =>
+                {
+                    b.HasOne("WebApi.Models.Property", "Property")
+                        .WithOne("PropertyLikeCount")
+                        .HasForeignKey("WebApi.Models.PropertyLikeCount", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Property");
+                });
+
+            modelBuilder.Entity("WebApi.Models.Property", b =>
+                {
+                    b.Navigation("Likes");
+
+                    b.Navigation("PropertyLikeCount")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApi.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }
