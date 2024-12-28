@@ -1,14 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserForRegister, UserForLogin } from '../model/user';
+import { UserForRegister, UserForLogin, UserModel } from '../model/user';
 import { environment } from '../../environments/environment';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   baseUrl = environment.baseUrl;
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private tokenService: TokenService
+  ) {}
 
   authUser(user: UserForLogin) {
     return this.http.post<{ token: string; message: string }>(
@@ -18,6 +22,25 @@ export class AuthService {
   }
 
   registerUser(user: UserForRegister) {
-    return this.http.post(this.baseUrl + '/account/register', user);
+    return this.http.post<{ token: string; message: string }>(
+      this.baseUrl + '/account/register',
+      user
+    );
+  }
+
+  getUser() {
+    const headers = this.tokenService.getAuthHeader();
+    return this.http.get<UserModel>(`${this.baseUrl}/account`, {
+      headers,
+    });
+  }
+
+  updateUser(user: UserModel) {
+    const headers = this.tokenService.getAuthHeader();
+    return this.http.patch<void>(
+      `${this.baseUrl}/account`,
+      { ...user },
+      { headers }
+    );
   }
 }

@@ -42,7 +42,6 @@ export class PropertyItemComponent implements OnInit, OnChanges {
   // To prevent flashing image
   private preloadImage(url: string | undefined): void {
     if (!url) {
-      console.log('In here');
       this.imageLoading = false;
       return;
     }

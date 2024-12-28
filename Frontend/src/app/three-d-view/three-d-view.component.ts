@@ -449,7 +449,6 @@ export class ThreeDViewComponent implements OnInit, OnDestroy {
      */
 
     this.gltfLoader.load('models/2.glb', (gltf) => {
-      console.log(gltf.scene);
       // gltf.scene.children.tra
       gltf.scene.scale.set(1.5, 1.5, 1.5);
       gltf.scene.traverse((child) => {

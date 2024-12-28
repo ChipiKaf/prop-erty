@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { RoutingService } from '../services/routing.service';
 import { TokenService } from '../services/token.service';
@@ -24,7 +24,7 @@ export type ListItem = {
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss'],
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent {
   active: boolean = false;
   listItems: ListItem[] = [
     {
@@ -57,13 +57,8 @@ export class NavBarComponent implements OnInit {
     private tokenService: TokenService
   ) {}
 
-  ngOnInit(): void {
-    console.log(this.active);
-  }
-
   toggleMenu() {
     this.active = !this.active;
-    console.log(this.active);
   }
 
   isItemVisible(item: ListItem): boolean {

@@ -36,7 +36,6 @@ export class PropertyListComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.fetchStatus$.subscribe((val) => console.log(val));
     this.store.dispatch(loadProperties());
   }
 }

@@ -7,34 +7,46 @@
       <app-card class="card-wrapper">
         <div class="card__header">Info</div>
         <div class="card__body mt-5">
-          <div class="form__container">
-            <form [formGroup]="infoForm">
-              <app-form-input
-                inputId="displayName"
-                label="Username"
-                formControlName="displayName"
-              />
+          <ng-container *ngIf="(status$ | async) !== 'pending'; else skeletonLoader">
+            <div class="form__container">
+              <form [formGroup]="infoForm">
+                <app-form-input
+                  inputId="displayName"
+                  label="Username"
+                  formControlName="displayName"
+                />
 
-              <app-form-input
-                inputId="firstName"
-                label="First Name"
-                formControlName="firstName"
-              />
+                <app-form-input
+                  inputId="firstName"
+                  label="First Name"
+                  formControlName="firstName"
+                />
 
-              <app-form-input
-                inputId="lastName"
-                label="Last Name"
-                formControlName="lastName"
-              />
+                <app-form-input
+                  inputId="lastName"
+                  label="Last Name"
+                  formControlName="lastName"
+                />
 
-              <app-form-button
-                [disabled]="infoForm.invalid || isSubmitting"
-                (click)="handleSubmit()"
-              >
-                Save
-              </app-form-button>
-            </form>
-          </div>
+                <app-form-button
+                  [disabled]="infoForm.invalid || (status$ | async) === 'loading' || !!(isUnchanged$ | async)"
+                  [showLoader]="(status$ | async) === 'loading'"
+                  (click)="handleSubmit()"
+                >
+                  Save
+                </app-form-button>
+              </form>
+            </div>
+          </ng-container>
+          <ng-template #skeletonLoader>
+            <ngx-skeleton-loader
+            count="3"
+            [theme]="{ 'margin-top': '3rem', 'margin-bottom': '3rem' }"
+            appearance="line"
+             />
+          </ng-template>
+
+
         </div>
       </app-card>
     </div>

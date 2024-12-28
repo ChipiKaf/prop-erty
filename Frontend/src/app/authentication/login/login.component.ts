@@ -75,7 +75,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.gltfLoader.load('models/city.glb', (gltf) => {
       this.city = gltf.scene;
       gltf.scene.scale.set(1.5, 1.5, 1.5);
-      // console.log(model)
       // this.scene.add(model.children);
       // if (!model) return;
       this.city.traverse((child) => {

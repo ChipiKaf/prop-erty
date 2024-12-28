@@ -7,5 +7,10 @@ export interface UserForRegister {
 export interface UserForLogin {
   email: string;
   password: string;
-  token?: string;
+}
+
+export interface UserModel {
+  displayName: string | null;
+  firstName: string | null;
+  lastName: string | null;
 }

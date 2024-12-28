@@ -7,11 +7,12 @@ import {
   loadProperty,
   loadPropertySuccess,
 } from './property.actions';
+import { Status } from '../../model/store';
 
 export interface PropertyState {
   properties: IPropertyBase[];
   error: string | null;
-  status: 'pending' | 'loading' | 'error' | 'success';
+  status: Status;
 }
 
 export const initialState: PropertyState = {

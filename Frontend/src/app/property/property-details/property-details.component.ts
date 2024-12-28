@@ -60,7 +60,6 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.propertyId = +this.route.snapshot.params['id'];
     this.getCurrentProperty();
-    console.log('Here we go');
     this.getNextProperty();
     this.getPreviousProperty();
 

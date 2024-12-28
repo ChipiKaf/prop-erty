@@ -82,8 +82,8 @@
       />
 
       <app-form-button
-        [disabled]="authForm.invalid || isSubmitting"
-        [showLoader]="showLoader"
+        [disabled]="authForm.invalid || (isLoading$ | async) === 'loading'"
+        [showLoader]="(isLoading$ | async) === 'loading'"
         (click)="handleSubmit()"
       >
         {{ isSignup ? 'Sign up' : 'Login' }}
