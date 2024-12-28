@@ -17,7 +17,7 @@ namespace WebApi.DataAccess.Repository
         {
             _db = db;
         }
-        public void Update(UserUpdateDto obj)
+        public void Update(UserUpdateModel obj)
         {
             ApplicationUser userToUpdate = base.Get(u=>u.Email == obj.Email);
             if (userToUpdate != null) 

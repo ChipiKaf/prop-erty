@@ -19,14 +19,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
 
 // Retrieve the environment variable
-var dbPassword = builder.Configuration["DBPassword"];
+//var dbPassword = builder.Configuration["DBPassword"];
+var dbPassword = builder.Configuration["POSTGRES_DBPassword"];
 
 if (string.IsNullOrEmpty(dbPassword))
 {
     throw new InvalidOperationException("Database password is not set in environment variables.");
 }
 
-var sqlStringBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("Default"))
+var sqlStringBuilder = new SqlConnectionStringBuilder(builder.Configuration.GetConnectionString("RDSConnection"))
 {
     Password = dbPassword
 };

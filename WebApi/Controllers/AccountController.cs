@@ -78,7 +78,9 @@ namespace WebApi.Controllers
 
             if (result.Succeeded) 
             {
-                return Ok(new { Message = "User registered Successfully" });
+                var token = GenerateJwtToken(model.Email);
+                return Ok(new { Token = token, Message = "Login successful" });
+
             }
 
             foreach (var error in result.Errors)
@@ -113,8 +115,9 @@ namespace WebApi.Controllers
         public IActionResult GetUser()
         {
             // Use the email in the JWT to fetch user
-            var emailClaim = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
-            
+            var emailClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+
             if (emailClaim == null)
             {
                 return Unauthorized(new { Message = "Invalid token: Email claim missing." });
@@ -130,7 +133,7 @@ namespace WebApi.Controllers
             return Ok(new UserResponseDto { DisplayName = user.DisplayName, FirstName = user.FirstName, LastName = user.LastName });
         }
 
-        [HttpPut("update")]
+        [HttpPatch]
         [Authorize]
         public IActionResult UpdateUser([FromBody] UserUpdateDto userUpdateDto)
         {
@@ -139,16 +142,15 @@ namespace WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var emailClaim = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
+            var emailClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
 
             if(emailClaim == null)
             {
                 return Unauthorized(new { Message = "Invalid token: Email claim missing." });
             }
 
-            userUpdateDto.Email = emailClaim.Value; // Use Email in JWT to update user
-
-            _uow.User.Update(userUpdateDto);
+            UserUpdateModel model = new() { Email = emailClaim.Value, DisplayName = userUpdateDto.DisplayName, FirstName = userUpdateDto.FirstName, LastName = userUpdateDto.LastName };
+            _uow.User.Update(model);
 
             _uow.Save();
             return Ok(new { Message = "User updated successfully" });

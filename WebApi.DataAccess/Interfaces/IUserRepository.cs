@@ -10,6 +10,6 @@ namespace WebApi.DataAccess.Interfaces
 {
     public interface IUserRepository : IRepository<ApplicationUser>
     {
-        void Update(UserUpdateDto obj);
+        void Update(UserUpdateModel obj);
     }
 }
