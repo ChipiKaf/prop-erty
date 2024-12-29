@@ -286,7 +286,7 @@ namespace WebApi.DataAccess.Migrations
                             Description = "Experience unparalleled luxury with this exquisite penthouse in a prestigious Pretoria estate. This stunning residence offers modern sophistication and timeless charm, making it the perfect retreat for an elevated lifestyle. Nestled in the heart of Pretoria, the estate provides easy access to upscale shopping, fine dining, and reputable schools, all within a serene, secure environment.",
                             Image = "1.jpg",
                             LastUpdatedBy = 0,
-                            LastUpdatedOn = new DateTime(2024, 12, 28, 18, 21, 25, 837, DateTimeKind.Utc).AddTicks(693),
+                            LastUpdatedOn = new DateTime(2024, 12, 29, 9, 7, 5, 738, DateTimeKind.Utc).AddTicks(7447),
                             Model = "4.glb",
                             Name = "The Penthouse",
                             Texture = "3.jpg",
@@ -300,7 +300,7 @@ namespace WebApi.DataAccess.Migrations
                             Description = "Experience tranquility and modern living in this beautiful sanctuary home townhouse located in the vibrant city of Johannesburg. This residence combines contemporary design with a serene atmosphere, providing the perfect escape from the bustling city life.",
                             Image = "2.jpg",
                             LastUpdatedBy = 0,
-                            LastUpdatedOn = new DateTime(2024, 12, 28, 18, 21, 25, 837, DateTimeKind.Utc).AddTicks(698),
+                            LastUpdatedOn = new DateTime(2024, 12, 29, 9, 7, 5, 738, DateTimeKind.Utc).AddTicks(7452),
                             Model = "2.glb",
                             Name = "Sanctuary home",
                             Texture = "2.jpg",
@@ -314,7 +314,7 @@ namespace WebApi.DataAccess.Migrations
                             Description = "Welcome to this stylish condo in the heart of Johannesburg, offering modern living in a prime urban setting. This well-appointed flat provides a perfect blend of comfort and convenience, ideal for city dwellers seeking a vibrant lifestyle. Located in a desirable neighborhood, the condo offers easy access to Johannesburg's top attractions, shopping centers, dining spots, and cultural landmarks. The building features secure access, ensuring a safe and peaceful living environment.",
                             Image = "3.jpg",
                             LastUpdatedBy = 0,
-                            LastUpdatedOn = new DateTime(2024, 12, 28, 18, 21, 25, 837, DateTimeKind.Utc).AddTicks(700),
+                            LastUpdatedOn = new DateTime(2024, 12, 29, 9, 7, 5, 738, DateTimeKind.Utc).AddTicks(7454),
                             Model = "",
                             Name = "The Condo",
                             Texture = "",
@@ -328,7 +328,7 @@ namespace WebApi.DataAccess.Migrations
                             Description = "Discover refined living in this elegant townhouse located in the sought-after Craven Hills neighborhood of Durban. This residence offers a harmonious blend of contemporary design and comfort, making it an ideal home for those seeking both style and convenience.",
                             Image = "4.jpg",
                             LastUpdatedBy = 0,
-                            LastUpdatedOn = new DateTime(2024, 12, 28, 18, 21, 25, 837, DateTimeKind.Utc).AddTicks(702),
+                            LastUpdatedOn = new DateTime(2024, 12, 29, 9, 7, 5, 738, DateTimeKind.Utc).AddTicks(7456),
                             Model = "",
                             Name = "Craven hills",
                             Texture = "",
@@ -475,7 +475,7 @@ namespace WebApi.DataAccess.Migrations
             modelBuilder.Entity("WebApi.Models.PropertyLike", b =>
                 {
                     b.HasOne("WebApi.Models.Property", "Property")
-                        .WithMany("Likes")
+                        .WithMany()
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -504,8 +504,6 @@ namespace WebApi.DataAccess.Migrations
 
             modelBuilder.Entity("WebApi.Models.Property", b =>
                 {
-                    b.Navigation("Likes");
-
                     b.Navigation("PropertyLikeCount")
                         .IsRequired();
                 });

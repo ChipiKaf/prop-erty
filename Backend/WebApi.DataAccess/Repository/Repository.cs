@@ -37,10 +37,31 @@ namespace WebApi.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, Expression<Func<T, object>> orderBy = null, string includeProperties = "")
         {
             IQueryable<T> query = dbSet;
-            return query.ToList();
+            // Apply filter if provided
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            // Split comma-separated list of navigation properties
+            if (!string.IsNullOrWhiteSpace(includeProperties)) 
+            { 
+                // Include them one by one
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp.Trim());
+                }
+            }
+
+            if (orderBy != null)
+            {
+                query = query.OrderBy(orderBy);
+            }
+
+            return [.. query];
         }
 
         public void Remove(T entity)

@@ -1,6 +1,9 @@
 import { IPropertyBase } from './ipropertybase';
 
 export class Property implements IPropertyBase {
+  model?: string | undefined;
+  texture?: string | undefined;
+  likes: number = 0;
   id: number = 0;
   sellRent: number = 0;
   name: string = '';

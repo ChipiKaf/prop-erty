@@ -36,7 +36,9 @@
 
   .text-container {
     position: absolute;
-    left: 4rem;
+    // left: 4rem;
+    width: 100%;
+    padding: 0 5rem;
     bottom: 0;
     opacity: 0;
     transition: opacity .3s, bottom .5s;

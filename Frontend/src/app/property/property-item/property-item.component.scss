@@ -1,0 +1,60 @@
+@import '../../../variables.scss';
+.text-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.like-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & .like__text {
+    font-size: 1.6rem;
+    font-family: $heading-font;
+    color: white;
+    transition: opacity .3s;
+    &.invisible {
+      opacity: 0;
+    }
+  }
+}
+.heart-container {
+  position: relative;
+  display: inline-block;
+
+  &.active {
+    & .heart-outline {
+      color: red
+    }
+
+    & .heart-fill {
+      clip-path: inset(0 0 0 0);
+    }
+
+  }
+  .heart-outline {
+    font-size: 3rem;
+    color: white;
+    transition: color .3s ease;
+  }
+
+  .heart-fill {
+    font-size: 3rem;
+    color: red;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -3;
+    /* Start off hidden from the top down (so 100% is clipped from the top) */
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 0.3s cubic-bezier(.47,1.64,.41,.8);
+  }
+
+  &:not(.active):hover .heart-fill {
+    /* Reveal the bottom 50% */
+    clip-path: inset(45% 0 0 0);
+  }
+}

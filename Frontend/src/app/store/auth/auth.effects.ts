@@ -5,6 +5,7 @@ import {
   loadUserFailure,
   loadUserSuccessful,
   logInUser,
+  logInUserFailure,
   logInUserSuccessful,
   signUpFailure,
   signUpSuccessful,
@@ -38,7 +39,7 @@ export class AuthEffects {
             return logInUserSuccessful({ token });
           }),
           catchError((error) => {
-            return of(loadUserFailure({ error }));
+            return of(logInUserFailure({ error }));
           })
         );
       })

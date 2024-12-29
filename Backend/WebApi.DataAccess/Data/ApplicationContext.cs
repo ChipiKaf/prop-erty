@@ -14,6 +14,8 @@ namespace WebApi.DataAccess.Data
 
         // Define DbSet for each entity
         public DbSet<Property> Properties { get; set; }
+        public DbSet<PropertyLike> PropertyLike { get; set; }
+        public DbSet<PropertyLikeCount> PropertyLikeCount { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -78,7 +80,7 @@ namespace WebApi.DataAccess.Data
             );
             modelBuilder.Entity<PropertyLike>()
                 .HasOne(pl => pl.Property)
-                .WithMany(p => p.Likes)
+                .WithMany()
                 .HasForeignKey(pl => pl.PropertyId)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -90,7 +92,7 @@ namespace WebApi.DataAccess.Data
 
             modelBuilder.Entity<PropertyLikeCount>()
                  .HasOne(plc => plc.Property)
-                 .WithOne(p => p.PropertyLikeCount)
+                 .WithOne(p=>p.PropertyLikeCount)
                  .HasForeignKey<PropertyLikeCount>(plc => plc.Id)
                  .IsRequired();
         }

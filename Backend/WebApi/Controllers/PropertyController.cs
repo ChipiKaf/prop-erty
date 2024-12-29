@@ -19,7 +19,11 @@ namespace WebApi.Controllers
         [HttpGet("properties")]
         public IActionResult GetProperties()
         {
-            IEnumerable<Property> properties = _unitOfWork.Property.GetAll();
+            IEnumerable<Property> properties = _unitOfWork.Property.GetAll(
+                filter: null,
+                orderBy: p=>p.Id,
+                includeProperties: "PropertyLikeCount"
+                );
             return Ok(properties);
         }
 

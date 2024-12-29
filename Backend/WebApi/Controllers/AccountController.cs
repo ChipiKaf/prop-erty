@@ -115,15 +115,7 @@ namespace WebApi.Controllers
         public IActionResult GetUser()
         {
             // Use the email in the JWT to fetch user
-            var emailClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-
-
-            if (emailClaim == null)
-            {
-                return Unauthorized(new { Message = "Invalid token: Email claim missing." });
-            }
-            
-            string email = emailClaim.Value;
+            string email = GetEmailFromClaims();
             
             ApplicationUser user = _uow.User.Get(u => u.Email == email);
             if (user == null)
@@ -142,14 +134,9 @@ namespace WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var emailClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            string email = GetEmailFromClaims();
 
-            if(emailClaim == null)
-            {
-                return Unauthorized(new { Message = "Invalid token: Email claim missing." });
-            }
-
-            UserUpdateModel model = new() { Email = emailClaim.Value, DisplayName = userUpdateDto.DisplayName, FirstName = userUpdateDto.FirstName, LastName = userUpdateDto.LastName };
+            UserUpdateModel model = new() { Email = email, DisplayName = userUpdateDto.DisplayName, FirstName = userUpdateDto.FirstName, LastName = userUpdateDto.LastName };
             _uow.User.Update(model);
 
             _uow.Save();

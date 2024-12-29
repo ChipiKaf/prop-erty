@@ -15,6 +15,7 @@ export interface IPropertyBase {
   texture?: string;
   estPossessionOn?: string;
   description?: string;
+  likes: number;
 }
 
 export class PropertyBase implements IPropertyBase {
@@ -67,4 +68,5 @@ export class PropertyBase implements IPropertyBase {
     this.model = model;
     this.texture = texture;
   }
+  likes: number = 0;
 }

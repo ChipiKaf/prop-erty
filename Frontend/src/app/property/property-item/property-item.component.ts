@@ -25,6 +25,8 @@ export class PropertyItemComponent implements OnInit, OnChanges {
   @Input() property!: IPropertyBase;
   imageLoading = false;
   loadedImageUrl = '';
+  isActive = false;
+  likesCount = 0;
 
   // No need to reload images if already loaded
   private static imageCache: Set<string> = new Set();
@@ -66,5 +68,16 @@ export class PropertyItemComponent implements OnInit, OnChanges {
     img.onerror = () => {
       this.imageLoading = false;
     };
+  }
+
+  public handleIconClick(ev: MouseEvent) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    this.isActive = !this.isActive;
+    if (this.isActive) {
+      this.likesCount++;
+    } else {
+      this.likesCount--;
+    }
   }
 }

@@ -1,0 +1,38 @@
+# ---------------------------
+#   STAGE 1: BUILD & PUBLISH
+# ---------------------------
+    FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+    # Create and set our working directory inside the container
+    WORKDIR /src
+    
+    # Copy everything from the repo into the container
+    COPY . ./
+    
+    # Restore dependencies using the .sln inside the WebApi folder
+    RUN dotnet restore "./WebApi/WebApi.sln"
+    
+    # Build the solution in Release mode (no restore)
+    RUN dotnet build "./WebApi/WebApi.sln" -c Release --no-restore
+    
+    # Publish all projects in the solution into /app/publish
+    RUN dotnet publish "./WebApi/WebApi.sln" -c Release --no-build -o /app/publish
+    
+    
+    # ---------------------------
+    #   STAGE 2: FINAL RUNTIME
+    # ---------------------------
+    FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+    
+    # Set the working directory for the final image
+    WORKDIR /app
+    
+    # Copy the published output from build stage to final stage
+    COPY --from=build /app/publish .
+    
+    # (Optional) Expose port 80 if you like to document usage
+    EXPOSE 80
+    
+    # The entrypoint runs your main WebApi assembly
+    ENTRYPOINT ["dotnet", "WebApi.dll"]
+    

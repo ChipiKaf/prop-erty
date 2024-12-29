@@ -1,8 +1,7 @@
 <div class="row main-container p-0">
   <ng-container
     *ngIf="
-      (fetchStatus$ | async) === 'pending' ||
-        (fetchStatus$ | async) === 'loading';
+      (fetchStatus$ | async) === 'pending'
       else propertyList
     "
   >
