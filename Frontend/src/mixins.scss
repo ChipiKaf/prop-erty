@@ -13,7 +13,7 @@ ORDER: Base + typography > general layout + grid > page layout > components
     @if $breakpoint == tab-land {
         @media (max-width: 75em) { @content }; // 1200px
     }
-    
+
     @if $breakpoint == tab-port {
         @media (max-width: 56.25em) { @content }; // 900px
     }
@@ -25,6 +25,47 @@ ORDER: Base + typography > general layout + grid > page layout > components
     @if $breakpoint == big-desktop {
         @media (min-width: 90em) and (max-width: 125em) { @content }; // 1800px
     }
-    
+
 }
 
+@mixin btn-base-style {
+  user-select: none;
+  display: inline-block;
+  min-width: 7rem;
+  min-height: 3.8rem;
+  font-family: $body-font;
+  font-size: 1.3rem;
+  position: relative;
+  overflow: hidden;
+  background-color: $color-primary-dark_2;
+  padding: 1rem 1rem;
+  color: $color-tertiary-light;
+  transition: all .5s;
+  border: 1px solid $color-primary-dark_2;
+
+  &:hover {
+      background-color: transparent;
+      color: $color-primary-dark_2;
+      border: 1px solid $color-primary-dark_2;
+  }
+
+  &:hover .btn__circle {
+      stroke: $color-primary-dark_2;
+  }
+
+  @include respond(phone) {
+      padding: 1rem 1rem;
+      width: 100%;
+      text-align: center;
+      font-size: 1.5rem;
+  }
+
+  &:link,
+  &:visited {
+      color: white;
+
+      text-decoration: none;
+      background-color: white;
+
+  }
+}

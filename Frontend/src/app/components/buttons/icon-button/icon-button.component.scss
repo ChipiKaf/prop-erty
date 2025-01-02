@@ -1,0 +1,15 @@
+@import '../../../../mixins.scss';
+@import '../../../../variables.scss';
+
+.btn {
+  @include btn-base-style;
+  &.btn-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    text-align: center;
+    max-width: 70px;
+    max-height: 70px;
+  }
+}

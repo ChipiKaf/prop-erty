@@ -1,8 +1,14 @@
 <button class="btn btn-form mt-3" type="submit" [disabled]="disabled">
-  <ng-container *ngIf="showLoader; else buttonText">
+  <!-- <ng-container *ngIf="showLoader; else buttonText">
     <i class="fa-solid fa-circle-notch fa-spin"></i>
-  </ng-container>
-  <ng-template #buttonText>
+  </ng-container> -->
+  <div class="loader" [class.active]="showLoader">
+    <i class="fa-solid fa-circle-notch fa-spin"></i>
+  </div>
+  <div class="text" [class.active]="!showLoader">
     <ng-content></ng-content>
-  </ng-template>
+  </div>
+  <!-- <ng-template #buttonText> -->
+    <!-- <ng-content></ng-content> -->
+  <!-- </ng-template> -->
 </button>

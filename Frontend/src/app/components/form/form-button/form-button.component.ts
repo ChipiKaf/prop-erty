@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-form-button',
@@ -8,8 +8,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   templateUrl: './form-button.component.html',
   styleUrl: './form-button.component.scss',
 })
-export class FormButtonComponent {
+export class FormButtonComponent implements OnInit {
   @Input() disabled: boolean = false;
   @Output() handleSubmit = new EventEmitter<void>();
   @Input() showLoader: boolean = false;
+  isActive = false;
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.isActive = true;
+    }, 2000);
+  }
 }

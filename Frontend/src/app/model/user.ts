@@ -1,3 +1,5 @@
+import { Like } from './like';
+
 export interface UserForRegister {
   email: string;
   password: string;
@@ -13,4 +15,5 @@ export interface UserModel {
   displayName: string | null;
   firstName: string | null;
   lastName: string | null;
+  likes: Like[] | null;
 }

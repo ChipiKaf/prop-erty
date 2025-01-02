@@ -23,6 +23,7 @@ import {
   switchAll,
 } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { IconButtonComponent } from '../components/buttons/icon-button/icon-button.component';
 
 @Component({
   selector: 'app-profile',
@@ -34,6 +35,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     FormButtonComponent,
     NgxSkeletonLoaderModule,
     ReactiveFormsModule,
+    IconButtonComponent,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -68,7 +70,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Patch the form with user data and ensure it's in sync
     this.userSubscription = this.user$.subscribe((user) => {
-      this.infoForm.patchValue({ ...user });
+      const { displayName, firstName, lastName } = user;
+      this.infoForm.patchValue({ displayName, firstName, lastName });
     });
 
     // Delay combineLatest until the form is fully initialized
@@ -79,7 +82,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.infoForm.valueChanges.pipe(startWith(this.infoForm.value)),
         ]).pipe(
           map(([formValues]) => {
-            return JSON.stringify(user) === JSON.stringify(formValues);
+            const { displayName, firstName, lastName } = user;
+            return (
+              JSON.stringify({ displayName, firstName, lastName }) ===
+              JSON.stringify(formValues)
+            );
           })
         );
       }),
@@ -96,6 +103,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (this.infoForm.invalid) return;
     const { displayName, firstName, lastName } = this.infoForm.value;
     if (!displayName || !firstName || !lastName) return;
-    this.store.dispatch(updateUser({ displayName, firstName, lastName }));
+    this.store.dispatch(
+      updateUser({ displayName, firstName, lastName, likes: null })
+    );
   }
 }

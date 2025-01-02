@@ -452,7 +452,6 @@ export class ThreeDViewComponent implements OnInit, OnDestroy {
       // gltf.scene.children.tra
       gltf.scene.scale.set(1.5, 1.5, 1.5);
       gltf.scene.traverse((child) => {
-        // console.log(child)
         const newChild = child as unknown as THREE.Mesh;
         if (newChild.isMesh) {
           newChild.material = bakedMaterial;
@@ -462,10 +461,8 @@ export class ThreeDViewComponent implements OnInit, OnDestroy {
     });
 
     // this.gltfLoader.load('models/3.glb', (gltf) => {
-    //   console.log(gltf.scene);
     //   // gltf.scene.children.tra
     //   gltf.scene.traverse((child) => {
-    //     // console.log(child)
     //     const newChild = child as unknown as THREE.Mesh;
     //     if (newChild.isMesh) {
     //       // newChild.material = bakedMaterial;
