@@ -42,6 +42,7 @@
     "@angular/cli": "^18.0.5",
     "@angular/compiler-cli": "^18.0.0",
     "@ngrx/eslint-plugin": "^18.1.1",
+    "@ngrx/store-devtools": "^18.1.1",
     "@types/gsap": "^3.0.0",
     "@types/jasmine": "~5.1.0",
     "@types/normalize-wheel": "^1.0.4",

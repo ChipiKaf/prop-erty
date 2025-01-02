@@ -1,0 +1,24 @@
+.toast-here {
+  position: fixed;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: .5rem;
+  padding: 1.6rem;
+  z-index: 10;
+  left: 50%;
+  bottom: 0px;
+  opacity: 0;
+  font-size: 1.6rem;
+  &.success {
+    background-color: #198754;
+  }
+  &.error {
+    background-color: #dc3545;
+  }
+  &.warn {
+    background-color: #ffc107;
+  }
+}

@@ -13,11 +13,17 @@ import {
   updateUser,
   updateUserFailure,
   updateUserSuccessful,
+  userLikeProperty,
+  userLikePropertyFailure,
+  userUnlikeProperty,
+  userUnlikePropertyFailure,
 } from './auth.actions';
 import { catchError, delay, map, of, switchMap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { RoutingService } from '../../services/routing.service';
 import { GRACE_PERIOD } from '../../constants';
+import { likeProperty, unlikeProperty } from '../property/property.actions';
+import { showError, showSuccess } from '../notification/notification.action';
 
 @Injectable()
 export class AuthEffects {
@@ -88,11 +94,41 @@ export class AuthEffects {
       })
     );
   });
+  loadUserSuccessful$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(loadUserSuccessful),
+      map(() => showSuccess({ message: 'Log in successful' }))
+    );
+  });
+  updateUserSuccessful$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(updateUserSuccessful),
+      map(() => showSuccess({ message: 'Updated user profile' }))
+    );
+  });
+  loadUserFailure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(loadUserFailure, logInUserFailure),
+      map(() => showError({ message: 'Failed to log in' }))
+    );
+  });
+  updateUserFailure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(updateUserFailure),
+      map(() => showError({ message: 'Failed to update user' }))
+    );
+  });
+  signUpFailure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(signUpFailure),
+      map(() => showError({ message: 'Failed to register user' }))
+    );
+  });
   updateUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(updateUser),
       delay(GRACE_PERIOD),
-      switchMap(({ displayName, firstName, lastName }) => {
+      switchMap(({ displayName, firstName, lastName, likes }) => {
         return this.authService
           .updateUser({
             displayName,
@@ -101,10 +137,34 @@ export class AuthEffects {
           })
           .pipe(
             map(() =>
-              updateUserSuccessful({ displayName, firstName, lastName })
+              updateUserSuccessful({ displayName, firstName, lastName, likes })
             ),
             catchError((err) => of(updateUserFailure(err)))
           );
+      })
+    );
+  });
+  userLikeProperty$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(userLikeProperty),
+      map(({ propertyId }) => {
+        return likeProperty({ propertyId });
+      })
+    );
+  });
+  userLikePropertyFailure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(userLikePropertyFailure, userUnlikePropertyFailure),
+      map(() => {
+        return showError({ message: 'Oops... Something went wrong' });
+      })
+    );
+  });
+  userUnlikeProperty$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(userUnlikeProperty),
+      map(({ propertyId }) => {
+        return unlikeProperty({ propertyId });
       })
     );
   });

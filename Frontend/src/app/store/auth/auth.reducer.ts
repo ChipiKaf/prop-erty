@@ -12,6 +12,10 @@ import {
   updateUser,
   updateUserFailure,
   updateUserSuccessful,
+  userLikeProperty,
+  userLikePropertyFailure,
+  userUnlikeProperty,
+  userUnlikePropertyFailure,
 } from './auth.actions';
 import { UserModel } from '../../model/user';
 import { Status } from '../../model/store';
@@ -26,7 +30,7 @@ export interface AuthState {
 
 const initialState: AuthState = {
   model: {
-    user: { displayName: '', firstName: '', lastName: '' },
+    user: { displayName: '', firstName: '', lastName: '', likes: null },
     status: 'pending',
     error: null,
   },
@@ -96,11 +100,11 @@ export const authReducer = createReducer(
   ),
   on(
     loadUserSuccessful,
-    (state, { displayName, firstName, lastName }): AuthState => ({
+    (state, { displayName, firstName, lastName, likes }): AuthState => ({
       ...state,
       model: {
         ...state.model,
-        user: { displayName, firstName, lastName },
+        user: { displayName, firstName, lastName, likes },
         status: 'success',
         error: null,
       },
@@ -126,11 +130,11 @@ export const authReducer = createReducer(
   ),
   on(
     updateUserSuccessful,
-    (state, { displayName, firstName, lastName }): AuthState => ({
+    (state, { displayName, firstName, lastName, likes }): AuthState => ({
       ...state,
       model: {
         ...state.model,
-        user: { displayName, firstName, lastName },
+        user: { displayName, firstName, lastName, likes },
         status: 'success',
         error: null,
       },
@@ -144,6 +148,83 @@ export const authReducer = createReducer(
         ...state.model,
         status: 'error',
         error,
+      },
+    })
+  ),
+  on(
+    userLikeProperty,
+    (state, { propertyId }): AuthState => ({
+      ...state,
+      model: {
+        ...state.model,
+        user: {
+          ...state.model.user,
+          likes: [
+            ...(state.model.user.likes || []),
+            {
+              id: state.model.user.likes?.length || 1,
+              propertyId,
+              lastUpdatedOn: Date.now().toString(),
+              lastUpdatedBy: 0,
+            },
+          ],
+        },
+      },
+    })
+  ),
+  on(
+    userLikePropertyFailure,
+    (state, { propertyId }): AuthState => ({
+      ...state,
+      model: {
+        ...state.model,
+        user: {
+          ...state.model.user,
+          likes: [
+            ...(state.model.user.likes || []).filter(
+              (prop) => prop.propertyId !== propertyId
+            ),
+          ],
+        },
+      },
+    })
+  ),
+
+  on(
+    userUnlikeProperty,
+    (state, { propertyId }): AuthState => ({
+      ...state,
+      model: {
+        ...state.model,
+        user: {
+          ...state.model.user,
+          likes: [
+            ...(state.model.user.likes || []).filter(
+              (prop) => prop.propertyId !== propertyId
+            ),
+          ],
+        },
+      },
+    })
+  ),
+  on(
+    userUnlikePropertyFailure,
+    (state, { propertyId }): AuthState => ({
+      ...state,
+      model: {
+        ...state.model,
+        user: {
+          ...state.model.user,
+          likes: [
+            ...(state.model.user.likes || []),
+            {
+              id: state.model.user.likes?.length || 1,
+              propertyId,
+              lastUpdatedOn: Date.now().toString(),
+              lastUpdatedBy: 0,
+            },
+          ],
+        },
       },
     })
   )

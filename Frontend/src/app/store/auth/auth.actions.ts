@@ -54,3 +54,24 @@ export const updateUserFailure = createAction(
   '[Auth API] Update user Failure',
   props<{ error: string | null }>()
 );
+
+// Like Property
+export const userLikeProperty = createAction(
+  '[Property-list/Property-details page] User Like Property',
+  props<{ propertyId: number }>()
+);
+
+export const userUnlikeProperty = createAction(
+  '[Property-list/Property-details page] User Unlike Property',
+  props<{ propertyId: number }>()
+);
+
+export const userUnlikePropertyFailure = createAction(
+  '[Property-list/Property-details page] User Unlike Property Failure',
+  props<{ propertyId: number }>()
+);
+
+export const userLikePropertyFailure = createAction(
+  '[Property-list/Property-details page] User Like Property Failure',
+  props<{ propertyId: number }>()
+);
