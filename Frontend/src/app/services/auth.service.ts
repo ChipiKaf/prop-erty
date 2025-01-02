@@ -35,7 +35,11 @@ export class AuthService {
     });
   }
 
-  updateUser(user: UserModel) {
+  updateUser(user: {
+    displayName: string | null;
+    firstName: string | null;
+    lastName: string | null;
+  }) {
     const headers = this.tokenService.getAuthHeader();
     return this.http.patch<void>(
       `${this.baseUrl}/account`,

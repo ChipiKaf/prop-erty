@@ -8,13 +8,13 @@
     class="property-img"
     [src]="loadedImageUrl"
   />
-  <div class="text-container">
+  <div *ngIf="!imageLoading" class="text-container">
     <div class="text">
       <h2 class="box-entry__title">{{ property.name }}</h2>
       <h3 class="box-entry__sub-title">{{ property.city }}</h3>
     </div>
     <div class="like-container">
-      <div (click)="handleIconClick($event)" class="heart-container" [class.active]="isActive">
+      <div (click)="handleIconClick($event, property.id, isLiked)" class="heart-container" [class.active]="isLiked">
         <!-- White outline heart -->
         <i class="fa-regular fa-heart heart-outline"></i>
 

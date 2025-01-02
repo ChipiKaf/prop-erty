@@ -31,3 +31,29 @@ export const loadPropertiesFailure = createAction(
   '[Properties API] Properties Load Failure',
   props<{ error: string }>()
 );
+
+export const likeProperty = createAction(
+  '[Property-Like API] Like Property',
+  props<{ propertyId: number }>()
+);
+export const likePropertySuccess = createAction(
+  '[Property-Like API] Like Property Success',
+  props<{ propertyId: number }>()
+);
+export const likePropertyFailure = createAction(
+  '[Property-Like API] Like Property Failure',
+  props<{ propertyId: number }>()
+);
+
+export const unlikeProperty = createAction(
+  '[Property-Like API] Unlike Property',
+  props<{ propertyId: number }>()
+);
+export const unlikePropertySuccess = createAction(
+  '[Property-Like API] Unlike Property Success',
+  props<{ propertyId: number }>()
+);
+export const unlikePropertyFailure = createAction(
+  '[Property-Like API] Unlike Property Failure',
+  props<{ propertyId: number }>()
+);

@@ -1,7 +1,7 @@
-<div class="row main-container p-0">
+<div *ngIf="(data$ | async) as data" class="row main-container p-0">
   <ng-container
     *ngIf="
-      (fetchStatus$ | async) === 'pending'
+      (data.fetchStatus) === 'pending'
       else propertyList
     "
   >
@@ -16,8 +16,8 @@
     </div>
   </ng-container>
   <ng-template #propertyList>
-    <div class="col-sm-4 p-0" *ngFor="let property of properties$ | async">
-      <app-property-item [property]="property"></app-property-item>
+    <div class="col-sm-4 p-0" *ngFor="let property of data.properties; trackBy: trackByPropertyId">
+      <app-property-item [property]="property" [isLiked]="findLike(data.user?.likes || [], property.id)"></app-property-item>
     </div>
   </ng-template>
 </div>

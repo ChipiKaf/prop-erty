@@ -40,3 +40,19 @@
 .parent-container {
   flex: 1;
 }
+
+.toast-here {
+  position: fixed;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: .5rem;
+  padding: 1.6rem;
+  z-index: 100;
+  left: 50%;
+  bottom: 150px;
+  opacity: 1;
+  font-size: 1.6rem;
+}

@@ -1,15 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  likeProperty,
+  likePropertyFailure,
+  likePropertySuccess,
   loadProperties,
   loadPropertiesFailure,
   loadPropertiesSuccess,
   loadProperty,
   loadPropertySuccess,
+  unlikeProperty,
+  unlikePropertyFailure,
+  unlikePropertySuccess,
 } from './property.actions';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { HousingService } from '../../services/housing.service';
 import { RoutingService } from '../../services/routing.service';
+import {
+  userLikePropertyFailure,
+  userUnlikePropertyFailure,
+} from '../auth/auth.actions';
+import { showError } from '../notification/notification.action';
 @Injectable()
 export class PropertyEffects {
   constructor(
@@ -48,6 +59,57 @@ export class PropertyEffects {
             return of(loadPropertiesFailure({ error: err.message }));
           })
         );
+      })
+    );
+  });
+
+  loadPropertiesFailure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(loadPropertiesFailure),
+      map(() => showError({ message: 'Oops... Something went wrong' }))
+    );
+  });
+
+  likeProperty$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(likeProperty),
+      switchMap(({ propertyId }) => {
+        return this.housingService.likeProperty(propertyId).pipe(
+          map(() => likePropertySuccess({ propertyId })),
+          catchError(() => {
+            return of(likePropertyFailure({ propertyId }));
+          })
+        );
+      })
+    );
+  });
+  likePropertyFailure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(likePropertyFailure),
+      map(({ propertyId }) => {
+        return userLikePropertyFailure({ propertyId });
+      })
+    );
+  });
+
+  unlikeProperty$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(unlikeProperty),
+      switchMap(({ propertyId }) => {
+        return this.housingService.unlikeProperty(propertyId).pipe(
+          map(() => unlikePropertySuccess({ propertyId })),
+          catchError(() => {
+            return of(unlikePropertyFailure({ propertyId }));
+          })
+        );
+      })
+    );
+  });
+  unlikePropertyFailure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(unlikePropertyFailure),
+      map(({ propertyId }) => {
+        return userUnlikePropertyFailure({ propertyId });
       })
     );
   });

@@ -39,6 +39,19 @@ export class HousingService {
     });
   }
 
+  likeProperty(propertyId: number): Observable<unknown> {
+    const headers = this.tokenService.getAuthHeader();
+    return this.http.post(`${this.baseUrl}/like`, { propertyId }, { headers });
+  }
+
+  unlikeProperty(propertyId: number): Observable<unknown> {
+    const headers = this.tokenService.getAuthHeader();
+    return this.http.delete(`${this.baseUrl}/like`, {
+      headers,
+      body: { propertyId },
+    });
+  }
+
   getAllProperties(): Observable<Property[]> {
     const headers = this.tokenService.getAuthHeader();
 

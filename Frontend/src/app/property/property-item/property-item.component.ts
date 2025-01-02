@@ -9,6 +9,11 @@ import { IPropertyBase } from '../../model/ipropertybase';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { Store } from '@ngrx/store';
+import {
+  userLikeProperty,
+  userUnlikeProperty,
+} from '../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-property-item',
@@ -25,8 +30,10 @@ export class PropertyItemComponent implements OnInit, OnChanges {
   @Input() property!: IPropertyBase;
   imageLoading = false;
   loadedImageUrl = '';
-  isActive = false;
+  @Input() isLiked!: boolean;
   likesCount = 0;
+
+  constructor(private store: Store) {}
 
   // No need to reload images if already loaded
   private static imageCache: Set<string> = new Set();
@@ -70,14 +77,10 @@ export class PropertyItemComponent implements OnInit, OnChanges {
     };
   }
 
-  public handleIconClick(ev: MouseEvent) {
+  public handleIconClick(ev: MouseEvent, propertyId: number, isLiked: boolean) {
     ev.preventDefault();
     ev.stopPropagation();
-    this.isActive = !this.isActive;
-    if (this.isActive) {
-      this.likesCount++;
-    } else {
-      this.likesCount--;
-    }
+    if (!isLiked) this.store.dispatch(userLikeProperty({ propertyId }));
+    else this.store.dispatch(userUnlikeProperty({ propertyId }));
   }
 }

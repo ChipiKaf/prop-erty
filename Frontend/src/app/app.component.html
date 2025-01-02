@@ -1,4 +1,6 @@
 <div [ngClass]="{'background-gradient': !in3DView() && !inAuth()}">
+  <app-toast *ngIf="notification$ | async as notification" [show]="showToast" [message]="notification.message" [type]="notification.type"></app-toast>
+  <!-- <div *ngIf="notification$ | async as notification" class="toast-here">This is a toast</div> -->
   <!-- <app-loading-screen></app-loading-screen> -->
   <div class="layout-container">
     <app-nav-bar *ngIf="!in3DView()"></app-nav-bar>

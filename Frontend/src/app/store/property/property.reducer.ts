@@ -1,11 +1,15 @@
 import { createReducer, on } from '@ngrx/store';
 import { IPropertyBase } from '../../model/ipropertybase';
 import {
+  likeProperty,
+  likePropertySuccess,
   loadProperties,
   loadPropertiesFailure,
   loadPropertiesSuccess,
   loadProperty,
   loadPropertySuccess,
+  unlikeProperty,
+  unlikePropertySuccess,
 } from './property.actions';
 import { Status } from '../../model/store';
 
@@ -67,5 +71,31 @@ export const propertyReducer = createReducer(
   on(
     loadPropertiesFailure,
     (state, { error }): PropertyState => ({ ...state, error, status: 'error' })
-  )
+  ),
+  // Like
+  on(likeProperty, (state): PropertyState => ({ ...state })),
+  on(likePropertySuccess, (state, { propertyId }): PropertyState => {
+    return {
+      ...state,
+      status: 'success',
+      properties: state.properties.map((p) =>
+        p.id === propertyId
+          ? { ...p, likes: (p.likes || 0) + 1 } // create a new object for this property
+          : p
+      ),
+    };
+  }),
+
+  on(unlikeProperty, (state): PropertyState => ({ ...state })),
+  on(unlikePropertySuccess, (state, { propertyId }): PropertyState => {
+    return {
+      ...state,
+      status: 'success',
+      properties: state.properties.map((p) =>
+        p.id === propertyId
+          ? { ...p, likes: (p.likes || 1) - 1 } // create a new object for this property
+          : p
+      ),
+    };
+  })
 );
