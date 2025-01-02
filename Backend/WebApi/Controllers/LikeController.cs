@@ -2,17 +2,21 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.DataAccess.Dtos;
+using WebApi.DataAccess.Interfaces;
 using WebApi.DataAccess.Repository;
 using WebApi.Models;
+using WebApi.Services;
 
 namespace WebApi.Controllers
 {
     public class LikeController : BaseController
     {
-        UnitOfWork _uow;
-        public LikeController(UnitOfWork unitOfWork)
+        private readonly IUnitOfWork _uow;
+        private readonly SqsService _sqsService;
+        public LikeController(IUnitOfWork unitOfWork, SqsService sqsService)
         {
             _uow = unitOfWork;
+            _sqsService = sqsService;
         }
 
         private (Property? property, ApplicationUser? user, PropertyLike? propertyLike) GetLikeContext(int propertyId)
@@ -49,51 +53,41 @@ namespace WebApi.Controllers
             }
             return Ok(propertyLike);
         }
-        // Like property
-        [HttpPost]
-        [Authorize]
-        public IActionResult LikeProperty(PropertyLikeDto propertyLikeDto) 
+        private async Task<IActionResult> ProcessLikeAction(PropertyLikeDto propertyLikeDto, string action, int successStatusCode) 
         {
             var (property, user, propertyLike) = GetLikeContext(propertyLikeDto.PropertyId);
             if (property == null || user == null)
             {
                 return NotFound();
             }
-            if (propertyLike != null)
+            SQSMessageDto message = new()
             {
-                return StatusCode(403);
-            }
-            PropertyLike newPropertyLike = new() { PropertyId = propertyLikeDto.PropertyId, UserId = user.Id };
-            
-            _uow.PropertyLike.Add(newPropertyLike);
-            // Increase Like counter here
-            
-            _uow.Save();
-            return StatusCode(201);
-            
+                Action = action,
+                PropertyId = propertyLikeDto.PropertyId,
+                UserId = user.Id,
+                Timestamp = DateTime.UtcNow,
+            };
+
+            await _sqsService.SendMessageAsync(message, $"${user.Id}_${propertyLikeDto.PropertyId}");
+
+            return StatusCode(successStatusCode);
+
+        }
+        // Like property
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> LikeProperty(PropertyLikeDto propertyLikeDto) 
+        {
+            return await ProcessLikeAction(propertyLikeDto, "Like", 201);
         }
 
         // Unlike property
         [HttpDelete]
         [Authorize]
-        public IActionResult UnlikeProperty(PropertyLikeDto propertyLikeDto)
+        public async Task<IActionResult> UnlikeProperty(PropertyLikeDto propertyLikeDto)
         {
 
-            var (property, user, propertyLike) = GetLikeContext(propertyLikeDto.PropertyId);
-            if (property == null || user == null)
-            {
-                return NotFound();
-            }
-            if (propertyLike == null)
-            {
-                return StatusCode(403);
-            }
-
-            _uow.PropertyLike.Remove(propertyLike);
-            // Increase Like counter here
-
-            _uow.Save();
-            return StatusCode(204);
+            return await ProcessLikeAction(propertyLikeDto, "Unlike", 200);
 
         }
     }

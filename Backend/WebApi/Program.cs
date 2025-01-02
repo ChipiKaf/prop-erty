@@ -10,6 +10,7 @@ using WebApi.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity;
 using WebApi.Models;
 using Npgsql;
+using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,7 +64,12 @@ builder.Services.ConfigureApplicationCookie(options =>
         return Task.CompletedTask;
     };
 });
-
+string sqsQueueUrl = builder.Configuration["AWS:SqsQueueUrl"];
+if (sqsQueueUrl == null)
+{
+    throw new InvalidOperationException();
+}
+builder.Services.AddSingleton<SqsService>(sp => new SqsService(sqsQueueUrl));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var secretKey = builder.Configuration["JWT:Key"];

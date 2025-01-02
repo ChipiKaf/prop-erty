@@ -117,12 +117,12 @@ namespace WebApi.Controllers
             // Use the email in the JWT to fetch user
             string email = GetEmailFromClaims();
             
-            ApplicationUser user = _uow.User.Get(u => u.Email == email);
+            ApplicationUser user = _uow.User.Get(u => u.Email == email, null, "Likes");
             if (user == null)
             {
                 return StatusCode(404);
             }
-            return Ok(new UserResponseDto { DisplayName = user.DisplayName, FirstName = user.FirstName, LastName = user.LastName });
+            return Ok(new UserResponseDto { DisplayName = user.DisplayName, FirstName = user.FirstName, LastName = user.LastName, Likes = user.Likes });
         }
 
         [HttpPatch]

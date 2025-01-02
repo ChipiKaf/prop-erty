@@ -6,6 +6,7 @@
     <UserSecretsId>0070d92d-ddf4-408a-9edf-a5d31b3d0050</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AWSSDK.SQS" Version="3.7.400.70" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
@@ -22,9 +23,6 @@
     <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebApi.DataAccess\WebApi.DataAccess.csproj" />

@@ -8,6 +8,8 @@ namespace WebApi.DataAccess.Interfaces
 
         IUserRepository User { get; }
 
+        IPropertyLikeRepository PropertyLike { get; }
+
         void Save();
 
          //Task<bool> SaveAsync();

@@ -24,6 +24,7 @@ yarn-error.log
 /frontend/*.sublime-workspace
 /frontend/18.0.5
 # Visual Studio Code
+Backend/WebApi/.vs/*
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -49,3 +50,4 @@ bin
 /*.pdb
 /*.dll
 bin/Debug/net8.0/
+.suo

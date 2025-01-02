@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApi.Models
 {
-    public class PropertyLikeCount
+    public class PropertyLikeCount : BaseEntity
     {
         public int Id { get; set; }
         public int Count { get; set; }

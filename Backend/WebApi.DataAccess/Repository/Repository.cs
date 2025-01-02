@@ -24,7 +24,7 @@ namespace WebApi.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, Expression<Func<T, object>> orderBy = null)
+        public T Get(Expression<Func<T, bool>> filter, Expression<Func<T, object>>? orderBy = null, string? includeProperties = "")
         {
             IQueryable<T> query = dbSet;
             query = query.Where(filter);
@@ -32,6 +32,14 @@ namespace WebApi.DataAccess.Repository
             if (orderBy != null) 
             { 
                 query = query.OrderBy(orderBy);
+            }
+
+            if (!string.IsNullOrWhiteSpace(includeProperties)) 
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp.Trim());
+                }
             }
 
             return query.FirstOrDefault();
