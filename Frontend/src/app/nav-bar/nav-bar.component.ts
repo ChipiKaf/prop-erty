@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { RoutingService } from '../services/routing.service';
 import { TokenService } from '../services/token.service';
+import { gsap } from 'gsap';
 
 export enum ListItemTypes {
   ALL,
@@ -54,6 +55,7 @@ export class NavBarComponent {
 
   constructor(
     private router: RoutingService,
+    private nativeRouter: Router,
     private tokenService: TokenService
   ) {}
 
@@ -71,8 +73,26 @@ export class NavBarComponent {
     );
   }
 
-  navigate(item: ListItem) {
+  shakeAnimation(element: HTMLElement) {
+    const tl = gsap.timeline();
+    tl.to(element, {
+      duration: 0.1,
+      x: -5,
+      yoyo: true,
+      repeat: 5,
+      ease: 'power1.inOut',
+    });
+    console.log('Shaking');
+    // tl.play();
+    // tl.to()
+  }
+
+  navigate(item: ListItem, element: HTMLElement) {
     if (item.actions) item.actions();
+    if (item.url === this.nativeRouter.url) {
+      this.shakeAnimation(element);
+      return;
+    }
     this.router.navigate([item.url]);
   }
 }

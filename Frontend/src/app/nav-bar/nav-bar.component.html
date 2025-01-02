@@ -8,8 +8,8 @@
 
   <ul class="navbar-custom__list">
     <ng-container *ngFor="let item of listItems">
-      <li class="navbar-custom__list-item" *ngIf="isItemVisible(item)">
-        <a class="navbar-custom__link" (click)="navigate(item)">{{ item.name }}</a>
+      <li #navLink class="navbar-custom__list-item" *ngIf="isItemVisible(item)">
+        <a class="navbar-custom__link" (click)="navigate(item, navLink)">{{ item.name }}</a>
       </li>
     </ng-container>
   </ul>
