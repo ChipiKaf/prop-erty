@@ -75,3 +75,6 @@ export const userLikePropertyFailure = createAction(
   '[Property-list/Property-details page] User Like Property Failure',
   props<{ propertyId: number }>()
 );
+
+// Logout
+export const userLogout = createAction('[User API] Logout');

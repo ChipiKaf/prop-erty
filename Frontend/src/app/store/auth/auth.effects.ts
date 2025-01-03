@@ -15,10 +15,11 @@ import {
   updateUserSuccessful,
   userLikeProperty,
   userLikePropertyFailure,
+  userLogout,
   userUnlikeProperty,
   userUnlikePropertyFailure,
 } from './auth.actions';
-import { catchError, delay, map, of, switchMap } from 'rxjs';
+import { catchError, delay, map, of, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { RoutingService } from '../../services/routing.service';
 import { GRACE_PERIOD } from '../../constants';
@@ -168,4 +169,15 @@ export class AuthEffects {
       })
     );
   });
+  userLogout$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(userLogout),
+        tap(() => {
+          localStorage.removeItem('token');
+        })
+      );
+    },
+    { dispatch: false }
+  );
 }

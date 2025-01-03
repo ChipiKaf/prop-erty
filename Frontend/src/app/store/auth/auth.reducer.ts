@@ -14,6 +14,7 @@ import {
   updateUserSuccessful,
   userLikeProperty,
   userLikePropertyFailure,
+  userLogout,
   userUnlikeProperty,
   userUnlikePropertyFailure,
 } from './auth.actions';
@@ -227,5 +228,6 @@ export const authReducer = createReducer(
         },
       },
     })
-  )
+  ),
+  on(userLogout, (): AuthState => ({ ...initialState }))
 );
