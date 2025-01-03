@@ -1,4 +1,4 @@
-<ng-container *ngIf="combinedProperties$ | async as combinedProperties">
+<ng-container *ngIf="combinedProperties$ | async as data">
   <div class="row min-200">
     <div class="image-container col-sm-9 order-sm-2 order-1 box limit-height-lg pad">
       <div (click)="navigateTo3D()" class="three-d-icon d-flex align-items-center gap-1">
@@ -7,14 +7,17 @@
           <span class="text-inner">3D view</span>
         </div>
       </div>
-        <img *ngIf="combinedProperties.current?.image" class="property-img" src="{{combinedProperties.current?.image}}">
+        <img *ngIf="data.current?.image" class="property-img" src="{{data.current?.image}}">
+        <div class="like-button">
+          <app-like-button (buttonClicked)="handleIconClick($event, data.current?.id || 0, findLike(data.user?.likes || [], data.current?.id || 0))" [isLiked]="findLike(data.user?.likes || [], data.current?.id || 0)" [likesCount]="data.current?.likes || 0"></app-like-button>
+        </div>
     </div>
     <div class="col-sm-3 order-sm-1 order-2 relative">
         <div class="row full-height">
             <div class="col-12 box style-hovered flex align-end p-5">
                 <div class="text-container mb-5">
-                    <h2 class="box__title">{{ combinedProperties.current?.name }}</h2>
-                    <h3 class="box__sub-title">{{ combinedProperties.current?.city }}</h3>
+                    <h2 class="box__title">{{ data.current?.name }}</h2>
+                    <h3 class="box__sub-title">{{ data.current?.city }}</h3>
                 </div>
             </div>
             <div class="col-12 box flex p-5">
@@ -23,34 +26,34 @@
                         <div class="icon gold">
                             <i class="fa fa-map-marker"></i>
                         </div>
-                        <h4 class="icon-text">{{combinedProperties.current?.city}}</h4>
+                        <h4 class="icon-text">{{data.current?.city}}</h4>
                     </div>
                     <div class="icon-child">
                         <div class="icon burgundy">
                             <i class="fa fa-building"></i>
                         </div>
-                        <h4 class="icon-text">{{combinedProperties.current?.type}}</h4>
+                        <h4 class="icon-text">{{data.current?.type}}</h4>
                     </div>
                     <div class="icon-child">
                         <div class="icon grey">
                             <i class="fa fa-money"></i>
                         </div>
-                        <h4 class="icon-text">{{combinedProperties.current?.cost}}</h4>
+                        <h4 class="icon-text">{{data.current?.cost}}</h4>
                     </div>
                 </div>
             </div>
             <div class="col-12 box flex p-5">
                 <div class="description-text-container">
-                    <p>{{combinedProperties.current?.description}}</p>
+                    <p>{{data.current?.description}}</p>
                 </div>
             </div>
             <div class="col-12 box pad flex column">
-                <img *ngIf="combinedProperties.current?.image" class="property-img small" src="{{movingImage}}">
+                <img *ngIf="data.current?.image" class="property-img small" src="{{movingImage}}">
                 <div class="pagination-container">
-                  <ng-container *ngIf="combinedProperties.prev; else tempBack">
+                  <ng-container *ngIf="data.prev; else tempBack">
                     <div
-                    (mouseenter)="movingImage = combinedProperties.prev.image"
-                    (mouseleave)="movingImage = combinedProperties.current?.image"
+                    (mouseenter)="movingImage = data.prev.image"
+                    (mouseleave)="movingImage = data.current?.image"
                     class="arrow-button">
                       <i class="fa fa-long-arrow-left"></i> Back
                   </div>
@@ -60,10 +63,10 @@
                   </ng-template>
 
 
-                    <ng-container *ngIf="combinedProperties.next; else tempNext">
+                    <ng-container *ngIf="data.next; else tempNext">
                       <div
-                      (mouseenter)="movingImage = combinedProperties.next.image"
-                      (mouseleave)="movingImage = combinedProperties.current?.image"
+                      (mouseenter)="movingImage = data.next.image"
+                      (mouseleave)="movingImage = data.current?.image"
                       class="arrow-button">
                         Next <i class="fa fa-long-arrow-right"></i>
                     </div>

@@ -1,0 +1,12 @@
+<div class="like-container">
+  <div (click)="handleIconClick($event)" class="heart-container" [class.active]="isLiked">
+    <!-- White outline heart -->
+    <i class="fa-regular fa-heart heart-outline"></i>
+
+    <!-- Red solid heart (initially hidden by clip-path) -->
+    <i class="fa-solid fa-heart heart-fill"></i>
+  </div>
+  <div class="like__text" [class.invisible]="!likesCount">
+    <span>{{likesCount}}</span>
+  </div>
+</div>

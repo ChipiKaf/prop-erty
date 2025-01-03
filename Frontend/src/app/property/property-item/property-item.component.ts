@@ -14,11 +14,17 @@ import {
   userLikeProperty,
   userUnlikeProperty,
 } from '../../store/auth/auth.actions';
+import { LikeButtonComponent } from '../../components/buttons/like-button/like-button.component';
 
 @Component({
   selector: 'app-property-item',
   standalone: true,
-  imports: [CommonModule, RouterModule, NgxSkeletonLoaderModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NgxSkeletonLoaderModule,
+    LikeButtonComponent,
+  ],
   templateUrl: './property-item.component.html',
   // styleUrl: './property-item.component.scss',
   styleUrls: [

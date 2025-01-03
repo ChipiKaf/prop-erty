@@ -170,7 +170,7 @@
     /* Non-sticky version for smaller screens */
     @media (max-width: 576px) {
         &.limit-height-lg {
-            position: static;
+            position: relative;
             border-width: 2px;
             max-height: none;
         }
@@ -199,7 +199,7 @@
     // background-color: white;
     top: 6rem;
     right: 6rem;
-    z-index: 1000;
+    z-index: 2;
 
     &:hover {
       cursor: pointer;
@@ -222,4 +222,10 @@
       // transform: translateX(100%);
     }
   }
+}
+.like-button {
+  position: absolute;
+  bottom: 6rem;
+  right: 9rem;
+  z-index: 2;
 }

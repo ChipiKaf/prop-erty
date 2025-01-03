@@ -9,11 +9,19 @@ import { AppState } from '../../store/app.store';
 import { selectAllProperties } from '../../store/property/property.selector';
 import { IPropertyBase } from '../../model/ipropertybase';
 import { loadProperty } from '../../store/property/property.actions';
+import { LikeButtonComponent } from '../../components/buttons/like-button/like-button.component';
+import { Like } from '../../model/like';
+import { UserModel } from '../../model/user';
+import { selectUser } from '../../store/auth/auth.selector';
+import {
+  userLikeProperty,
+  userUnlikeProperty,
+} from '../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-property-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LikeButtonComponent],
   templateUrl: './property-details.component.html',
   styleUrl: './property-details.component.scss',
 })
@@ -22,12 +30,14 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   public mainPhotoUrl: string | null = null;
   private properties$ = this.store.select(selectAllProperties);
   prevProperty$: Observable<IPropertyBase | null> | null = null;
+  user$: Observable<UserModel> = this.store.select(selectUser);
   property$: Observable<IPropertyBase | null> | null = null;
   nextProperty$: Observable<IPropertyBase | null> | null = null;
   combinedProperties$: Observable<{
     current: IPropertyBase | null;
     next: IPropertyBase | null;
     prev: IPropertyBase | null;
+    user: UserModel | null;
   } | null> | null = null;
 
   prevProperty: IPropertyBase | null = null;
@@ -67,7 +77,11 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
       current: this.property$ || of(null),
       next: this.nextProperty$ || of(null),
       prev: this.prevProperty$ || of(null),
+      user: this.user$ || of(null),
     });
+  }
+  public findLike(likes: Like[], propertyId: number): boolean {
+    return !!likes.find((like) => like.propertyId === propertyId);
   }
   private getPreviousProperty() {
     this.prevProperty$ = this.properties$.pipe(
@@ -145,11 +159,17 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  navigateTo3D() {
+  public navigateTo3D() {
     this.router.navigate([`/property-view-3d/${this.propertyId}`]);
   }
 
-  changePrimaryPhoto(mainPhotoUrl: string) {
+  public changePrimaryPhoto(mainPhotoUrl: string) {
     this.mainPhotoUrl = mainPhotoUrl;
+  }
+  public handleIconClick(ev: MouseEvent, propertyId: number, isLiked: boolean) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    if (!isLiked) this.store.dispatch(userLikeProperty({ propertyId }));
+    else this.store.dispatch(userUnlikeProperty({ propertyId }));
   }
 }
