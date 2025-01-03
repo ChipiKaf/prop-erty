@@ -15,6 +15,7 @@ import { AuthEffects } from './store/auth/auth.effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { notificationReducer } from './store/notification/notification.reducer';
 import { NotificationEffects } from './store/notification/notification.effects';
+import { AppEffects } from './store/app.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,7 +27,12 @@ export const appConfig: ApplicationConfig = {
       auth: authReducer,
       notification: notificationReducer,
     }),
-    provideEffects(PropertyEffects, AuthEffects, NotificationEffects),
+    provideEffects(
+      PropertyEffects,
+      AuthEffects,
+      NotificationEffects,
+      AppEffects
+    ),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: false, // Enable log-only mode in production

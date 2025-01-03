@@ -1,4 +1,13 @@
-<div class="menu" [class.active]="active">
+<div #menu class="menu">
+</div>
+<div #menuList class="menu-list">
+  <ul class="menu-list__items">
+    <ng-container *ngFor="let item of listItems">
+      <li *ngIf="isItemVisible(item)" #navLinkMenu class="menu-list__item"  (click)="navigate(item, navLinkMenu, true)">
+        <span #menuText class="menu-list__text"> {{ item.name }}</span>
+       </li>
+    </ng-container>
+  </ul>
 </div>
 <nav class="navbar-custom">
 

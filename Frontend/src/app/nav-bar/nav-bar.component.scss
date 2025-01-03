@@ -80,13 +80,10 @@
 }
 
 svg {
-  // height: 3.5rem;
     & .line-one {
         transform: rotate(0) translate(0, 0);
-        animation: transform-first-line-undo .5s ease forwards;
 
         &.active {
-            animation: transform-first-line 1s ease .2s forwards;
         }
     }
 
@@ -153,5 +150,39 @@ svg {
         margin: auto;
         font-size: 4rem;
     }
-    // letter-spacing: .5rem;
+}
+
+.menu-list {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 30;
+  display: none;
+
+  & &__items {
+    text-decoration: none;
+    list-style: none;
+  }
+
+  & &__item {
+    font-size: 3.5rem;
+    text-align: center;
+    overflow: hidden;
+    font-family: $body-font-alt;
+    &:not(:last-child) {
+      margin-bottom: 3rem;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  & &__text {
+    display: block;
+    transform: translateY(100%);
+  }
 }

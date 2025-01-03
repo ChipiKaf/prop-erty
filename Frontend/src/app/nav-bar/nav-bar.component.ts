@@ -1,9 +1,21 @@
+/* eslint-disable @ngrx/no-typed-global-store */
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { RoutingService } from '../services/routing.service';
 import { TokenService } from '../services/token.service';
 import { gsap } from 'gsap';
+import { Subscription } from 'rxjs';
+import { AppState } from '../store/app.store';
+import { Store } from '@ngrx/store';
+import { userLogout } from '../store/auth/auth.actions';
 
 export enum ListItemTypes {
   ALL,
@@ -25,7 +37,13 @@ export type ListItem = {
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss'],
 })
-export class NavBarComponent {
+export class NavBarComponent implements AfterViewInit {
+  @ViewChild('menu', { static: true }) menu: ElementRef<HTMLDivElement> | null =
+    null;
+  @ViewChild('menuList', { static: true })
+  menuList: ElementRef<HTMLDivElement> | null = null;
+  @ViewChildren('menuText')
+  menuTexts: QueryList<ElementRef<HTMLSpanElement>> | null = null;
   active: boolean = false;
   listItems: ListItem[] = [
     {
@@ -48,19 +66,63 @@ export class NavBarComponent {
       url: '/login',
       type: ListItemTypes.AUTHENTICATED,
       actions: () => {
-        localStorage.removeItem('token');
+        this.store.dispatch(userLogout());
       },
     },
   ];
-
+  menuTl = gsap.timeline({ defaults: { duration: 0.3, ease: 'power2.inOut' } });
+  menuTextsSubscription!: Subscription;
   constructor(
     private router: RoutingService,
     private nativeRouter: Router,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private store: Store<AppState>
   ) {}
 
+  ngAfterViewInit(): void {
+    this.setupAnimation();
+    this.menuTextsSubscription = this.menuTexts!.changes.subscribe(() => {
+      // When menuTexts change, re-setup the animation
+      this.setupAnimation();
+    });
+  }
+
+  private setupAnimation() {
+    if (this.menuTl.isActive()) {
+      setTimeout(() => {
+        this.reinstantiateTimeline();
+      }, 1000);
+    } else {
+      this.reinstantiateTimeline();
+    }
+  }
+
+  private reinstantiateTimeline() {
+    this.menuTl.clear();
+    const menuTextElements = this.menuTexts!.toArray().map(
+      (el) => el.nativeElement
+    );
+    this.menuTl
+      .to(this.menu!.nativeElement, {
+        scale: 50,
+      })
+      .set(
+        this.menuList!.nativeElement,
+        { display: 'flex', zIndex: 30 },
+        '<+0.2'
+      )
+      .to(menuTextElements, {
+        yPercent: -100,
+      });
+    this.menuTl.pause();
+  }
   toggleMenu() {
     this.active = !this.active;
+    if (this.active) {
+      this.menuTl.play();
+    } else {
+      this.menuTl.reverse();
+    }
   }
 
   isItemVisible(item: ListItem): boolean {
@@ -82,17 +144,15 @@ export class NavBarComponent {
       repeat: 5,
       ease: 'power1.inOut',
     });
-    console.log('Shaking');
-    // tl.play();
-    // tl.to()
   }
 
-  navigate(item: ListItem, element: HTMLElement) {
+  navigate(item: ListItem, element: HTMLElement, isMenu = false) {
     if (item.actions) item.actions();
     if (item.url === this.nativeRouter.url) {
       this.shakeAnimation(element);
       return;
     }
+    if (isMenu) this.toggleMenu();
     this.router.navigate([item.url]);
   }
 }

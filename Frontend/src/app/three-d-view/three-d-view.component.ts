@@ -1,3 +1,4 @@
+/* eslint-disable @ngrx/no-typed-global-store */
 import {
   Component,
   ElementRef,
@@ -19,7 +20,11 @@ import {
 import normalizeWheel from 'normalize-wheel';
 import { Sky } from 'three/addons/objects/Sky.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store/app.store';
+import { selectAllProperties } from '../store/property/property.selector';
+import { ActivatedRoute } from '@angular/router';
 
 export type Value = { min: number; max: number };
 
@@ -33,6 +38,7 @@ export type Value = { min: number; max: number };
 export class ThreeDViewComponent implements OnInit, OnDestroy {
   @ViewChild('canvasContainer', { static: true })
   canvasContainer!: ElementRef<HTMLDivElement>;
+  properties$ = this.store.select(selectAllProperties);
 
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
@@ -47,6 +53,8 @@ export class ThreeDViewComponent implements OnInit, OnDestroy {
   private composer!: EffectComposer;
   private fxaaPass!: ShaderPass;
   private ssaaRenderPass!: SSAARenderPass;
+  private modelUrl: GLTF | null = null;
+  private textureUrl: THREE.Texture | null = null;
 
   private spherical!: {
     value: THREE.Spherical;
@@ -92,7 +100,10 @@ export class ThreeDViewComponent implements OnInit, OnDestroy {
   // #endregion
 
   private updateControls!: (delta: number) => void;
-  constructor() {
+  constructor(
+    private store: Store<AppState>,
+    private route: ActivatedRoute
+  ) {
     this.spherical = {
       value: new THREE.Spherical(60, Math.PI * 0.35, Math.PI * 0.25),
       smoothed: new THREE.Spherical(20, Math.PI * 0.35, -Math.PI * 0.25),
@@ -205,6 +216,12 @@ export class ThreeDViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.properties$.subscribe((properties) => {
+      const propertyId = +this.route.snapshot.params['id'];
+      const property = properties.find((propert) => propert.id === propertyId);
+      if (!property) return;
+      this.loadModel(property.texture || '', property.model || '');
+    });
     // #region Add event listeners
     window.addEventListener('wheel', this.onWheel, { passive: false });
     window.addEventListener('touchstart', this.onTouchStart);
@@ -417,13 +434,10 @@ export class ThreeDViewComponent implements OnInit, OnDestroy {
 
     this.scene.add(new THREE.AmbientLight());
     // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-
-    this.loadModel();
-
     window.addEventListener('resize', () => this.onWindowResize());
   }
 
-  private loadModel(): void {
+  private loadModel(texture: string, model: string): void {
     this.textureLoader = new THREE.TextureLoader();
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('draco/');
@@ -434,7 +448,7 @@ export class ThreeDViewComponent implements OnInit, OnDestroy {
      * Textures
      */
 
-    const bakedTexture = this.textureLoader.load('textures/2.jpg');
+    const bakedTexture = this.textureLoader.load(`textures/${texture}`);
     bakedTexture.colorSpace = THREE.SRGBColorSpace;
     bakedTexture.flipY = false;
 
@@ -448,7 +462,7 @@ export class ThreeDViewComponent implements OnInit, OnDestroy {
      * Model
      */
 
-    this.gltfLoader.load('models/2.glb', (gltf) => {
+    this.gltfLoader.load(`models/${model}`, (gltf) => {
       // gltf.scene.children.tra
       gltf.scene.scale.set(1.5, 1.5, 1.5);
       gltf.scene.traverse((child) => {
