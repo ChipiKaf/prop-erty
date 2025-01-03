@@ -49,6 +49,7 @@
             </div>
             <div class="col-12 box pad flex column">
                 <img *ngIf="data.current?.image" class="property-img small" src="{{movingImage}}">
+                <a *ngIf="data.current?.model && data.current?.texture" (click)="navigateTo3D()" class="link-to-3D" >View in 3D</a>
                 <div class="pagination-container">
                   <ng-container *ngIf="data.prev; else tempBack">
                     <div

@@ -233,3 +233,9 @@
   right: 9rem;
   z-index: 2;
 }
+.link-to-3D {
+  font-size: 1.6rem;
+  &:hover {
+    cursor: pointer;
+  }
+}

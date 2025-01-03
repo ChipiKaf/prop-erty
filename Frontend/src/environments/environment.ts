@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   // baseUrl: 'http://localhost:5146/api',
   // baseUrl: 'http://localhost:8080/api',
-  baseUrl: 'http://ec2-52-23-233-224.compute-1.amazonaws.com/api',
+  baseUrl: 'https://api.chipilidev.com/api',
 };
 
 /*

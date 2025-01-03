@@ -1,6 +1,10 @@
 @import '../../../variables.scss';
+.login-container {
+  overflow: hidden;
+}
 .login-background {
   background-color: $color-primary-light;
+  overflow: hidden;
 }
 .home-background {
   background-image: url('/home3.jpg');
