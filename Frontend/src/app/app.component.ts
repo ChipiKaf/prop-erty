@@ -7,7 +7,6 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { CommonModule } from '@angular/common';
 import { TokenService } from './services/token.service';
 import { Store } from '@ngrx/store';
-import { loadUser } from './store/auth/auth.actions';
 import { ToastComponent } from './components/toast/toast.component';
 import {
   selectNotificationMessage,
@@ -17,6 +16,7 @@ import { AppState } from './store/app.store';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { NotificationType } from './store/notification/notification.reducer';
 import { resetNotifications } from './store/notification/notification.action';
+import { initializeSession } from './store/app.actions';
 
 @Component({
   selector: 'app-root',
@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     if (this.tokenService.hasToken()) {
       // If session still valid, load user on initialization
-      this.store.dispatch(loadUser());
+      this.store.dispatch(initializeSession());
     }
   }
   ngOnDestroy(): void {
