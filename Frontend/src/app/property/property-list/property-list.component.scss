@@ -1,3 +1,5 @@
+@import '../../../variables.scss';
+@import '../../../mixins.scss';
 .box-entry {
   display: flex;
   justify-content: center;
@@ -22,6 +24,10 @@
     font-weight: 400;
     font-style: normal;
     font-size: 4rem;
+
+    @include respond(phone) {
+      font-size: 2.5rem;
+    }
   }
 
   & &__sub-title {
@@ -32,6 +38,9 @@
     font-weight: 200;
     font-style: normal;
     z-index: 4;
+    @include respond(phone) {
+      font-size: 1.5rem;
+    }
   }
 
   .text-container {
@@ -53,6 +62,31 @@
       filter: brightness(0.7);
     }
 
+    .text-container {
+      bottom: 5rem;
+      opacity: 1;
+    }
+
+    @include respond(phone) {
+      padding: 2rem;
+      cursor: pointer;
+
+      .property-img {
+        filter: brightness(0.8);
+      }
+
+      .text-container {
+        bottom: 5rem;
+        opacity: 1;
+      }
+    }
+  }
+
+  @include respond(phone) {
+    padding: 2rem;
+    .property-img {
+      filter: brightness(0.8);
+    }
     .text-container {
       bottom: 5rem;
       opacity: 1;

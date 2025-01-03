@@ -1,9 +1,22 @@
 /* eslint-disable @ngrx/no-typed-global-store */
-import { Component, ElementRef, OnInit, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  AfterViewInit,
+  OnDestroy,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { gsap } from 'gsap';
-import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  Observable,
+  of,
+  Subscription,
+  switchMap,
+} from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/app.store';
 import { selectAllProperties } from '../../store/property/property.selector';
@@ -25,7 +38,9 @@ import {
   templateUrl: './property-details.component.html',
   styleUrl: './property-details.component.scss',
 })
-export class PropertyDetailsComponent implements OnInit, AfterViewInit {
+export class PropertyDetailsComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   public propertyId: number = 0;
   public mainPhotoUrl: string | null = null;
   private properties$ = this.store.select(selectAllProperties);
@@ -43,6 +58,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   prevProperty: IPropertyBase | null = null;
   nextProperty: IPropertyBase | null = null;
   movingImage: string | undefined = '';
+  private routeSub!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -68,7 +84,29 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.propertyId = +this.route.snapshot.params['id'];
+    this.routeSub = this.route.paramMap.subscribe((params) => {
+      const idParam = params.get('id');
+      if (idParam) {
+        this.propertyId = +idParam;
+        this.loadPropertyData();
+      }
+    });
+    // this.propertyId = +this.route.snapshot.params['id'];
+    // this.getCurrentProperty();
+    // this.getNextProperty();
+    // this.getPreviousProperty();
+
+    // this.combinedProperties$ = combineLatest({
+    //   current: this.property$ || of(null),
+    //   next: this.nextProperty$ || of(null),
+    //   prev: this.prevProperty$ || of(null),
+    //   user: this.user$ || of(null),
+    // });
+  }
+  ngOnDestroy(): void {
+    this.routeSub.unsubscribe();
+  }
+  private loadPropertyData() {
     this.getCurrentProperty();
     this.getNextProperty();
     this.getPreviousProperty();
@@ -77,7 +115,7 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
       current: this.property$ || of(null),
       next: this.nextProperty$ || of(null),
       prev: this.prevProperty$ || of(null),
-      user: this.user$ || of(null),
+      user: this.user$,
     });
   }
   public findLike(likes: Like[], propertyId: number): boolean {
@@ -161,6 +199,10 @@ export class PropertyDetailsComponent implements OnInit, AfterViewInit {
 
   public navigateTo3D() {
     this.router.navigate([`/property-view-3d/${this.propertyId}`]);
+  }
+
+  public goTo(id: number) {
+    this.router.navigate([`/property-detail/${id}`]);
   }
 
   public changePrimaryPhoto(mainPhotoUrl: string) {

@@ -1,4 +1,5 @@
 @import '../../../variables.scss';
+@import '../../../mixins.scss';
 .box {
     border-width: 2px 2px 2px 0;
     margin-top: -2px;
@@ -76,6 +77,9 @@
     }
     &.pad {
         padding: 5rem;
+        @include respond(phone) {
+          padding: 2rem;
+        }
     }
 
     .icons-container {
