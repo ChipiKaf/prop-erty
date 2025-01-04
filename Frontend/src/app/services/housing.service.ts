@@ -33,56 +33,21 @@ export class HousingService {
   }
 
   getProperty(id: number): Observable<GetPropertyModel> {
-    const headers = this.tokenService.getAuthHeader();
-    return this.http.get<GetPropertyModel>(`${this.baseUrl}/property/${id}`, {
-      headers,
-    });
+    return this.http.get<GetPropertyModel>(`${this.baseUrl}/property/${id}`);
   }
 
   likeProperty(propertyId: number): Observable<unknown> {
-    const headers = this.tokenService.getAuthHeader();
-    return this.http.post(`${this.baseUrl}/like`, { propertyId }, { headers });
+    return this.http.post(`${this.baseUrl}/like`, { propertyId });
   }
 
   unlikeProperty(propertyId: number): Observable<unknown> {
-    const headers = this.tokenService.getAuthHeader();
     return this.http.delete(`${this.baseUrl}/like`, {
-      headers,
       body: { propertyId },
     });
   }
 
   getAllProperties(): Observable<Property[]> {
-    const headers = this.tokenService.getAuthHeader();
-
-    return this.http.get<Property[]>(`${this.baseUrl}/property/properties`, {
-      headers,
-    });
-  }
-  addProperty(property: Property) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + localStorage.getItem('token'),
-      }),
-    };
-    return this.http.post(
-      this.baseUrl + '/property/add',
-      property,
-      httpOptions
-    );
-  }
-
-  newPropID() {
-    if (localStorage.getItem('PID')) {
-      localStorage.setItem(
-        'PID',
-        String(+(localStorage.getItem('PID') || 0) + 1)
-      );
-      return +(localStorage.getItem('PID') || 0);
-    } else {
-      localStorage.setItem('PID', '101');
-      return 101;
-    }
+    return this.http.get<Property[]>(`${this.baseUrl}/property/properties`);
   }
 
   getPropertyAge(dateofEstablishment: string): string {

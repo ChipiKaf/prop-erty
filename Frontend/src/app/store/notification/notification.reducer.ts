@@ -2,10 +2,11 @@ import { createReducer, on } from '@ngrx/store';
 import {
   resetNotifications,
   showError,
+  showNeutral,
   showSuccess,
   showWarning,
 } from './notification.action';
-export type NotificationType = 'error' | 'warn' | 'success' | null;
+export type NotificationType = 'error' | 'warn' | 'success' | 'neutral' | null;
 export interface NotificationState {
   type: NotificationType;
   message: string;
@@ -40,6 +41,14 @@ export const notificationReducer = createReducer(
       ...state,
       message,
       type: 'success',
+    })
+  ),
+  on(
+    showNeutral,
+    (state, { message }): NotificationState => ({
+      ...state,
+      message,
+      type: 'neutral',
     })
   ),
   on(resetNotifications, (): NotificationState => ({ ...initialState }))

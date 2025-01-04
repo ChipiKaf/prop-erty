@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.DataAccess.Interfaces;
@@ -6,16 +7,18 @@ using WebApi.Models;
 
 namespace WebApi.Controllers
 {
+    [Authorize]
     public class PropertyController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IAntiforgery _anitforgery;
 
-        public PropertyController(IUnitOfWork unitOfWork)
+        public PropertyController(IUnitOfWork unitOfWork, IAntiforgery antiforgery)
         {
             _unitOfWork = unitOfWork;
+            _anitforgery = antiforgery;
         }
-        [Authorize]
         [HttpGet("properties")]
         public IActionResult GetProperties()
         {
@@ -27,7 +30,6 @@ namespace WebApi.Controllers
             return Ok(properties);
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public IActionResult GetProperty(int id)
         {

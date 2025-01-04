@@ -21,6 +21,7 @@ import {
   userUnlikePropertyFailure,
 } from '../auth/auth.actions';
 import { showError } from '../notification/notification.action';
+import { loadStartup } from '../app.actions';
 @Injectable()
 export class PropertyEffects {
   constructor(
@@ -32,7 +33,7 @@ export class PropertyEffects {
   loadProperties$ = createEffect(() => {
     return this.actions$.pipe(
       // Listen to only loadProperties action
-      ofType(loadProperties),
+      ofType(loadProperties, loadStartup),
       switchMap(() =>
         this.housingService.getAllProperties().pipe(
           map((properties) => {

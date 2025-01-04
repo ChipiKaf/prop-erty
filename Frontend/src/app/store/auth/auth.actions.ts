@@ -8,9 +8,11 @@ export const logInUser = createAction(
   props<UserForLogin>()
 );
 export const logInUserSuccessful = createAction(
-  '[Auth API] Log in user successful',
-  props<{ token: string }>()
+  '[Auth API] Log in user successful'
 );
+export const checkAuth = createAction('[Auth API] Check auth status');
+export const isAuthed = createAction('[Auth API] User is Authenticated');
+export const isNotAuthed = createAction('[Auth API] User is not Authenticated');
 export const logInUserFailure = createAction(
   '[Auth API] Log in user failure',
   props<{ error: string }>()
@@ -22,8 +24,7 @@ export const signUpUser = createAction(
   props<UserForRegister>()
 );
 export const signUpSuccessful = createAction(
-  '[Auth API] Sign up user successful',
-  props<{ token: string }>()
+  '[Auth API] Sign up user successful'
 );
 export const signUpFailure = createAction(
   '[Auth API] Sign up user failure',
@@ -78,3 +79,5 @@ export const userLikePropertyFailure = createAction(
 
 // Logout
 export const userLogout = createAction('[User API] Logout');
+export const userLogoutSuccess = createAction('[User API] User Logged out');
+export const userLogoutFailure = createAction('[User API] User Logged out');

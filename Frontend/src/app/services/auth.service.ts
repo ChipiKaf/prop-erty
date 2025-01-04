@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UserForRegister, UserForLogin, UserModel } from '../model/user';
 import { environment } from '../../environments/environment';
 import { TokenService } from './token.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -29,10 +30,21 @@ export class AuthService {
   }
 
   getUser() {
-    const headers = this.tokenService.getAuthHeader();
-    return this.http.get<UserModel>(`${this.baseUrl}/account`, {
-      headers,
-    });
+    return this.http.get<UserModel>(`${this.baseUrl}/account`);
+  }
+
+  logout<T>(): Observable<T> {
+    return this.http.post<T>(`${this.baseUrl}/account/logout`, {});
+  }
+
+  checkAuth() {
+    return this.http.get<{ isAuthenticated: boolean; user?: string }>(
+      `${this.baseUrl}/account/check-auth`
+    );
+  }
+
+  getCsrfToken<T>(): Observable<T> {
+    return this.http.get<T>(`${this.baseUrl}/account/antiforgery/token`);
   }
 
   updateUser(user: {
@@ -40,11 +52,6 @@ export class AuthService {
     firstName: string | null;
     lastName: string | null;
   }) {
-    const headers = this.tokenService.getAuthHeader();
-    return this.http.patch<void>(
-      `${this.baseUrl}/account`,
-      { ...user },
-      { headers }
-    );
+    return this.http.patch<void>(`${this.baseUrl}/account`, { ...user });
   }
 }

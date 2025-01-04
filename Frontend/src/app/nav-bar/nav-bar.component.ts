@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 import { AppState } from '../store/app.store';
 import { Store } from '@ngrx/store';
 import { userLogout } from '../store/auth/auth.actions';
+import { selectIsAuthenticated } from '../store/auth/auth.selector';
 
 export enum ListItemTypes {
   ALL,
@@ -26,6 +27,7 @@ export enum ListItemTypes {
 export type ListItem = {
   name: string;
   url: string;
+  href?: string;
   type: ListItemTypes;
   actions?: () => void;
 };
@@ -45,15 +47,22 @@ export class NavBarComponent implements AfterViewInit {
   @ViewChildren('menuText')
   menuTexts: QueryList<ElementRef<HTMLSpanElement>> | null = null;
   active: boolean = false;
+  isAuthenticated$ = this.store.select(selectIsAuthenticated);
   listItems: ListItem[] = [
     {
       name: 'Properties',
       url: '/',
-      type: ListItemTypes.ALL,
+      type: ListItemTypes.AUTHENTICATED,
+    },
+    {
+      name: 'Login',
+      url: '/login',
+      type: ListItemTypes.UNAUTHENTICATED,
     },
     {
       name: 'Contact',
       url: '/',
+      href: 'https://chipilidev.com/contact',
       type: ListItemTypes.UNAUTHENTICATED,
     },
     {
@@ -148,6 +157,10 @@ export class NavBarComponent implements AfterViewInit {
 
   navigate(item: ListItem, element: HTMLElement, isMenu = false) {
     if (item.actions) item.actions();
+    if (item.href) {
+      window.open(item.href, '_blank');
+      return; // Exit the function to prevent further navigation
+    }
     if (item.url === this.nativeRouter.url) {
       this.shakeAnimation(element);
       return;

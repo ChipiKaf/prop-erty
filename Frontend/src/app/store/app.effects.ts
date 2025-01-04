@@ -2,27 +2,24 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { initializeSession } from './app.actions';
-import { loadUser } from './auth/auth.actions';
-import { loadProperties } from './property/property.actions';
-import { map } from 'rxjs/operators';
+import { checkAuth } from './auth/auth.actions';
+import { map, switchMap } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class AppEffects {
-  constructor(private actions$: Actions) {}
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService
+  ) {}
 
-  // Effect to load the user
-  loadUser$ = createEffect(() => {
+  // Effect to fetch antiforgery token
+  loadAntiForgeryToken$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(initializeSession),
-      map(() => loadUser())
-    );
-  });
-
-  // Effect to load properties
-  loadProperties$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(initializeSession),
-      map(() => loadProperties())
+      switchMap(() =>
+        this.authService.getCsrfToken().pipe(map(() => checkAuth()))
+      )
     );
   });
 }

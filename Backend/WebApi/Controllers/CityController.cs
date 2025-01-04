@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers
 {
     [Authorize]
+    [ValidateAntiForgeryToken]
     public class CityController : BaseController
     {
         //private readonly IUnitOfWork uow;

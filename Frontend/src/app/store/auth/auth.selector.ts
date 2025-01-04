@@ -3,9 +3,9 @@ import { AppState } from '../app.store';
 
 export const selectAuth = (state: AppState) => state.auth;
 export const selectModel = (state: AppState) => state.auth.model;
-export const selectToken = createSelector(
+export const selectIsAuthenticated = createSelector(
   selectAuth,
-  (state) => state.authentication.token
+  (state) => state.authentication.isAuthenticated
 );
 export const selectAuthenticationStatus = createSelector(
   selectAuth,

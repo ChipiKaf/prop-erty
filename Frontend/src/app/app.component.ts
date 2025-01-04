@@ -67,10 +67,10 @@ export class AppComponent implements OnInit, OnDestroy {
         }, 2000);
       }
     );
-    if (this.tokenService.hasToken()) {
-      // If session still valid, load user on initialization
-      this.store.dispatch(initializeSession());
-    }
+    // if (this.tokenService.hasToken()) {
+    // If session still valid, load user on initialization
+    this.store.dispatch(initializeSession());
+    // }
   }
   ngOnDestroy(): void {
     this.notificationSubscription.unsubscribe();

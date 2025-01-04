@@ -15,6 +15,11 @@ export const showSuccess = createAction(
   props<{ message: string }>()
 );
 
+export const showNeutral = createAction(
+  '[Notification state] Show Neutral',
+  props<{ message: string }>()
+);
+
 export const resetNotifications = createAction(
   '[Notification state] Reset state'
 );

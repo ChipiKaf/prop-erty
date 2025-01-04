@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.DataAccess.Dtos;
@@ -9,14 +10,17 @@ using WebApi.Services;
 
 namespace WebApi.Controllers
 {
+    [Authorize]
     public class LikeController : BaseController
     {
         private readonly IUnitOfWork _uow;
         private readonly SqsService _sqsService;
-        public LikeController(IUnitOfWork unitOfWork, SqsService sqsService)
+        private readonly IAntiforgery _antiforgery;
+        public LikeController(IUnitOfWork unitOfWork, SqsService sqsService, IAntiforgery antiforgery)
         {
             _uow = unitOfWork;
             _sqsService = sqsService;
+            _antiforgery = antiforgery;
         }
 
         private (Property? property, ApplicationUser? user, PropertyLike? propertyLike) GetLikeContext(int propertyId)
@@ -43,7 +47,6 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("/{id}")]
-        [Authorize]
         public IActionResult GetLikes(int id) 
         {
            PropertyLike propertyLike = _uow.PropertyLike.Get(pl => pl.Id == id);
@@ -75,18 +78,17 @@ namespace WebApi.Controllers
         }
         // Like property
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> LikeProperty(PropertyLikeDto propertyLikeDto) 
         {
+            await _antiforgery.ValidateRequestAsync(HttpContext);
             return await ProcessLikeAction(propertyLikeDto, "Like", 201);
         }
 
         // Unlike property
         [HttpDelete]
-        [Authorize]
         public async Task<IActionResult> UnlikeProperty(PropertyLikeDto propertyLikeDto)
         {
-
+            await _antiforgery.ValidateRequestAsync(HttpContext);
             return await ProcessLikeAction(propertyLikeDto, "Unlike", 200);
 
         }

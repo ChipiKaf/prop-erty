@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -19,16 +20,40 @@ namespace WebApi.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IUnitOfWork _uow;
         private readonly IConfiguration _config;
+        private readonly IAntiforgery _antiforgery;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public AccountController(UserManager<ApplicationUser> userManager, 
             SignInManager<ApplicationUser> signInManager,
             IUnitOfWork uow,
-            IConfiguration config)
+            IAntiforgery antiforgery,
+            IConfiguration config,
+            IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _config = config;
             _uow = uow;
+            _antiforgery = antiforgery;
+            _webHostEnvironment = webHostEnvironment;
+        }
+
+        [HttpGet("antiforgery/token")]
+        public IActionResult GetAntiforgeryToken()
+        {
+            var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+            Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!,
+                new CookieOptions
+                {
+                    HttpOnly = false,
+                    Secure = !_webHostEnvironment.IsDevelopment(),
+                    SameSite = _webHostEnvironment.IsDevelopment() ? SameSiteMode.Lax : SameSiteMode.None,
+                    Domain = _webHostEnvironment.IsDevelopment() ? null : ".chipilidev.com",
+                    Path = "/"
+                }
+
+                );
+            return NoContent();
         }
 
         private string GenerateJwtToken(string email)
@@ -78,8 +103,20 @@ namespace WebApi.Controllers
 
             if (result.Succeeded) 
             {
-                var token = GenerateJwtToken(model.Email);
-                return Ok(new { Token = token, Message = "Login successful" });
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                //var token = GenerateJwtToken(model.Email);
+                var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+                Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!,
+                    new CookieOptions
+                    {
+                        HttpOnly = false,
+                        Secure = !_webHostEnvironment.IsDevelopment(),
+                        SameSite = _webHostEnvironment.IsDevelopment() ? SameSiteMode.Lax : SameSiteMode.None,
+                        Domain = _webHostEnvironment.IsDevelopment() ? null : ".chipilidev.com",
+                        Path = "/"
+                    }
+                    );
+                return Ok(new { Message = "Registration successful and user is logged in" });
 
             }
 
@@ -90,6 +127,15 @@ namespace WebApi.Controllers
 
             return BadRequest(ModelState);
 
+        }
+        [HttpGet("check-auth")]
+        public IActionResult CheckAuth()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Ok(new { isAuthenticated = true, user = User.Identity.Name });
+            }
+            return Ok(new { isAuthenticated = false });
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
@@ -103,11 +149,42 @@ namespace WebApi.Controllers
 
             if (result.Succeeded)
             {
-                var token = GenerateJwtToken(model.Email);
-                return Ok(new { Token = token, Message = "Login successful" });
+                var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+                Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken!,
+                    new CookieOptions
+                    {
+                        HttpOnly = false, // Accessible via JavaScript
+                        Secure = !_webHostEnvironment.IsDevelopment(),
+                        SameSite = _webHostEnvironment.IsDevelopment() ? SameSiteMode.Lax : SameSiteMode.None,
+                        Domain = _webHostEnvironment.IsDevelopment() ? null : ".chipilidev.com",
+                        Path = "/"
+                    });
+                return Ok(new { Message = "Login successful" });
             }
 
             return Unauthorized(new { Message = "Invalid email or password." });
+        }
+
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            // Validate the CSRF token to protect against CSRF attacks
+            await _antiforgery.ValidateRequestAsync(HttpContext);
+
+            // Sign out the user, removing the authentication cookie
+            await _signInManager.SignOutAsync();
+
+            // Delete the CSRF token cookie
+            Response.Cookies.Delete("XSRF-TOKEN", new CookieOptions
+            {
+                HttpOnly = false,
+                Secure = !_webHostEnvironment.IsDevelopment(),
+                SameSite = _webHostEnvironment.IsDevelopment() ? SameSiteMode.Lax : SameSiteMode.None,
+                Domain = _webHostEnvironment.IsDevelopment() ? null : ".chipilidev.com",
+                Path = "/"
+            });
+            return Ok(new { Message = "Logout successful." });
         }
 
         [HttpGet]
@@ -115,8 +192,12 @@ namespace WebApi.Controllers
         public IActionResult GetUser()
         {
             // Use the email in the JWT to fetch user
-            string email = GetEmailFromClaims();
-            
+            string email = User.FindFirstValue(ClaimTypes.Name) ?? User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+            if (string.IsNullOrEmpty(email)) { 
+                return Unauthorized();
+            }
+
             ApplicationUser user = _uow.User.Get(u => u.Email == email, null, "Likes");
             if (user == null)
             {
@@ -129,12 +210,24 @@ namespace WebApi.Controllers
         [Authorize]
         public IActionResult UpdateUser([FromBody] UserUpdateDto userUpdateDto)
         {
+            _antiforgery.ValidateRequestAsync(HttpContext).Wait();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            string email = GetEmailFromClaims();
+            string email = User.FindFirstValue(ClaimTypes.Name) ?? User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+            if (string.IsNullOrEmpty(email)) 
+            {
+                return Unauthorized();
+            }
+
+            var user = _uow.User.Get(u => u.Email == email);
+            if (user == null)
+            {
+                return NotFound(new { Message = "User not found." });
+            }
 
             UserUpdateModel model = new() { Email = email, DisplayName = userUpdateDto.DisplayName, FirstName = userUpdateDto.FirstName, LastName = userUpdateDto.LastName };
             _uow.User.Update(model);

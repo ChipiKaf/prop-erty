@@ -17,7 +17,7 @@
 
   <ul class="navbar-custom__list">
     <ng-container *ngFor="let item of listItems">
-      <li #navLink class="navbar-custom__list-item" *ngIf="isItemVisible(item)">
+      <li #navLink class="navbar-custom__list-item" *ngIf="item.type === 0 || ((isAuthenticated$ | async) === true) && item.type === 1 || ((isAuthenticated$ | async) === false && item.type === 2)" >
         <a class="navbar-custom__link" (click)="navigate(item, navLink)">{{ item.name }}</a>
       </li>
     </ng-container>

@@ -1,5 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import {
+  isAuthed,
+  isNotAuthed,
   loadUser,
   loadUserFailure,
   loadUserSuccessful,
@@ -23,7 +25,7 @@ import { Status } from '../../model/store';
 export interface AuthState {
   model: { user: UserModel; status: Status; error: string | null };
   authentication: {
-    token: string | null;
+    isAuthenticated: boolean;
     status: Status;
     error: string | null;
   };
@@ -35,7 +37,7 @@ const initialState: AuthState = {
     status: 'pending',
     error: null,
   },
-  authentication: { token: null, status: 'pending', error: null },
+  authentication: { isAuthenticated: false, status: 'pending', error: null },
 };
 
 export const authReducer = createReducer(
@@ -49,11 +51,11 @@ export const authReducer = createReducer(
   ),
   on(
     logInUserSuccessful,
-    (state, { token }): AuthState => ({
+    (state): AuthState => ({
       ...state,
       authentication: {
         ...state.authentication,
-        token,
+        isAuthenticated: true,
         status: 'success',
         error: null,
       },
@@ -63,7 +65,12 @@ export const authReducer = createReducer(
     logInUserFailure,
     (state, { error }): AuthState => ({
       ...state,
-      authentication: { ...state.authentication, error, status: 'error' },
+      authentication: {
+        ...state.authentication,
+        isAuthenticated: false,
+        error,
+        status: 'error',
+      },
     })
   ),
   on(
@@ -75,13 +82,33 @@ export const authReducer = createReducer(
   ),
   on(
     signUpSuccessful,
-    (state, { token }): AuthState => ({
+    (state): AuthState => ({
       ...state,
       authentication: {
         ...state.authentication,
-        token,
+        isAuthenticated: true,
         status: 'success',
         error: null,
+      },
+    })
+  ),
+  on(
+    isAuthed,
+    (state): AuthState => ({
+      ...state,
+      authentication: {
+        ...state.authentication,
+        isAuthenticated: true,
+      },
+    })
+  ),
+  on(
+    isNotAuthed,
+    (state): AuthState => ({
+      ...state,
+      authentication: {
+        ...state.authentication,
+        isAuthenticated: false,
       },
     })
   ),
@@ -89,7 +116,12 @@ export const authReducer = createReducer(
     signUpFailure,
     (state, { error }): AuthState => ({
       ...state,
-      authentication: { ...state.authentication, error, status: 'error' },
+      authentication: {
+        ...state.authentication,
+        isAuthenticated: false,
+        error,
+        status: 'error',
+      },
     })
   ),
   on(
@@ -190,7 +222,7 @@ export const authReducer = createReducer(
       },
     })
   ),
-
+  // on()
   on(
     userUnlikeProperty,
     (state, { propertyId }): AuthState => ({

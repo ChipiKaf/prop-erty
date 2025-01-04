@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  // baseUrl: 'http://localhost:5146/api',
+  baseUrl: 'http://localhost:5146/api',
   // baseUrl: 'http://localhost:8080/api',
-  baseUrl: 'https://api.chipilidev.com/api',
+  // baseUrl: 'https://api.chipilidev.com/api',
 };
 
 /*

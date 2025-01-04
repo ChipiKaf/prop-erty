@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  isAuthed,
+  isNotAuthed,
+  checkAuth,
   loadUser,
   loadUserFailure,
   loadUserSuccessful,
@@ -18,13 +21,20 @@ import {
   userLogout,
   userUnlikeProperty,
   userUnlikePropertyFailure,
+  userLogoutSuccess,
+  userLogoutFailure,
 } from './auth.actions';
-import { catchError, delay, map, of, switchMap, tap } from 'rxjs';
+import { catchError, delay, map, of, switchMap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { RoutingService } from '../../services/routing.service';
 import { GRACE_PERIOD } from '../../constants';
 import { likeProperty, unlikeProperty } from '../property/property.actions';
-import { showError, showSuccess } from '../notification/notification.action';
+import {
+  showError,
+  showNeutral,
+  showSuccess,
+} from '../notification/notification.action';
+import { loadStartup } from '../app.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -40,10 +50,9 @@ export class AuthEffects {
       // Side effects
       switchMap(({ email, password }) => {
         return this.authService.authUser({ email, password }).pipe(
-          map(({ token }) => {
-            localStorage.setItem('token', token);
+          map(() => {
             this.router.navigate(['/']);
-            return logInUserSuccessful({ token });
+            return logInUserSuccessful();
           }),
           catchError((error) => {
             return of(logInUserFailure({ error }));
@@ -54,7 +63,7 @@ export class AuthEffects {
   });
   authSuccess$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(logInUserSuccessful, signUpSuccessful),
+      ofType(logInUserSuccessful, signUpSuccessful, loadStartup),
       map(({}) => {
         return loadUser();
       })
@@ -69,10 +78,9 @@ export class AuthEffects {
         return this.authService
           .registerUser({ email, password, confirmPassword })
           .pipe(
-            map(({ token }) => {
-              localStorage.setItem('token', token);
+            map(() => {
               this.router.navigate(['/']);
-              return signUpSuccessful({ token });
+              return signUpSuccessful();
             }),
             catchError((error) => of(signUpFailure({ error })))
           );
@@ -169,15 +177,59 @@ export class AuthEffects {
       })
     );
   });
-  userLogout$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(userLogout),
-        tap(() => {
-          localStorage.removeItem('token');
-        })
-      );
-    },
-    { dispatch: false }
-  );
+  userLogout$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(userLogout),
+      switchMap(() =>
+        this.authService.logout().pipe(
+          map(() => userLogoutSuccess()),
+          catchError(() => of(userLogoutFailure()))
+        )
+      )
+    );
+  });
+
+  userLogoutSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(userLogoutSuccess),
+      map(() => {
+        this.router.navigate(['/login']);
+        return showNeutral({ message: 'Goodbye!' });
+      })
+    );
+  });
+
+  userLogoutFailure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(userLogoutFailure),
+      map(() => {
+        return showError({ message: 'Oops... Something went wrong' });
+      })
+    );
+  });
+
+  checkAuth$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(checkAuth),
+      switchMap(() =>
+        this.authService.checkAuth().pipe(
+          map(({ isAuthenticated }) => {
+            if (isAuthenticated) return isAuthed();
+            else return isNotAuthed();
+          }), // Load Users and Properties
+          catchError(() => {
+            this.router.navigate(['/login']);
+            return of(isNotAuthed());
+          })
+        )
+      )
+    );
+  });
+
+  isAuthed$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(isAuthed),
+      map(() => loadUser())
+    );
+  });
 }
