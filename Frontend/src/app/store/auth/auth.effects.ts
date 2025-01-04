@@ -203,6 +203,7 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(userLogoutFailure),
       map(() => {
+        console.log('In logout failuer');
         return showError({ message: 'Oops... Something went wrong' });
       })
     );

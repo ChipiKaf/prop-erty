@@ -80,4 +80,6 @@ export const userLikePropertyFailure = createAction(
 // Logout
 export const userLogout = createAction('[User API] Logout');
 export const userLogoutSuccess = createAction('[User API] User Logged out');
-export const userLogoutFailure = createAction('[User API] User Logged out');
+export const userLogoutFailure = createAction(
+  '[User API] Unable to Log user out'
+);

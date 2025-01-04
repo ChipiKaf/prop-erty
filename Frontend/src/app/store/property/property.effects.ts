@@ -67,7 +67,10 @@ export class PropertyEffects {
   loadPropertiesFailure$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadPropertiesFailure),
-      map(() => showError({ message: 'Oops... Something went wrong' }))
+      map(() => {
+        console.log('Load poperties failed');
+        return showError({ message: 'Oops... Something went wrong' });
+      })
     );
   });
 

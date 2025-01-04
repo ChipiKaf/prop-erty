@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Antiforgery;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +33,8 @@ namespace WebApi.Controllers
                 return (null, null, null);
             }
 
-            string email = GetEmailFromClaims();
+            string email = User.FindFirstValue(ClaimTypes.Name) ?? User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
             ApplicationUser user = _uow.User.Get(u => u.Email == email);
 
             if (user == null)
